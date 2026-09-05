@@ -1,0 +1,936 @@
+{
+ "1": {
+  "family": 1,
+  "itemId": 878,
+  "name": "Fiery Gem",
+  "maxLevel": 6,
+  "type": 1,
+  "stat": "MNATK",
+  "col": "mn_atk_valu",
+  "perLevel": 4,
+  "equipTypes": [
+   1
+  ]
+ },
+ "2": {
+  "family": 2,
+  "itemId": 879,
+  "name": "Furious Gem",
+  "maxLevel": 6,
+  "type": 1,
+  "stat": "MNATK",
+  "col": "mn_atk_valu",
+  "perLevel": 6,
+  "equipTypes": [
+   2,
+   3,
+   4,
+   7,
+   9
+  ]
+ },
+ "3": {
+  "family": 3,
+  "itemId": 880,
+  "name": "Explosive Gem",
+  "maxLevel": 6,
+  "type": 1,
+  "stat": "MNATK",
+  "col": "mn_atk_valu",
+  "perLevel": 10,
+  "equipTypes": [
+   3,
+   4
+  ]
+ },
+ "4": {
+  "family": 4,
+  "itemId": 881,
+  "name": "Lustrious Gem",
+  "maxLevel": 6,
+  "type": 1,
+  "stat": "HIT",
+  "col": "hit_valu",
+  "perLevel": 5,
+  "equipTypes": [
+   1,
+   2,
+   3,
+   4,
+   7,
+   9,
+   23
+  ]
+ },
+ "5": {
+  "family": 5,
+  "itemId": 882,
+  "name": "Glowing Gem",
+  "maxLevel": 6,
+  "type": 2,
+  "stat": "DEF",
+  "col": "def_valu",
+  "perLevel": 5,
+  "equipTypes": [
+   11,
+   22,
+   27
+  ]
+ },
+ "6": {
+  "family": 6,
+  "itemId": 883,
+  "name": "Shining Gem",
+  "maxLevel": 6,
+  "type": 2,
+  "stat": "MXHP",
+  "col": "mx_hp_valu",
+  "perLevel": 100,
+  "equipTypes": [
+   11,
+   22,
+   27
+  ]
+ },
+ "7": {
+  "family": 7,
+  "itemId": 884,
+  "name": "Shadow Gem",
+  "maxLevel": 6,
+  "type": 2,
+  "stat": "FLEE",
+  "col": "flee_valu",
+  "perLevel": 2,
+  "equipTypes": [
+   1,
+   2,
+   3,
+   4,
+   7,
+   9,
+   24
+  ]
+ },
+ "8": {
+  "family": 8,
+  "itemId": 887,
+  "name": "Spirit Gem",
+  "maxLevel": 6,
+  "type": 4,
+  "stat": "STA",
+  "col": "sta_valu",
+  "perLevel": 1,
+  "equipTypes": [
+   1,
+   2,
+   3,
+   4,
+   7,
+   9,
+   24
+  ]
+ },
+ "9": {
+  "family": 9,
+  "itemId": 860,
+  "name": "Gem of the Wind",
+  "maxLevel": 3,
+  "type": 4,
+  "stat": "AGI",
+  "col": "agi_valu",
+  "perLevel": 5,
+  "equipTypes": [
+   24
+  ]
+ },
+ "10": {
+  "family": 10,
+  "itemId": 861,
+  "name": "Gem of Striking",
+  "maxLevel": 3,
+  "type": 4,
+  "stat": "DEX",
+  "col": "dex_valu",
+  "perLevel": 5,
+  "equipTypes": [
+   23
+  ]
+ },
+ "11": {
+  "family": 11,
+  "itemId": 862,
+  "name": "Gem of Colossus",
+  "maxLevel": 3,
+  "type": 4,
+  "stat": "CON",
+  "col": "con_valu",
+  "perLevel": 5,
+  "equipTypes": [
+   11,
+   22,
+   27
+  ]
+ },
+ "12": {
+  "family": 12,
+  "itemId": 863,
+  "name": "Gem of Rage",
+  "maxLevel": 3,
+  "type": 4,
+  "stat": "STR",
+  "col": "str_valu",
+  "perLevel": 5,
+  "equipTypes": [
+   1,
+   2,
+   3,
+   4,
+   7,
+   9
+  ]
+ },
+ "13": {
+  "family": 13,
+  "itemId": 864,
+  "name": "Eye of Black Dragon",
+  "maxLevel": 2,
+  "type": 1,
+  "stat": "MNATK",
+  "col": "mn_atk_valu",
+  "perLevel": 50,
+  "equipTypes": [
+   1,
+   2,
+   3,
+   4,
+   7,
+   9
+  ]
+ },
+ "14": {
+  "family": 14,
+  "itemId": 865,
+  "name": "Soul of Black Dragon",
+  "maxLevel": 2,
+  "type": 2,
+  "stat": "PDEF",
+  "col": "p_def",
+  "perLevel": 3,
+  "equipTypes": [
+   11,
+   22,
+   27
+  ]
+ },
+ "15": {
+  "family": 15,
+  "itemId": 866,
+  "name": "Heart of Black Dragon",
+  "maxLevel": 2,
+  "type": 2,
+  "stat": "MXHP",
+  "col": "mx_hp_valu",
+  "perLevel": 500,
+  "equipTypes": [
+   23,
+   24
+  ]
+ },
+ "16": {
+  "family": 16,
+  "itemId": 1012,
+  "name": "Gem of Soul",
+  "maxLevel": 3,
+  "type": 4,
+  "stat": "STA",
+  "col": "sta_valu",
+  "perLevel": 5,
+  "equipTypes": [
+   1,
+   2,
+   3,
+   4,
+   7,
+   9
+  ]
+ },
+ "17": {
+  "family": 17,
+  "itemId": 6832,
+  "name": "Yellow Jade",
+  "maxLevel": 1,
+  "type": 2,
+  "stat": "DEF",
+  "col": "def_valu",
+  "perLevel": 10,
+  "equipTypes": [
+   20
+  ]
+ },
+ "18": {
+  "family": 18,
+  "itemId": 6833,
+  "name": "Red Jade",
+  "maxLevel": 1,
+  "type": 1,
+  "stat": "MXHP",
+  "col": "mx_hp_valu",
+  "perLevel": 200,
+  "equipTypes": [
+   20
+  ]
+ },
+ "19": {
+  "family": 19,
+  "itemId": 6834,
+  "name": "Green Jade",
+  "maxLevel": 1,
+  "type": 2,
+  "stat": "MXSP",
+  "col": "mx_sp_valu",
+  "perLevel": 200,
+  "equipTypes": [
+   20
+  ]
+ },
+ "20": {
+  "family": 20,
+  "itemId": 6836,
+  "name": "Chiatan's Aura",
+  "maxLevel": 1,
+  "type": 1,
+  "stat": "CRT",
+  "col": "crt_valu",
+  "perLevel": 10,
+  "equipTypes": [
+   20
+  ]
+ },
+ "21": {
+  "family": 21,
+  "itemId": 6837,
+  "name": "Lock's Hit",
+  "maxLevel": 1,
+  "type": 1,
+  "stat": "HIT",
+  "col": "hit_valu",
+  "perLevel": 10,
+  "equipTypes": [
+   23
+  ]
+ },
+ "22": {
+  "family": 22,
+  "itemId": 6838,
+  "name": "Bing's Dodging",
+  "maxLevel": 1,
+  "type": 2,
+  "stat": "FLEE",
+  "col": "flee_valu",
+  "perLevel": 10,
+  "equipTypes": [
+   24
+  ]
+ },
+ "23": {
+  "family": 23,
+  "itemId": 6839,
+  "name": "Feng's Defense",
+  "maxLevel": 1,
+  "type": 2,
+  "stat": "DEF",
+  "col": "def_valu",
+  "perLevel": 15,
+  "equipTypes": [
+   22,
+   27
+  ]
+ },
+ "24": {
+  "family": 24,
+  "itemId": 6840,
+  "name": "Shark's Strengthening",
+  "maxLevel": 1,
+  "type": 4,
+  "stat": "MXHP",
+  "col": "mx_hp_valu",
+  "perLevel": 300,
+  "equipTypes": [
+   22,
+   11,
+   27
+  ]
+ },
+ "25": {
+  "family": 25,
+  "itemId": 5845,
+  "name": "Azrael's Glare",
+  "maxLevel": 1,
+  "type": 1,
+  "stat": "STR",
+  "col": "str_valu",
+  "perLevel": 8,
+  "equipTypes": [
+   1,
+   2,
+   3,
+   4,
+   7,
+   9
+  ]
+ },
+ "26": {
+  "family": 26,
+  "itemId": 5846,
+  "name": "Undead Azrael",
+  "maxLevel": 1,
+  "type": 2,
+  "stat": "CON",
+  "col": "con_valu",
+  "perLevel": 8,
+  "equipTypes": [
+   11,
+   22,
+   27
+  ]
+ },
+ "27": {
+  "family": 27,
+  "itemId": 5847,
+  "name": "Azrael's Light",
+  "maxLevel": 1,
+  "type": 4,
+  "stat": "STA",
+  "col": "sta_valu",
+  "perLevel": 8,
+  "equipTypes": [
+   1,
+   2,
+   3,
+   4,
+   7,
+   9,
+   22,
+   27
+  ]
+ },
+ "28": {
+  "family": 28,
+  "itemId": 5848,
+  "name": "Azrael's Aggregation",
+  "maxLevel": 1,
+  "type": 1,
+  "stat": "DEX",
+  "col": "dex_valu",
+  "perLevel": 8,
+  "equipTypes": [
+   1,
+   2,
+   3,
+   4,
+   7,
+   9,
+   23
+  ]
+ },
+ "29": {
+  "family": 29,
+  "itemId": 5849,
+  "name": "Azrael's Dance",
+  "maxLevel": 1,
+  "type": 4,
+  "stat": "AGI",
+  "col": "agi_valu",
+  "perLevel": 8,
+  "equipTypes": [
+   24
+  ]
+ },
+ "33": {
+  "family": 33,
+  "itemId": 6718,
+  "name": "?",
+  "maxLevel": 1,
+  "type": 2,
+  "stat": "CON",
+  "col": "con_valu",
+  "perLevel": 1,
+  "equipTypes": [
+   22,
+   27
+  ]
+ },
+ "34": {
+  "family": 34,
+  "itemId": 6817,
+  "name": "Broken Gem of the Wind",
+  "maxLevel": 9,
+  "type": 4,
+  "stat": "AGI",
+  "col": "agi_valu",
+  "perLevel": 2,
+  "equipTypes": [
+   24
+  ]
+ },
+ "35": {
+  "family": 35,
+  "itemId": 6818,
+  "name": "Cracked Gem of the Wind",
+  "maxLevel": 9,
+  "type": 4,
+  "stat": "AGI",
+  "col": "agi_valu",
+  "perLevel": 3,
+  "equipTypes": [
+   24
+  ]
+ },
+ "36": {
+  "family": 36,
+  "itemId": 6819,
+  "name": "Chipped Gem of the Wind",
+  "maxLevel": 9,
+  "type": 4,
+  "stat": "AGI",
+  "col": "agi_valu",
+  "perLevel": 4,
+  "equipTypes": [
+   24
+  ]
+ },
+ "37": {
+  "family": 37,
+  "itemId": 6820,
+  "name": "Broken Gem of Striking",
+  "maxLevel": 9,
+  "type": 4,
+  "stat": "DEX",
+  "col": "dex_valu",
+  "perLevel": 2,
+  "equipTypes": [
+   3,
+   4
+  ]
+ },
+ "38": {
+  "family": 38,
+  "itemId": 6821,
+  "name": "Cracked Gem of Striking",
+  "maxLevel": 9,
+  "type": 4,
+  "stat": "DEX",
+  "col": "dex_valu",
+  "perLevel": 3,
+  "equipTypes": [
+   23
+  ]
+ },
+ "39": {
+  "family": 39,
+  "itemId": 6822,
+  "name": "Chipped Gem of Striking",
+  "maxLevel": 9,
+  "type": 4,
+  "stat": "DEX",
+  "col": "dex_valu",
+  "perLevel": 4,
+  "equipTypes": [
+   23
+  ]
+ },
+ "40": {
+  "family": 40,
+  "itemId": 6823,
+  "name": "Broken Gem of Colossus",
+  "maxLevel": 9,
+  "type": 4,
+  "stat": "CON",
+  "col": "con_valu",
+  "perLevel": 2,
+  "equipTypes": [
+   11,
+   22,
+   27
+  ]
+ },
+ "41": {
+  "family": 41,
+  "itemId": 6824,
+  "name": "Cracked Gem of Colossus",
+  "maxLevel": 9,
+  "type": 4,
+  "stat": "CON",
+  "col": "con_valu",
+  "perLevel": 3,
+  "equipTypes": [
+   11,
+   22,
+   27
+  ]
+ },
+ "42": {
+  "family": 42,
+  "itemId": 6825,
+  "name": "Chipped Gem of Colossus",
+  "maxLevel": 9,
+  "type": 4,
+  "stat": "CON",
+  "col": "con_valu",
+  "perLevel": 4,
+  "equipTypes": [
+   11,
+   22,
+   27
+  ]
+ },
+ "43": {
+  "family": 43,
+  "itemId": 6826,
+  "name": "Broken Gem of Rage",
+  "maxLevel": 9,
+  "type": 4,
+  "stat": "STR",
+  "col": "str_valu",
+  "perLevel": 2,
+  "equipTypes": [
+   1,
+   2,
+   3,
+   4,
+   7,
+   9
+  ]
+ },
+ "44": {
+  "family": 44,
+  "itemId": 6827,
+  "name": "Cracked Gem of Rage",
+  "maxLevel": 9,
+  "type": 4,
+  "stat": "STR",
+  "col": "str_valu",
+  "perLevel": 3,
+  "equipTypes": [
+   1,
+   2,
+   3,
+   4,
+   7,
+   9
+  ]
+ },
+ "45": {
+  "family": 45,
+  "itemId": 6828,
+  "name": "Chipped Gem of Rage",
+  "maxLevel": 9,
+  "type": 4,
+  "stat": "STR",
+  "col": "str_valu",
+  "perLevel": 4,
+  "equipTypes": [
+   1,
+   2,
+   3,
+   4,
+   7,
+   9
+  ]
+ },
+ "46": {
+  "family": 46,
+  "itemId": 6829,
+  "name": "Broken Gem of Soul",
+  "maxLevel": 9,
+  "type": 4,
+  "stat": "STA",
+  "col": "sta_valu",
+  "perLevel": 2,
+  "equipTypes": [
+   1,
+   2,
+   3,
+   4,
+   7,
+   9
+  ]
+ },
+ "47": {
+  "family": 47,
+  "itemId": 6830,
+  "name": "Cracked Gem of Soul",
+  "maxLevel": 9,
+  "type": 4,
+  "stat": "STA",
+  "col": "sta_valu",
+  "perLevel": 3,
+  "equipTypes": [
+   1,
+   2,
+   3,
+   4,
+   7,
+   9
+  ]
+ },
+ "48": {
+  "family": 48,
+  "itemId": 6831,
+  "name": "Chipped Gem of Soul",
+  "maxLevel": 9,
+  "type": 4,
+  "stat": "STA",
+  "col": "sta_valu",
+  "perLevel": 4,
+  "equipTypes": [
+   1,
+   2,
+   3,
+   4,
+   7,
+   9
+  ]
+ },
+ "49": {
+  "family": 49,
+  "itemId": 7108,
+  "name": "Great Gem of Rage",
+  "maxLevel": 1,
+  "type": 1,
+  "stat": "STR",
+  "col": "str_valu",
+  "perLevel": 6,
+  "equipTypes": [
+   1,
+   2,
+   3,
+   4,
+   7,
+   9
+  ]
+ },
+ "50": {
+  "family": 50,
+  "itemId": 7109,
+  "name": "Great Gem of Soul",
+  "maxLevel": 1,
+  "type": 4,
+  "stat": "STA",
+  "col": "sta_valu",
+  "perLevel": 6,
+  "equipTypes": [
+   1,
+   2,
+   3,
+   4,
+   7,
+   9
+  ]
+ },
+ "51": {
+  "family": 51,
+  "itemId": 7110,
+  "name": "Great Gem of Striking",
+  "maxLevel": 1,
+  "type": 1,
+  "stat": "DEX",
+  "col": "dex_valu",
+  "perLevel": 6,
+  "equipTypes": [
+   3,
+   4
+  ]
+ },
+ "52": {
+  "family": 52,
+  "itemId": 7111,
+  "name": "Great Gem of Colossus",
+  "maxLevel": 1,
+  "type": 2,
+  "stat": "CON",
+  "col": "con_valu",
+  "perLevel": 6,
+  "equipTypes": [
+   11,
+   22,
+   27
+  ]
+ },
+ "53": {
+  "family": 53,
+  "itemId": 7112,
+  "name": "Great Gem of Wind",
+  "maxLevel": 1,
+  "type": 4,
+  "stat": "AGI",
+  "col": "agi_valu",
+  "perLevel": 6,
+  "equipTypes": [
+   24
+  ]
+ },
+ "54": {
+  "family": 54,
+  "itemId": 7288,
+  "name": "?",
+  "maxLevel": 1,
+  "type": 1,
+  "stat": "STR",
+  "col": "str_valu",
+  "perLevel": 2,
+  "equipTypes": [
+   23
+  ]
+ },
+ "55": {
+  "family": 55,
+  "itemId": 7289,
+  "name": "?",
+  "maxLevel": 1,
+  "type": 4,
+  "stat": "STA",
+  "col": "sta_valu",
+  "perLevel": 2,
+  "equipTypes": [
+   23
+  ]
+ },
+ "56": {
+  "family": 56,
+  "itemId": 7290,
+  "name": "?",
+  "maxLevel": 1,
+  "type": 1,
+  "stat": "DEX",
+  "col": "dex_valu",
+  "perLevel": 2,
+  "equipTypes": [
+   23
+  ]
+ },
+ "57": {
+  "family": 57,
+  "itemId": 7291,
+  "name": "?",
+  "maxLevel": 1,
+  "type": 2,
+  "stat": "AGI",
+  "col": "agi_valu",
+  "perLevel": 2,
+  "equipTypes": [
+   23
+  ]
+ },
+ "58": {
+  "family": 58,
+  "itemId": 7292,
+  "name": "?",
+  "maxLevel": 1,
+  "type": 4,
+  "stat": "CON",
+  "col": "con_valu",
+  "perLevel": 2,
+  "equipTypes": [
+   23
+  ]
+ },
+ "59": {
+  "family": 59,
+  "itemId": 7558,
+  "name": "?",
+  "maxLevel": 1,
+  "type": 2,
+  "stat": "DEF",
+  "col": "def_valu",
+  "perLevel": 20,
+  "equipTypes": [
+   83
+  ]
+ },
+ "60": {
+  "family": 60,
+  "itemId": 7559,
+  "name": "?",
+  "maxLevel": 1,
+  "type": 2,
+  "stat": "MXHP",
+  "col": "mx_hp_valu",
+  "perLevel": 300,
+  "equipTypes": [
+   82
+  ]
+ },
+ "61": {
+  "family": 61,
+  "itemId": 7560,
+  "name": "?",
+  "maxLevel": 1,
+  "type": 4,
+  "stat": "STA",
+  "col": "sta_valu",
+  "perLevel": 3,
+  "equipTypes": [
+   81
+  ]
+ },
+ "62": {
+  "family": 62,
+  "itemId": 7561,
+  "name": "?",
+  "maxLevel": 1,
+  "type": 4,
+  "stat": "DEX",
+  "col": "dex_valu",
+  "perLevel": 3,
+  "equipTypes": [
+   81
+  ]
+ },
+ "63": {
+  "family": 63,
+  "itemId": 7562,
+  "name": "?",
+  "maxLevel": 1,
+  "type": 4,
+  "stat": "AGI",
+  "col": "agi_valu",
+  "perLevel": 3,
+  "equipTypes": [
+   81
+  ]
+ },
+ "64": {
+  "family": 64,
+  "itemId": 9175,
+  "name": "Locke's Power",
+  "maxLevel": 1,
+  "type": 4,
+  "stat": "DEX",
+  "col": "dex_valu",
+  "perLevel": 3,
+  "equipTypes": [
+   3,
+   4
+  ]
+ },
+ "65": {
+  "family": 65,
+  "itemId": 9017,
+  "name": "?",
+  "maxLevel": 1,
+  "type": 1,
+  "stat": "CRT",
+  "col": "crt_valu",
+  "perLevel": 20,
+  "equipTypes": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   7,
+   9
+  ]
+ }
+}

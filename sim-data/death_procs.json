@@ -1,0 +1,51 @@
+{
+ "procs": {
+  "Hardin": {
+   "set": "Hardin",
+   "class": "Champion",
+   "chance": 0.12,
+   "text": "12% on hit: Hardin's Grasp \u2014 snares the target for 2s"
+  },
+  "Darkness": {
+   "set": "Darkness",
+   "class": "Crusader",
+   "chance": 0.12,
+   "text": "12% on hit: Empowered \u2014 +120 min/max attack for 3s"
+  },
+  "Abaddon": {
+   "set": "Abaddon",
+   "class": "Sharpshooter",
+   "chance": 0.12,
+   "text": "12% on hit: Empowered \u2014 +220 min/max attack for 3s"
+  },
+  "Styx": {
+   "set": "Styx",
+   "class": "Seal Master",
+   "chance": 0.12,
+   "text": "12% on hit: Styx Situation \u2014 roots the target for 2s. Also a flat +5 physical resist, applied unconditionally."
+  },
+  "Asura": {
+   "set": "Asura",
+   "class": "Voyager",
+   "chance": 0.15,
+   "text": "15% when hit: Asura's Bulwark \u2014 a survival shield for 4s"
+  },
+  "Abyss": {
+   "set": "Abyss",
+   "class": "Cleric",
+   "chance": 0.2,
+   "text": "every heal you cast is multiplied by 1.20, with a 20% chance to shield the ally"
+  }
+ },
+ "constants": {
+  "empSeconds": 3,
+  "empAtk": {
+   "210": 120,
+   "211": 220
+  },
+  "shieldDef": 150,
+  "styxPdef": 5,
+  "healMultiplier": 1.2
+ },
+ "source": "death_set_combos.lua"
+}

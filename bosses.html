@@ -1,0 +1,1561 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gauntlet Boss &amp; Loot</title><style>
+:root{
+  --ground:#DFF2FB; --surface:#FFFFFF; --sunken:#EFF9FE; --line:#8AD6EE;
+  --ink:#002463; --panel:#FFFFFF; --text:#002463; --muted:#10306B; --faint:#4F72A0;
+  --brass:#97660B; --brass-soft:#FBEFD2; --verdigris:#0F7A91; --signal:#BF3B27;
+  --sky:#9CCFEF; --sky-deep:#84BBDE;
+  --shadow:0 1px 2px rgba(0,36,99,.08), 0 8px 24px -12px rgba(0,36,99,.20);
+  --mono:ui-monospace,"Cascadia Mono",Consolas,"SF Mono",Menlo,monospace;
+ --faint:#5f7286;--brass:#e0a63d;--verdigris:#5aa6ad;--signal:#d97a63;
+ --mono:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;
+ --serif:Georgia,"Palatino Linotype","Book Antiqua",serif}
+*{box-sizing:border-box}
+/* Wallpaper + type from the Armory. See tools/armory_skin.py for why these exact
+   values -- they are sampled from the client UI atlases, not chosen. */
+body{margin:0;background:linear-gradient(rgba(223,242,251,.86),rgba(223,242,251,.94)),url("/keyart.jpg") center top / cover fixed, var(--ground);color:var(--ink);font:15px/1.55 "Trebuchet MS","Segoe UI",system-ui,sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+header{padding:54px 0 26px;border-bottom:1px solid var(--line)}
+h1{font:600 clamp(28px,4.6vw,48px)/1.05 var(--serif);margin:10px 0 12px;letter-spacing:-.02em}
+h1 em{font-style:italic;color:var(--brass)}
+.eyebrow{font:11px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+.lede{max-width:66ch;color:var(--muted)}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:16px 0;position:sticky;top:0;
+ background:var(--ink);border-bottom:1px solid var(--line);z-index:10}
+.pill{display:inline-flex;align-items:center;gap:7px;cursor:pointer;user-select:none;
+ font:11.5px/1 var(--mono);padding:7px 12px;border:1px solid var(--line);border-radius:99px;
+ background:var(--panel);color:var(--muted)}
+.pill .dot{width:9px;height:9px;border-radius:50%;flex:none}
+.pill[aria-pressed="true"]{color:var(--text);border-color:currentColor}
+.pill[aria-pressed="false"]{opacity:.42}
+.pill .ct{font-variant-numeric:tabular-nums;opacity:.75}
+input[type=search]{margin-left:auto;font:12px/1 var(--mono);padding:8px 12px;border-radius:3px;
+ border:1px solid var(--line);background:var(--panel);color:var(--text);min-width:210px}
+.card{border:1px solid var(--line);border-radius:4px;background:var(--panel);margin:14px 0;overflow:hidden}
+.chead{display:grid;grid-template-columns:12px 1fr auto;gap:12px;align-items:baseline;
+ padding:13px 16px;border-bottom:1px solid var(--line)}
+.rankdot{width:10px;height:10px;border-radius:50%;align-self:center}
+.cname{font:600 17px/1.2 var(--serif)}
+.cmeta{font:11.5px/1.5 var(--mono);color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+.cbody{padding:12px 16px}
+/* Region headings. Sticky so the region you are reading stays named while you scroll a long
+   list -- 134 cards is several screens, and losing the heading is losing the grouping. */
+.zonehead{position:sticky;top:0;z-index:2;margin:26px 0 10px;padding:8px 2px;
+  background:var(--ground);border-bottom:2px solid var(--line);
+  font:600 19px/1.2 var(--serif);color:var(--ink)}
+.zonect{font:11px/1 var(--mono);color:var(--faint);vertical-align:3px;margin-left:8px}
+.stats{display:flex;flex-wrap:wrap;gap:6px 20px;font:12px/1 var(--mono);color:var(--muted);
+ font-variant-numeric:tabular-nums;margin-bottom:10px}
+.stats b{color:var(--text);font-weight:600}
+.where{font:11.5px/1.6 var(--mono);color:var(--faint);margin-bottom:10px}
+.where b{color:var(--verdigris);font-weight:600}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{padding:6px 9px;text-align:left;border-bottom:1px solid var(--line);vertical-align:baseline}
+th{font:600 10px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+td.n{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.pbar{display:inline-block;width:46px;height:5px;border-radius:3px;background:#22303f;
+ overflow:hidden;vertical-align:middle;margin-right:8px}
+.pbar i{display:block;height:100%;background:var(--verdigris);border-radius:3px}
+.dead{margin-top:10px;border-left:3px solid var(--signal);padding:8px 12px;
+ background:color-mix(in srgb,var(--signal) 9%,transparent);border-radius:0 3px 3px 0}
+.dead b{color:var(--signal)}
+.dead div{font-size:12.5px;color:var(--muted)}
+.nodrop{font:12px/1 var(--mono);color:var(--faint)}
+.back{position:fixed;top:12px;left:12px;z-index:50;font:11px/1 var(--mono);letter-spacing:.06em;
+ text-transform:uppercase;color:var(--brass);border:1px solid var(--brass);border-radius:3px;
+ padding:6px 10px;text-decoration:none;background:var(--panel)}
+footer{padding:34px 0 60px;color:var(--faint);font:12px/1.7 var(--mono)}
+@media(max-width:640px){.chead{grid-template-columns:12px 1fr}.cmeta{text-align:left}}
+</style></head><body>
+<a class="back" href="forecaster.html">&larr; Armory</a>
+<header><div class="wrap">
+  <div class="eyebrow">Gauntlet: Dragon Risen · boss &amp; loot guide</div>
+  <h1>Everything you can <em>kill or open</em>.</h1>
+  <p class="lede">Every boss, mini boss and chest on the Gauntlet, what it drops, and how likely
+  each drop is. Use the pills to narrow by kind, or search a name, a region or an item.</p>
+  <p class="lede" style="margin-top:14px;color:var(--brass)"><b>Ordinary monsters pay gold, not
+  items.</b> All 90 of them carry no drop table &mdash; but every kill pays gold, and the rate rises
+  as you push east: 45 around the starting towns, then 105 in Silver Mine through to 285 in the
+  Black Dragon Lair. Items come from bosses, minis and chests; gold comes from everything.</p>
+</div></header>
+<div class="wrap">
+  <div class="bar"><button class="pill" data-k="main" aria-pressed="true"><span class="dot" style="background:#ff5f4d"></span>Main bosses <span class="ct">10</span></button><button class="pill" data-k="mini" aria-pressed="true"><span class="dot" style="background:#9b7fd4"></span>Mini bosses <span class="ct">16</span></button><button class="pill" data-k="chest" aria-pressed="true"><span class="dot" style="background:#e8b53a"></span>Chests <span class="ct">18</span></button><button class="pill" data-k="mob" aria-pressed="true"><span class="dot" style="background:#d2543f"></span>Monsters <span class="ct">90</span></button><input type="search" id="q" placeholder="name, zone or drop…"
+   aria-label="Filter"><span class="eyebrow" id="count"></span></div>
+  <h2 class="zonehead">Spawn <span class="zonect">9</span></h2><div class="card" data-rank="mini" data-search="ancient mystic shrub spawn mini boss ring chest (lv30) codfish steamboat steam bun sword of grief touch of death staff of the avenger tooth of specter">
+  <div class="chead"><span class="rankdot" style="background:#9b7fd4"></span>
+    <span><span class="cname">Ancient Mystic Shrub</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Mini boss · id 221</span></span>
+    <span class="cmeta">Lv 35 · 60,000 HP<br>respawn 600s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>520 – 740</b></span><span>Defense <b>227</b></span>
+      <span>P.Resist <b>35</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Spawn</b> — tile 145, 106, 236, 385</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Ring Chest (Lv30)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Codfish Steamboat</td><td class="n">143</td><td class="n"><span class="pbar"><i style="width:70%"></i></span>70%</td></tr><tr><td>Steam Bun</td><td class="n">200</td><td class="n"><span class="pbar"><i style="width:50%"></i></span>50%</td></tr><tr><td>Sword of Grief</td><td class="n">400</td><td class="n"><span class="pbar"><i style="width:25%"></i></span>25%</td></tr><tr><td>Touch of Death</td><td class="n">400</td><td class="n"><span class="pbar"><i style="width:25%"></i></span>25%</td></tr><tr><td>Staff of the Avenger</td><td class="n">400</td><td class="n"><span class="pbar"><i style="width:25%"></i></span>25%</td></tr><tr><td>Tooth of Specter</td><td class="n">400</td><td class="n"><span class="pbar"><i style="width:25%"></i></span>25%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="mob" data-search="drowned sapling spawn monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Drowned Sapling</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 1721</span></span>
+    <span class="cmeta">Lv 1 · 10 HP<br>respawn 60s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>4 – 5</b></span><span>Defense <b>3</b></span>
+      <span>P.Resist <b>10</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Spawn</b> — tile 165, 293, 227, 379, 104, 210, 207, 191, 154, 390, 152, 191 +20 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="iron ore spawn monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Iron Ore</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 464</span></span>
+    <span class="cmeta">Lv 1 · 10 HP<br>respawn 30s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>4 – 5</b></span><span>Defense <b>3</b></span>
+      <span>P.Resist <b>10</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Spawn</b> — tile 200, 228, 202, 536, 93, 188, 104, 294, 188, 195, 243, 177 +26 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="melon spawn monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Melon</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 96</span></span>
+    <span class="cmeta">Lv 1 · 90 HP<br>respawn 30s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>6 – 9</b></span><span>Defense <b>2</b></span>
+      <span>P.Resist <b>1</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Spawn</b> — tile 63, 198, 159, 232, 162, 505, 161, 509, 202, 535</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="iron ore lv2 silver mine · spawn · unzoned monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Iron Ore Lv2</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 1729</span></span>
+    <span class="cmeta">Lv 2 · 10 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>4 – 5</b></span><span>Defense <b>3</b></span>
+      <span>P.Resist <b>10</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Silver Mine · Spawn · Unzoned</b> — tile 449, 341, 405, 358, 377, 349, 411, 313, 590, 306, 537, 368 +45 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="forest spirit spawn monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Forest Spirit</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 103</span></span>
+    <span class="cmeta">Lv 3 · 69 HP<br>respawn 30s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>9 – 14</b></span><span>Defense <b>6</b></span>
+      <span>P.Resist <b>2</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Spawn</b> — tile 126, 211, 92, 210, 168, 481, 150, 467, 74, 247, 86, 259 +1 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="horned penguin spawn monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Horned Penguin</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 34</span></span>
+    <span class="cmeta">Lv 15 · 300 HP<br>respawn 30s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>48 – 73</b></span><span>Defense <b>32</b></span>
+      <span>P.Resist <b>7</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Spawn</b> — tile 163, 204, 167, 217, 169, 193, 220, 472, 166, 450</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="navy advanced tower spawn monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Navy Advanced Tower</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 1010</span></span>
+    <span class="cmeta">Lv 90 · 999,999 HP<br>respawn 5s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>10000000 – 10000000</b></span><span>Defense <b>10000000</b></span>
+      <span>P.Resist <b>99</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Spawn</b> — tile 277, 314, 269, 314, 274, 306, 266, 309, 270, 320</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="pirate advanced tower spawn monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Pirate Advanced Tower</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 1011</span></span>
+    <span class="cmeta">Lv 90 · 999,999 HP<br>respawn 5s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>10000000 – 10000000</b></span><span>Defense <b>10000000</b></span>
+      <span>P.Resist <b>99</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Spawn</b> — tile 272, 336, 276, 342, 262, 338, 269, 345, 274, 352</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><h2 class="zonehead">Silver Mine <span class="zonect">19</span></h2><div class="card" data-rank="main" data-search="medusa silver mine main boss jades voucher broken gem voucher cracked gem voucher advanced gem voucher unique gem voucher ring chest (lv30) ring chest (lv40)">
+  <div class="chead"><span class="rankdot" style="background:#ff5f4d"></span>
+    <span><span class="cname">Medusa</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Main boss · id 1012</span></span>
+    <span class="cmeta">Lv 35 · 200,000 HP<br>respawn 900s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>300 – 450</b></span><span>Defense <b>130</b></span>
+      <span>P.Resist <b>30</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Silver Mine</b> — tile 666, 332</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Jades Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Broken Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Cracked Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Advanced Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Unique Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Ring Chest (Lv30)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Ring Chest (Lv40)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="mini" data-search="sorrow archer captain silver mine mini boss ring chest (lv30) ring chest (lv40) broken gem voucher cracked gem voucher advanced gem voucher unique gem voucher black dragon gem voucher">
+  <div class="chead"><span class="rankdot" style="background:#9b7fd4"></span>
+    <span><span class="cname">Sorrow Archer Captain</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Mini boss · id 693</span></span>
+    <span class="cmeta">Lv 31 · 32,000 HP<br>respawn 600s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>186 – 279</b></span><span>Defense <b>91</b></span>
+      <span>P.Resist <b>21</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Silver Mine</b> — tile 467, 341</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Ring Chest (Lv30)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Ring Chest (Lv40)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Broken Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Cracked Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Advanced Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Unique Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Black Dragon Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="mini" data-search="grassland wolf champion silver mine mini boss ring chest (lv30) ring chest (lv40) broken gem voucher cracked gem voucher advanced gem voucher unique gem voucher black dragon gem voucher">
+  <div class="chead"><span class="rankdot" style="background:#9b7fd4"></span>
+    <span><span class="cname">Grassland Wolf Champion</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Mini boss · id 851</span></span>
+    <span class="cmeta">Lv 32 · 35,000 HP<br>respawn 600s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>197 – 295</b></span><span>Defense <b>91</b></span>
+      <span>P.Resist <b>21</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Silver Mine</b> — tile 562, 342</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Ring Chest (Lv30)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Ring Chest (Lv40)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Broken Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Cracked Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Advanced Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Unique Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Black Dragon Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="mini" data-search="behemoth silver mine mini boss ring chest (lv30) ring chest (lv40) broken gem voucher cracked gem voucher advanced gem voucher unique gem voucher black dragon gem voucher">
+  <div class="chead"><span class="rankdot" style="background:#9b7fd4"></span>
+    <span><span class="cname">Behemoth</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Mini boss · id 99</span></span>
+    <span class="cmeta">Lv 33 · 39,000 HP<br>respawn 600s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>209 – 313</b></span><span>Defense <b>91</b></span>
+      <span>P.Resist <b>21</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Silver Mine</b> — tile 597, 427</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Ring Chest (Lv30)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Ring Chest (Lv40)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Broken Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Cracked Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Advanced Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Unique Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Black Dragon Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="mini" data-search="atrocious yeti king silver mine mini boss ring chest (lv30) ring chest (lv40) broken gem voucher cracked gem voucher advanced gem voucher unique gem voucher black dragon gem voucher">
+  <div class="chead"><span class="rankdot" style="background:#9b7fd4"></span>
+    <span><span class="cname">Atrocious Yeti King</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Mini boss · id 289</span></span>
+    <span class="cmeta">Lv 34 · 43,000 HP<br>respawn 600s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>222 – 333</b></span><span>Defense <b>91</b></span>
+      <span>P.Resist <b>21</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Silver Mine</b> — tile 566, 242</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Ring Chest (Lv30)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Ring Chest (Lv40)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Broken Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Cracked Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Advanced Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Unique Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Black Dragon Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="chest" data-search="obscure chest 1 silver mine chest shadow gem broken gem of striking cracked gem of colossus broken gem of soul chipped gem of striking chipped gem of soul green jade great gem of rage great gem of colossus gem of colossus">
+  <div class="chead"><span class="rankdot" style="background:#e8b53a"></span>
+    <span><span class="cname">Obscure Chest 1</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Chest · id 1702</span></span>
+    <span class="cmeta">Lv 15 · 3,600 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>0 – 0</b></span><span>Defense <b>60</b></span>
+      <span>P.Resist <b>34</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Silver Mine</b> — tile 488, 388</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Shadow Gem</td><td class="n">429</td><td class="n"><span class="pbar"><i style="width:23%"></i></span>23%</td></tr><tr><td>Broken Gem of Striking</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Cracked Gem of Colossus</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Broken Gem of Soul</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Chipped Gem of Striking</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Chipped Gem of Soul</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Green Jade</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Great Gem of Rage</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Great Gem of Colossus</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Gem of Colossus</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="chest" data-search="treasure chest silver mine chest spirit gem broken gem of the wind cracked gem of striking broken gem of rage cracked gem of soul chipped gem of colossus yellow jade great gem of soul great gem of wind gem of the wind gem of rage">
+  <div class="chead"><span class="rankdot" style="background:#e8b53a"></span>
+    <span><span class="cname">Treasure Chest</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Chest · id 1700</span></span>
+    <span class="cmeta">Lv 15 · 3,600 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>0 – 0</b></span><span>Defense <b>60</b></span>
+      <span>P.Resist <b>34</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Silver Mine</b> — tile 597, 376, 437, 299, 444, 360, 408, 349, 579, 344, 598, 278 +1 more</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Spirit Gem</td><td class="n">429</td><td class="n"><span class="pbar"><i style="width:23%"></i></span>23%</td></tr><tr><td>Broken Gem of the Wind</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Cracked Gem of Striking</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Broken Gem of Rage</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Cracked Gem of Soul</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Chipped Gem of Colossus</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Yellow Jade</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Great Gem of Soul</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Great Gem of Wind</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Gem of the Wind</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr><tr><td>Gem of Rage</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="chest" data-search="treasure chest silver mine chest lustrious gem cracked gem of the wind broken gem of colossus cracked gem of rage chipped gem of the wind chipped gem of rage red jade great gem of striking gem of striking gem of soul">
+  <div class="chead"><span class="rankdot" style="background:#e8b53a"></span>
+    <span><span class="cname">Treasure Chest</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Chest · id 1701</span></span>
+    <span class="cmeta">Lv 15 · 3,600 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>0 – 0</b></span><span>Defense <b>60</b></span>
+      <span>P.Resist <b>34</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Silver Mine</b> — tile 529, 316, 638, 423, 619, 225</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Lustrious Gem</td><td class="n">429</td><td class="n"><span class="pbar"><i style="width:23%"></i></span>23%</td></tr><tr><td>Cracked Gem of the Wind</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Broken Gem of Colossus</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Cracked Gem of Rage</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Chipped Gem of the Wind</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Chipped Gem of Rage</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Red Jade</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Great Gem of Striking</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Gem of Striking</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr><tr><td>Gem of Soul</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="mob" data-search="iron ore lv2 silver mine · spawn · unzoned monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Iron Ore Lv2</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 1729</span></span>
+    <span class="cmeta">Lv 2 · 10 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>4 – 5</b></span><span>Defense <b>3</b></span>
+      <span>P.Resist <b>10</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Silver Mine · Spawn · Unzoned</b> — tile 449, 341, 405, 358, 377, 349, 411, 313, 590, 306, 537, 368 +45 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="silt-choked tree silver mine · unzoned monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Silt-Choked Tree</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 1722</span></span>
+    <span class="cmeta">Lv 2 · 10 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>4 – 5</b></span><span>Defense <b>3</b></span>
+      <span>P.Resist <b>10</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Silver Mine · Unzoned</b> — tile 657, 244, 529, 334, 403, 290, 390, 370, 561, 301, 567, 228 +29 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="sandy shroom silver mine monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Sandy Shroom</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 129</span></span>
+    <span class="cmeta">Lv 23 · 659 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>84 – 127</b></span><span>Defense <b>53</b></span>
+      <span>P.Resist <b>10</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Silver Mine</b> — tile 387, 297</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="snow lady silver mine monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Snow Lady</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 281</span></span>
+    <span class="cmeta">Lv 23 · 960 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>84 – 127</b></span><span>Defense <b>53</b></span>
+      <span>P.Resist <b>10</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Silver Mine</b> — tile 393, 290, 377, 349, 409, 300, 377, 363, 409, 319, 410, 326 +1 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="man-eating spider silver mine monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Man-Eating Spider</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 210</span></span>
+    <span class="cmeta">Lv 27 · 764 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>64 – 96</b></span><span>Defense <b>40</b></span>
+      <span>P.Resist <b>12</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Silver Mine</b> — tile 437, 303, 388, 309, 389, 368, 403, 351, 437, 307, 438, 305 +12 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="grassland elk silver mine monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Grassland Elk</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 299</span></span>
+    <span class="cmeta">Lv 31 · 1,036 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>128 – 193</b></span><span>Defense <b>69</b></span>
+      <span>P.Resist <b>13</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Silver Mine</b> — tile 378, 340, 378, 327, 378, 317, 338, 327</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="grassland wolf silver mine monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Grassland Wolf</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 136</span></span>
+    <span class="cmeta">Lv 33 · 1,065 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>92 – 139</b></span><span>Defense <b>60</b></span>
+      <span>P.Resist <b>10</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Silver Mine</b> — tile 435, 358, 427, 359, 440, 353, 440, 347, 441, 339, 423, 359 +3 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="cursed mummy forsaken city · silver mine monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Cursed Mummy</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 722</span></span>
+    <span class="cmeta">Lv 40 · 6,026 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>377 – 566</b></span><span>Defense <b>130</b></span>
+      <span>P.Resist <b>24</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Forsaken City · Silver Mine</b> — tile 488, 390, 578, 344, 549, 355, 903, 357</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="wolf silver mine monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Wolf</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 500</span></span>
+    <span class="cmeta">Lv 41 · 2,462 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>214 – 321</b></span><span>Defense <b>80</b></span>
+      <span>P.Resist <b>16</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Silver Mine</b> — tile 520, 354, 512, 384, 562, 375, 490, 323, 490, 346, 508, 326 +4 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="crazy mummy forsaken city · silver mine monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Crazy Mummy</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 723</span></span>
+    <span class="cmeta">Lv 42 · 11,160 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>404 – 607</b></span><span>Defense <b>136</b></span>
+      <span>P.Resist <b>26</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Forsaken City · Silver Mine</b> — tile 529, 314, 597, 277, 769, 265, 750, 247, 726, 246, 736, 281 +5 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="werewolf warrior dark swamp · silver mine monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Werewolf Warrior</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 271</span></span>
+    <span class="cmeta">Lv 42 · 1,900 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>202 – 303</b></span><span>Defense <b>60</b></span>
+      <span>P.Resist <b>14</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp · Silver Mine</b> — tile 591, 292, 597, 337, 597, 371, 1116, 325, 1227, 437, 1017, 462 +5 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><h2 class="zonehead">Forsaken City <span class="zonect">29</span></h2><div class="card" data-rank="main" data-search="death knight forsaken city main boss jades voucher broken gem voucher cracked gem voucher advanced gem voucher unique gem voucher black dragon gem voucher chaos framestone ring chest (lv40) ring chest (lv50) egg of mordo junior egg of mordo junior egg of mordo junior">
+  <div class="chead"><span class="rankdot" style="background:#ff5f4d"></span>
+    <span><span class="cname">Death Knight</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Main boss · id 673</span></span>
+    <span class="cmeta">Lv 45 · 350,000 HP<br>respawn 900s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>480 – 720</b></span><span>Defense <b>170</b></span>
+      <span>P.Resist <b>35</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Forsaken City</b> — tile 817, 285</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Jades Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Broken Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Cracked Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Advanced Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Unique Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Black Dragon Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Chaos Framestone</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Ring Chest (Lv40)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Ring Chest (Lv50)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Egg of Mordo Junior</td><td class="n">400</td><td class="n"><span class="pbar"><i style="width:25%"></i></span>25%</td></tr><tr><td>Egg of Mordo Junior</td><td class="n">1000</td><td class="n"><span class="pbar"><i style="width:10%"></i></span>10%</td></tr><tr><td>Egg of Mordo Junior</td><td class="n">2000</td><td class="n"><span class="pbar"><i style="width:5%"></i></span>5%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="mini" data-search="cerebus forsaken city mini boss ring chest (lv40) ring chest (lv50) broken gem voucher cracked gem voucher advanced gem voucher unique gem voucher black dragon gem voucher chaos clawstone chaos pawstone chaos framestone chest of the black dragon chest of kylin">
+  <div class="chead"><span class="rankdot" style="background:#9b7fd4"></span>
+    <span><span class="cname">Cerebus</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Mini boss · id 837</span></span>
+    <span class="cmeta">Lv 42 · 62,000 HP<br>respawn 600s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>315 – 472</b></span><span>Defense <b>118</b></span>
+      <span>P.Resist <b>24</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Forsaken City</b> — tile 739, 458</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Ring Chest (Lv40)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Ring Chest (Lv50)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Broken Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Cracked Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Advanced Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Unique Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Black Dragon Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Chaos Clawstone</td><td class="n">833</td><td class="n"><span class="pbar"><i style="width:12%"></i></span>12%</td></tr><tr><td>Chaos Pawstone</td><td class="n">833</td><td class="n"><span class="pbar"><i style="width:12%"></i></span>12%</td></tr><tr><td>Chaos Framestone</td><td class="n">833</td><td class="n"><span class="pbar"><i style="width:12%"></i></span>12%</td></tr><tr><td>Chest of the Black Dragon</td><td class="n">2000</td><td class="n"><span class="pbar"><i style="width:5%"></i></span>5%</td></tr><tr><td>Chest of Kylin</td><td class="n">2000</td><td class="n"><span class="pbar"><i style="width:5%"></i></span>5%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="mini" data-search="ancient sentinel forsaken city mini boss ring chest (lv40) ring chest (lv50) broken gem voucher cracked gem voucher advanced gem voucher unique gem voucher black dragon gem voucher chaos clawstone chaos pawstone chaos framestone chest of the black dragon chest of kylin">
+  <div class="chead"><span class="rankdot" style="background:#9b7fd4"></span>
+    <span><span class="cname">Ancient Sentinel</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Mini boss · id 700</span></span>
+    <span class="cmeta">Lv 43 · 68,000 HP<br>respawn 600s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>334 – 501</b></span><span>Defense <b>118</b></span>
+      <span>P.Resist <b>24</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Forsaken City</b> — tile 913, 258</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Ring Chest (Lv40)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Ring Chest (Lv50)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Broken Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Cracked Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Advanced Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Unique Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Black Dragon Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Chaos Clawstone</td><td class="n">833</td><td class="n"><span class="pbar"><i style="width:12%"></i></span>12%</td></tr><tr><td>Chaos Pawstone</td><td class="n">833</td><td class="n"><span class="pbar"><i style="width:12%"></i></span>12%</td></tr><tr><td>Chaos Framestone</td><td class="n">833</td><td class="n"><span class="pbar"><i style="width:12%"></i></span>12%</td></tr><tr><td>Chest of the Black Dragon</td><td class="n">2000</td><td class="n"><span class="pbar"><i style="width:5%"></i></span>5%</td></tr><tr><td>Chest of Kylin</td><td class="n">2000</td><td class="n"><span class="pbar"><i style="width:5%"></i></span>5%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="mini" data-search="wandering soul forsaken city mini boss ring chest (lv40) ring chest (lv50) broken gem voucher cracked gem voucher advanced gem voucher unique gem voucher black dragon gem voucher chaos clawstone chaos pawstone chaos framestone chest of the black dragon chest of kylin">
+  <div class="chead"><span class="rankdot" style="background:#9b7fd4"></span>
+    <span><span class="cname">Wandering Soul</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Mini boss · id 679</span></span>
+    <span class="cmeta">Lv 44 · 75,000 HP<br>respawn 600s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>354 – 531</b></span><span>Defense <b>118</b></span>
+      <span>P.Resist <b>24</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Forsaken City</b> — tile 940, 453</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Ring Chest (Lv40)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Ring Chest (Lv50)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Broken Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Cracked Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Advanced Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Unique Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Black Dragon Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Chaos Clawstone</td><td class="n">833</td><td class="n"><span class="pbar"><i style="width:12%"></i></span>12%</td></tr><tr><td>Chaos Pawstone</td><td class="n">833</td><td class="n"><span class="pbar"><i style="width:12%"></i></span>12%</td></tr><tr><td>Chaos Framestone</td><td class="n">833</td><td class="n"><span class="pbar"><i style="width:12%"></i></span>12%</td></tr><tr><td>Chest of the Black Dragon</td><td class="n">2000</td><td class="n"><span class="pbar"><i style="width:5%"></i></span>5%</td></tr><tr><td>Chest of Kylin</td><td class="n">2000</td><td class="n"><span class="pbar"><i style="width:5%"></i></span>5%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="chest" data-search="abandoned chest 1 forsaken city chest shadow gem broken gem of striking cracked gem of colossus broken gem of soul chipped gem of striking chipped gem of soul green jade great gem of rage great gem of colossus gem of colossus">
+  <div class="chead"><span class="rankdot" style="background:#e8b53a"></span>
+    <span><span class="cname">Abandoned Chest 1</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Chest · id 1705</span></span>
+    <span class="cmeta">Lv 45 · 5,400 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>0 – 0</b></span><span>Defense <b>165</b></span>
+      <span>P.Resist <b>41</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Forsaken City</b> — tile 832, 314, 881, 451, 803, 316, 802, 312</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Shadow Gem</td><td class="n">429</td><td class="n"><span class="pbar"><i style="width:23%"></i></span>23%</td></tr><tr><td>Broken Gem of Striking</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Cracked Gem of Colossus</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Broken Gem of Soul</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Chipped Gem of Striking</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Chipped Gem of Soul</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Green Jade</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Great Gem of Rage</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Great Gem of Colossus</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Gem of Colossus</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="chest" data-search="obscure chest 2 forsaken city chest spirit gem broken gem of the wind cracked gem of striking broken gem of rage cracked gem of soul chipped gem of colossus yellow jade great gem of soul great gem of wind gem of the wind gem of rage">
+  <div class="chead"><span class="rankdot" style="background:#e8b53a"></span>
+    <span><span class="cname">Obscure Chest 2</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Chest · id 1703</span></span>
+    <span class="cmeta">Lv 45 · 5,400 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>0 – 0</b></span><span>Defense <b>165</b></span>
+      <span>P.Resist <b>41</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Forsaken City</b> — tile 911, 253, 774, 382, 818, 417, 848, 230</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Spirit Gem</td><td class="n">429</td><td class="n"><span class="pbar"><i style="width:23%"></i></span>23%</td></tr><tr><td>Broken Gem of the Wind</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Cracked Gem of Striking</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Broken Gem of Rage</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Cracked Gem of Soul</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Chipped Gem of Colossus</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Yellow Jade</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Great Gem of Soul</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Great Gem of Wind</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Gem of the Wind</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr><tr><td>Gem of Rage</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="chest" data-search="obscure chest 3 forsaken city chest lustrious gem cracked gem of the wind broken gem of colossus cracked gem of rage chipped gem of the wind chipped gem of rage red jade great gem of striking gem of striking gem of soul">
+  <div class="chead"><span class="rankdot" style="background:#e8b53a"></span>
+    <span><span class="cname">Obscure Chest 3</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Chest · id 1704</span></span>
+    <span class="cmeta">Lv 45 · 5,400 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>0 – 0</b></span><span>Defense <b>165</b></span>
+      <span>P.Resist <b>41</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Forsaken City</b> — tile 743, 461, 757, 426, 800, 289</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Lustrious Gem</td><td class="n">429</td><td class="n"><span class="pbar"><i style="width:23%"></i></span>23%</td></tr><tr><td>Cracked Gem of the Wind</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Broken Gem of Colossus</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Cracked Gem of Rage</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Chipped Gem of the Wind</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Chipped Gem of Rage</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Red Jade</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Great Gem of Striking</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Gem of Striking</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr><tr><td>Gem of Soul</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="mob" data-search="iron ore lv3 forsaken city monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Iron Ore Lv3</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 1730</span></span>
+    <span class="cmeta">Lv 3 · 10 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>4 – 5</b></span><span>Defense <b>3</b></span>
+      <span>P.Resist <b>10</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Forsaken City</b> — tile 949, 286, 924, 440, 758, 257, 958, 465, 886, 322, 825, 290 +30 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="tidewrack tree forsaken city monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Tidewrack Tree</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 1723</span></span>
+    <span class="cmeta">Lv 3 · 10 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>4 – 5</b></span><span>Defense <b>3</b></span>
+      <span>P.Resist <b>10</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Forsaken City</b> — tile 849, 376, 946, 329, 771, 317, 889, 437, 730, 263, 927, 378 +12 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="cursed mummy forsaken city · silver mine monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Cursed Mummy</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 722</span></span>
+    <span class="cmeta">Lv 40 · 6,026 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>377 – 566</b></span><span>Defense <b>130</b></span>
+      <span>P.Resist <b>24</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Forsaken City · Silver Mine</b> — tile 488, 390, 578, 344, 549, 355, 903, 357</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="jack - black sail forsaken city monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Jack - Black Sail</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 668</span></span>
+    <span class="cmeta">Lv 40 · 30,000 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>188 – 283</b></span><span>Defense <b>100</b></span>
+      <span>P.Resist <b>20</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Forsaken City</b> — tile 923, 437</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="crazy mummy forsaken city · silver mine monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Crazy Mummy</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 723</span></span>
+    <span class="cmeta">Lv 42 · 11,160 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>404 – 607</b></span><span>Defense <b>136</b></span>
+      <span>P.Resist <b>26</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Forsaken City · Silver Mine</b> — tile 529, 314, 597, 277, 769, 265, 750, 247, 726, 246, 736, 281 +5 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="cumbersome yeti forsaken city monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Cumbersome Yeti</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 517</span></span>
+    <span class="cmeta">Lv 44 · 4,360 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>151 – 226</b></span><span>Defense <b>85</b></span>
+      <span>P.Resist <b>18</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Forsaken City</b> — tile 755, 339, 769, 352, 743, 330, 727, 342, 736, 356, 839, 256 +1 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="cumbersome yeti forsaken city monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Cumbersome Yeti</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 195</span></span>
+    <span class="cmeta">Lv 45 · 3,500 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>224 – 336</b></span><span>Defense <b>120</b></span>
+      <span>P.Resist <b>20</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Forsaken City</b> — tile 776, 374</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="jack the pirate&#x27;s militia forsaken city monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Jack the Pirate&#x27;s Militia</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 291</span></span>
+    <span class="cmeta">Lv 45 · 2,664 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>246 – 369</b></span><span>Defense <b>87</b></span>
+      <span>P.Resist <b>0</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Forsaken City</b> — tile 889, 369, 838, 441, 824, 454, 832, 448, 857, 444, 872, 458 +4 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="undead archer forsaken city monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Undead Archer</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 270</span></span>
+    <span class="cmeta">Lv 45 · 1,900 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>224 – 336</b></span><span>Defense <b>50</b></span>
+      <span>P.Resist <b>18</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Forsaken City</b> — tile 721, 441, 840, 239, 866, 248, 849, 249, 828, 246</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="elite tribal warrior forsaken city monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Elite Tribal Warrior</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 248</span></span>
+    <span class="cmeta">Lv 46 · 3,222 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>231 – 346</b></span><span>Defense <b>99</b></span>
+      <span>P.Resist <b>20</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Forsaken City</b> — tile 797, 268, 831, 261</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="sand crab forsaken city monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Sand Crab</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 186</span></span>
+    <span class="cmeta">Lv 47 · 3,267 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>190 – 285</b></span><span>Defense <b>121</b></span>
+      <span>P.Resist <b>23</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Forsaken City</b> — tile 853, 424, 834, 402, 847, 415, 819, 415, 806, 405, 795, 396 +5 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="dark mud monster forsaken city monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Dark Mud Monster</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 503</span></span>
+    <span class="cmeta">Lv 49 · 3,037 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>279 – 418</b></span><span>Defense <b>94</b></span>
+      <span>P.Resist <b>19</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Forsaken City</b> — tile 731, 430, 757, 426, 753, 431, 739, 422, 734, 415</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="horrific snowman forsaken city monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Horrific Snowman</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 544</span></span>
+    <span class="cmeta">Lv 50 · 5,096 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>212 – 319</b></span><span>Defense <b>128</b></span>
+      <span>P.Resist <b>22</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Forsaken City</b> — tile 902, 257</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="sakura pirate sailor forsaken city monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Sakura Pirate Sailor</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 537</span></span>
+    <span class="cmeta">Lv 51 · 4,190 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>219 – 328</b></span><span>Defense <b>98</b></span>
+      <span>P.Resist <b>18</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Forsaken City</b> — tile 824, 378, 812, 382, 797, 368</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="sturdy rock golem forsaken city monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Sturdy Rock Golem</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 505</span></span>
+    <span class="cmeta">Lv 51 · 4,190 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>219 – 328</b></span><span>Defense <b>130</b></span>
+      <span>P.Resist <b>25</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Forsaken City</b> — tile 801, 452</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="elite skeletal warrior forsaken city monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Elite Skeletal Warrior</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 506</span></span>
+    <span class="cmeta">Lv 52 · 3,368 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>338 – 507</b></span><span>Defense <b>88</b></span>
+      <span>P.Resist <b>19</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Forsaken City</b> — tile 959, 316, 946, 265, 945, 282, 925, 304, 897, 280, 927, 344 +1 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="sakura pirate fighter forsaken city monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Sakura Pirate Fighter</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 538</span></span>
+    <span class="cmeta">Lv 52 · 4,210 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>225 – 338</b></span><span>Defense <b>99</b></span>
+      <span>P.Resist <b>19</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Forsaken City</b> — tile 772, 453</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="sakura pirate militia forsaken city monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Sakura Pirate Militia</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 539</span></span>
+    <span class="cmeta">Lv 52 · 4,210 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>225 – 338</b></span><span>Defense <b>99</b></span>
+      <span>P.Resist <b>19</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Forsaken City</b> — tile 731, 451, 755, 449</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="undead warrior forsaken city monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Undead Warrior</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 267</span></span>
+    <span class="cmeta">Lv 52 · 2,000 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>282 – 423</b></span><span>Defense <b>111</b></span>
+      <span>P.Resist <b>18</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Forsaken City</b> — tile 962, 322, 786, 467</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="iron mummy forsaken city monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Iron Mummy</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 41</span></span>
+    <span class="cmeta">Lv 53 · 5,499 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>232 – 348</b></span><span>Defense <b>135</b></span>
+      <span>P.Resist <b>23</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Forsaken City</b> — tile 941, 364, 865, 401, 843, 372</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="huge spiky stramonium forsaken city monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Huge Spiky Stramonium</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 514</span></span>
+    <span class="cmeta">Lv 54 · 4,260 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>299 – 448</b></span><span>Defense <b>115</b></span>
+      <span>P.Resist <b>22</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Forsaken City</b> — tile 822, 323, 766, 233, 837, 301, 799, 303, 830, 291, 788, 245</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="steel mummy forsaken city monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Steel Mummy</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 42</span></span>
+    <span class="cmeta">Lv 54 · 5,538 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>239 – 358</b></span><span>Defense <b>138</b></span>
+      <span>P.Resist <b>24</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Forsaken City</b> — tile 780, 381, 872, 304, 851, 328, 829, 350, 788, 333, 761, 305 +3 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><h2 class="zonehead">Dark Swamp <span class="zonect">34</span></h2><div class="card" data-rank="main" data-search="huge mud monster dark swamp main boss jades voucher broken gem voucher cracked gem voucher advanced gem voucher unique gem voucher black dragon gem voucher chaos pawstone chaos clawstone ring chest (lv50) ring chest (lv60) egg of angela egg of angela egg of angela">
+  <div class="chead"><span class="rankdot" style="background:#ff5f4d"></span>
+    <span><span class="cname">Huge Mud Monster</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Main boss · id 675</span></span>
+    <span class="cmeta">Lv 55 · 550,000 HP<br>respawn 900s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>700 – 1050</b></span><span>Defense <b>210</b></span>
+      <span>P.Resist <b>40</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1121, 300</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Jades Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Broken Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Cracked Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Advanced Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Unique Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Black Dragon Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Chaos Pawstone</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Chaos Clawstone</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Ring Chest (Lv50)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Ring Chest (Lv60)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Egg of Angela</td><td class="n">400</td><td class="n"><span class="pbar"><i style="width:25%"></i></span>25%</td></tr><tr><td>Egg of Angela</td><td class="n">1000</td><td class="n"><span class="pbar"><i style="width:10%"></i></span>10%</td></tr><tr><td>Egg of Angela</td><td class="n">2000</td><td class="n"><span class="pbar"><i style="width:5%"></i></span>5%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="mini" data-search="fox taoist dark swamp mini boss ring chest (lv50) ring chest (lv60) broken gem voucher cracked gem voucher advanced gem voucher unique gem voucher black dragon gem voucher chaos clawstone chaos pawstone chaos framestone chest of the fallen chest of the black dragon chest of kylin">
+  <div class="chead"><span class="rankdot" style="background:#9b7fd4"></span>
+    <span><span class="cname">Fox Taoist</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Mini boss · id 748</span></span>
+    <span class="cmeta">Lv 51 · 88,000 HP<br>respawn 600s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>434 – 651</b></span><span>Defense <b>147</b></span>
+      <span>P.Resist <b>28</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1192, 404</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Ring Chest (Lv50)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Ring Chest (Lv60)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Broken Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Cracked Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Advanced Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Unique Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Black Dragon Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Chaos Clawstone</td><td class="n">400</td><td class="n"><span class="pbar"><i style="width:25%"></i></span>25%</td></tr><tr><td>Chaos Pawstone</td><td class="n">400</td><td class="n"><span class="pbar"><i style="width:25%"></i></span>25%</td></tr><tr><td>Chaos Framestone</td><td class="n">400</td><td class="n"><span class="pbar"><i style="width:25%"></i></span>25%</td></tr><tr><td>Chest of the Fallen</td><td class="n">1000</td><td class="n"><span class="pbar"><i style="width:10%"></i></span>10%</td></tr><tr><td>Chest of the Black Dragon</td><td class="n">1250</td><td class="n"><span class="pbar"><i style="width:8%"></i></span>8%</td></tr><tr><td>Chest of Kylin</td><td class="n">1250</td><td class="n"><span class="pbar"><i style="width:8%"></i></span>8%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="mini" data-search="fox sage dark swamp mini boss ring chest (lv50) ring chest (lv60) broken gem voucher cracked gem voucher advanced gem voucher unique gem voucher black dragon gem voucher chaos clawstone chaos pawstone chaos framestone chest of the fallen chest of the black dragon chest of kylin">
+  <div class="chead"><span class="rankdot" style="background:#9b7fd4"></span>
+    <span><span class="cname">Fox Sage</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Mini boss · id 776</span></span>
+    <span class="cmeta">Lv 52 · 97,000 HP<br>respawn 600s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>460 – 690</b></span><span>Defense <b>147</b></span>
+      <span>P.Resist <b>28</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1105, 390</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Ring Chest (Lv50)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Ring Chest (Lv60)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Broken Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Cracked Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Advanced Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Unique Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Black Dragon Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Chaos Clawstone</td><td class="n">400</td><td class="n"><span class="pbar"><i style="width:25%"></i></span>25%</td></tr><tr><td>Chaos Pawstone</td><td class="n">400</td><td class="n"><span class="pbar"><i style="width:25%"></i></span>25%</td></tr><tr><td>Chaos Framestone</td><td class="n">400</td><td class="n"><span class="pbar"><i style="width:25%"></i></span>25%</td></tr><tr><td>Chest of the Fallen</td><td class="n">1000</td><td class="n"><span class="pbar"><i style="width:10%"></i></span>10%</td></tr><tr><td>Chest of the Black Dragon</td><td class="n">1250</td><td class="n"><span class="pbar"><i style="width:8%"></i></span>8%</td></tr><tr><td>Chest of Kylin</td><td class="n">1250</td><td class="n"><span class="pbar"><i style="width:8%"></i></span>8%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="mini" data-search="master swamp watcher dark swamp mini boss ring chest (lv50) ring chest (lv60) broken gem voucher cracked gem voucher advanced gem voucher unique gem voucher black dragon gem voucher chaos clawstone chaos pawstone chaos framestone chest of the fallen chest of the black dragon chest of kylin">
+  <div class="chead"><span class="rankdot" style="background:#9b7fd4"></span>
+    <span><span class="cname">Master Swamp Watcher</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Mini boss · id 708</span></span>
+    <span class="cmeta">Lv 53 · 106,000 HP<br>respawn 600s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>488 – 732</b></span><span>Defense <b>147</b></span>
+      <span>P.Resist <b>28</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1200, 297</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Ring Chest (Lv50)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Ring Chest (Lv60)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Broken Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Cracked Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Advanced Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Unique Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Black Dragon Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Chaos Clawstone</td><td class="n">400</td><td class="n"><span class="pbar"><i style="width:25%"></i></span>25%</td></tr><tr><td>Chaos Pawstone</td><td class="n">400</td><td class="n"><span class="pbar"><i style="width:25%"></i></span>25%</td></tr><tr><td>Chaos Framestone</td><td class="n">400</td><td class="n"><span class="pbar"><i style="width:25%"></i></span>25%</td></tr><tr><td>Chest of the Fallen</td><td class="n">1000</td><td class="n"><span class="pbar"><i style="width:10%"></i></span>10%</td></tr><tr><td>Chest of the Black Dragon</td><td class="n">1250</td><td class="n"><span class="pbar"><i style="width:8%"></i></span>8%</td></tr><tr><td>Chest of Kylin</td><td class="n">1250</td><td class="n"><span class="pbar"><i style="width:8%"></i></span>8%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="mini" data-search="elite lizardman warrior dark swamp mini boss ring chest (lv50) ring chest (lv60) broken gem voucher cracked gem voucher advanced gem voucher unique gem voucher black dragon gem voucher chaos clawstone chaos pawstone chaos framestone chest of the fallen chest of the black dragon chest of kylin">
+  <div class="chead"><span class="rankdot" style="background:#9b7fd4"></span>
+    <span><span class="cname">Elite Lizardman Warrior</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Mini boss · id 528</span></span>
+    <span class="cmeta">Lv 54 · 117,000 HP<br>respawn 600s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>517 – 775</b></span><span>Defense <b>147</b></span>
+      <span>P.Resist <b>28</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1073, 265</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Ring Chest (Lv50)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Ring Chest (Lv60)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Broken Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Cracked Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Advanced Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Unique Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Black Dragon Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Chaos Clawstone</td><td class="n">400</td><td class="n"><span class="pbar"><i style="width:25%"></i></span>25%</td></tr><tr><td>Chaos Pawstone</td><td class="n">400</td><td class="n"><span class="pbar"><i style="width:25%"></i></span>25%</td></tr><tr><td>Chaos Framestone</td><td class="n">400</td><td class="n"><span class="pbar"><i style="width:25%"></i></span>25%</td></tr><tr><td>Chest of the Fallen</td><td class="n">1000</td><td class="n"><span class="pbar"><i style="width:10%"></i></span>10%</td></tr><tr><td>Chest of the Black Dragon</td><td class="n">1250</td><td class="n"><span class="pbar"><i style="width:8%"></i></span>8%</td></tr><tr><td>Chest of Kylin</td><td class="n">1250</td><td class="n"><span class="pbar"><i style="width:8%"></i></span>8%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="chest" data-search="abandoned chest 2 dark swamp chest spirit gem broken gem of the wind cracked gem of striking broken gem of rage cracked gem of soul chipped gem of colossus yellow jade great gem of soul great gem of wind gem of the wind gem of rage">
+  <div class="chead"><span class="rankdot" style="background:#e8b53a"></span>
+    <span><span class="cname">Abandoned Chest 2</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Chest · id 1706</span></span>
+    <span class="cmeta">Lv 55 · 7,200 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>0 – 0</b></span><span>Defense <b>262</b></span>
+      <span>P.Resist <b>46</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1054, 265, 1063, 358, 1021, 410, 1026, 448</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Spirit Gem</td><td class="n">429</td><td class="n"><span class="pbar"><i style="width:23%"></i></span>23%</td></tr><tr><td>Broken Gem of the Wind</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Cracked Gem of Striking</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Broken Gem of Rage</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Cracked Gem of Soul</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Chipped Gem of Colossus</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Yellow Jade</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Great Gem of Soul</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Great Gem of Wind</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Gem of the Wind</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr><tr><td>Gem of Rage</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="chest" data-search="abandoned chest 3 dark swamp chest lustrious gem cracked gem of the wind broken gem of colossus cracked gem of rage chipped gem of the wind chipped gem of rage red jade great gem of striking gem of striking gem of soul">
+  <div class="chead"><span class="rankdot" style="background:#e8b53a"></span>
+    <span><span class="cname">Abandoned Chest 3</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Chest · id 1707</span></span>
+    <span class="cmeta">Lv 55 · 7,200 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>0 – 0</b></span><span>Defense <b>262</b></span>
+      <span>P.Resist <b>46</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1078, 288, 1095, 329, 1144, 460</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Lustrious Gem</td><td class="n">429</td><td class="n"><span class="pbar"><i style="width:23%"></i></span>23%</td></tr><tr><td>Cracked Gem of the Wind</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Broken Gem of Colossus</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Cracked Gem of Rage</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Chipped Gem of the Wind</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Chipped Gem of Rage</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Red Jade</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Great Gem of Striking</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Gem of Striking</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr><tr><td>Gem of Soul</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="chest" data-search="chest of demonic world 1 dark swamp chest shadow gem broken gem of striking cracked gem of colossus broken gem of soul chipped gem of striking chipped gem of soul green jade great gem of rage great gem of colossus gem of colossus">
+  <div class="chead"><span class="rankdot" style="background:#e8b53a"></span>
+    <span><span class="cname">Chest of Demonic World 1</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Chest · id 1708</span></span>
+    <span class="cmeta">Lv 55 · 7,200 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>0 – 0</b></span><span>Defense <b>262</b></span>
+      <span>P.Resist <b>46</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1123, 297, 1240, 478, 1110, 391</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Shadow Gem</td><td class="n">429</td><td class="n"><span class="pbar"><i style="width:23%"></i></span>23%</td></tr><tr><td>Broken Gem of Striking</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Cracked Gem of Colossus</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Broken Gem of Soul</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Chipped Gem of Striking</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Chipped Gem of Soul</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Green Jade</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Great Gem of Rage</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Great Gem of Colossus</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Gem of Colossus</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="mob" data-search="bog-rooted tree dark swamp monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Bog-Rooted Tree</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 1724</span></span>
+    <span class="cmeta">Lv 4 · 10 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>4 – 5</b></span><span>Defense <b>3</b></span>
+      <span>P.Resist <b>10</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1045, 305, 1124, 436, 1246, 326, 1068, 352, 1008, 354, 1064, 436 +12 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="iron ore lv4 dark swamp monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Iron Ore Lv4</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 1731</span></span>
+    <span class="cmeta">Lv 4 · 10 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>4 – 5</b></span><span>Defense <b>3</b></span>
+      <span>P.Resist <b>10</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1193, 369, 1246, 260, 1073, 266, 1106, 459, 1244, 382, 1092, 373 +25 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="werewolf warrior dark swamp · silver mine monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Werewolf Warrior</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 271</span></span>
+    <span class="cmeta">Lv 42 · 1,900 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>202 – 303</b></span><span>Defense <b>60</b></span>
+      <span>P.Resist <b>14</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp · Silver Mine</b> — tile 591, 292, 597, 337, 597, 371, 1116, 325, 1227, 437, 1017, 462 +5 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="lizardman dark swamp monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Lizardman</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 196</span></span>
+    <span class="cmeta">Lv 55 · 2,500 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>308 – 462</b></span><span>Defense <b>117</b></span>
+      <span>P.Resist <b>22</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1192, 219, 1232, 312, 1044, 278</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="navy rifleman dark swamp monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Navy Rifleman</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 667</span></span>
+    <span class="cmeta">Lv 55 · 4,300 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>308 – 462</b></span><span>Defense <b>117</b></span>
+      <span>P.Resist <b>22</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1224, 479, 1228, 470, 1241, 469, 1234, 466, 1220, 473, 1226, 466 +3 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="swamp warden dark swamp monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Swamp Warden</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 698</span></span>
+    <span class="cmeta">Lv 55 · 17,200 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>616 – 924</b></span><span>Defense <b>175</b></span>
+      <span>P.Resist <b>33</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1114, 253</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="tribal shaman dark swamp monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Tribal Shaman</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 38</span></span>
+    <span class="cmeta">Lv 55 · 2,900 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>308 – 462</b></span><span>Defense <b>60</b></span>
+      <span>P.Resist <b>22</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1177, 230, 1027, 366, 1220, 354, 1180, 361</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="agile tribal villager dark swamp monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Agile Tribal Villager</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 515</span></span>
+    <span class="cmeta">Lv 56 · 3,632 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>316 – 474</b></span><span>Defense <b>95</b></span>
+      <span>P.Resist <b>23</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1005, 265</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="evil snow doll spirit dark swamp monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Evil Snow Doll Spirit</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 671</span></span>
+    <span class="cmeta">Lv 57 · 18,280 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>649 – 974</b></span><span>Defense <b>181</b></span>
+      <span>P.Resist <b>35</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1228, 220</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="palace guard dark swamp monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Palace Guard</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 47</span></span>
+    <span class="cmeta">Lv 57 · 5,941 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>259 – 388</b></span><span>Defense <b>145</b></span>
+      <span>P.Resist <b>25</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1150, 224</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="vicious undead warrior dark swamp monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Vicious Undead Warrior</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 521</span></span>
+    <span class="cmeta">Lv 57 · 3,656 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>389 – 584</b></span><span>Defense <b>96</b></span>
+      <span>P.Resist <b>21</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1236, 292, 1131, 463, 1116, 466, 1097, 465, 1071, 467</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="deadly skeletal archer dark swamp monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Deadly Skeletal Archer</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 541</span></span>
+    <span class="cmeta">Lv 58 · 4,570 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>267 – 400</b></span><span>Defense <b>123</b></span>
+      <span>P.Resist <b>23</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1072, 224</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="forest hunter dark swamp monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Forest Hunter</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 261</span></span>
+    <span class="cmeta">Lv 58 · 4,000 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>334 – 501</b></span><span>Defense <b>40</b></span>
+      <span>P.Resist <b>24</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1020, 247, 1052, 247, 1028, 239, 1042, 240</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="northern pirate militia dark swamp monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Northern Pirate Militia</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 564</span></span>
+    <span class="cmeta">Lv 58 · 4,570 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>267 – 400</b></span><span>Defense <b>110</b></span>
+      <span>P.Resist <b>21</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1018, 397, 1029, 419, 1032, 401</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="iron golem dark swamp monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Iron Golem</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 212</span></span>
+    <span class="cmeta">Lv 60 · 6,000 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>356 – 535</b></span><span>Defense <b>140</b></span>
+      <span>P.Resist <b>25</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1223, 232, 1192, 461, 1241, 236, 1249, 252, 1238, 271</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="lizard warrior dark swamp monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Lizard Warrior</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 197</span></span>
+    <span class="cmeta">Lv 60 · 5,258 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>356 – 535</b></span><span>Defense <b>100</b></span>
+      <span>P.Resist <b>25</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1055, 261, 1204, 224, 1242, 350, 1062, 264, 1051, 266, 1059, 268</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="terra soldier leader dark swamp monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Terra Soldier Leader</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 66</span></span>
+    <span class="cmeta">Lv 60 · 5,258 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>356 – 535</b></span><span>Defense <b>127</b></span>
+      <span>P.Resist <b>25</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1166, 435, 1142, 238, 1009, 278, 1148, 397</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="demonic snowman dark swamp monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Demonic Snowman</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 725</span></span>
+    <span class="cmeta">Lv 61 · 22,176 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>731 – 1096</b></span><span>Defense <b>193</b></span>
+      <span>P.Resist <b>37</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1156, 244, 1148, 365, 1172, 367, 1156, 385</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="giant lizard dark swamp monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Giant Lizard</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 250</span></span>
+    <span class="cmeta">Lv 62 · 5,009 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>9 – 618</b></span><span>Defense <b>9</b></span>
+      <span>P.Resist <b>9</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1092, 330</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="long hair crab dark swamp monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Long Hair Crab</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 273</span></span>
+    <span class="cmeta">Lv 62 · 15,235 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>460 – 690</b></span><span>Defense <b>177</b></span>
+      <span>P.Resist <b>27</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1127, 272, 1138, 282, 1151, 292, 1139, 309, 1129, 318, 1104, 308 +1 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="small treant dark swamp monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Small Treant</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 205</span></span>
+    <span class="cmeta">Lv 62 · 5,566 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>375 – 562</b></span><span>Defense <b>131</b></span>
+      <span>P.Resist <b>25</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1012, 346, 1096, 218, 1050, 313, 1066, 359</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="horrific cursed corpse dark swamp monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Horrific Cursed Corpse</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 508</span></span>
+    <span class="cmeta">Lv 63 · 7,293 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>307 – 460</b></span><span>Defense <b>159</b></span>
+      <span>P.Resist <b>28</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1153, 456, 1078, 445, 1031, 457, 1149, 468</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="vicious pumpkin knight dark swamp monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Vicious Pumpkin Knight</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 518</span></span>
+    <span class="cmeta">Lv 63 · 4,488 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>461 – 692</b></span><span>Defense <b>106</b></span>
+      <span>P.Resist <b>23</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1238, 416, 1244, 455, 1072, 426</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="chimera dark swamp monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Chimera</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 55</span></span>
+    <span class="cmeta">Lv 64 · 4,488 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>472 – 709</b></span><span>Defense <b>108</b></span>
+      <span>P.Resist <b>23</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1084, 256, 1105, 384, 1119, 385, 1109, 401</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="elite tribal warrior dark swamp monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Elite Tribal Warrior</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 519</span></span>
+    <span class="cmeta">Lv 64 · 4,488 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>472 – 709</b></span><span>Defense <b>108</b></span>
+      <span>P.Resist <b>23</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1112, 274, 1018, 285</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="treant terror dark swamp monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Treant Terror</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 547</span></span>
+    <span class="cmeta">Lv 64 · 4,488 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>472 – 709</b></span><span>Defense <b>108</b></span>
+      <span>P.Resist <b>23</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Dark Swamp</b> — tile 1196, 262, 1194, 295, 1215, 291, 1213, 310, 1179, 307</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><h2 class="zonehead">Demonic World <span class="zonect">13</span></h2><div class="card" data-rank="main" data-search="icy dragon demonic world main boss jades voucher broken gem voucher cracked gem voucher advanced gem voucher unique gem voucher black dragon gem voucher ring chest (lv60) ring chest (lv70) egg of evil chest of the fallen chest of the black dragon chest of kylin chest of the fallen chest of the black dragon chest of kylin">
+  <div class="chead"><span class="rankdot" style="background:#ff5f4d"></span>
+    <span><span class="cname">Icy Dragon</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Main boss · id 74</span></span>
+    <span class="cmeta">Lv 65 · 850,000 HP<br>respawn 900s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>980 – 1470</b></span><span>Defense <b>250</b></span>
+      <span>P.Resist <b>45</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Demonic World</b> — tile 1333, 371</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Jades Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Broken Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Cracked Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Advanced Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Unique Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Black Dragon Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Ring Chest (Lv60)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Ring Chest (Lv70)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Egg of Evil</td><td class="n">279</td><td class="n"><span class="pbar"><i style="width:36%"></i></span>36%</td></tr><tr><td>Chest of the Fallen</td><td class="n">500</td><td class="n"><span class="pbar"><i style="width:20%"></i></span>20%</td></tr><tr><td>Chest of the Black Dragon</td><td class="n">500</td><td class="n"><span class="pbar"><i style="width:20%"></i></span>20%</td></tr><tr><td>Chest of Kylin</td><td class="n">500</td><td class="n"><span class="pbar"><i style="width:20%"></i></span>20%</td></tr><tr><td>Chest of the Fallen</td><td class="n">1000</td><td class="n"><span class="pbar"><i style="width:10%"></i></span>10%</td></tr><tr><td>Chest of the Black Dragon</td><td class="n">1000</td><td class="n"><span class="pbar"><i style="width:10%"></i></span>10%</td></tr><tr><td>Chest of Kylin</td><td class="n">1000</td><td class="n"><span class="pbar"><i style="width:10%"></i></span>10%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="main" data-search="thief - wang xiao hu demonic world main boss jades voucher broken gem voucher cracked gem voucher advanced gem voucher unique gem voucher black dragon gem voucher ring chest (lv60) ring chest (lv70) egg of luck chest of the fallen chest of the black dragon chest of kylin chest of the fallen chest of the black dragon chest of kylin">
+  <div class="chead"><span class="rankdot" style="background:#ff5f4d"></span>
+    <span><span class="cname">Thief - Wang Xiao Hu</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Main boss · id 1281</span></span>
+    <span class="cmeta">Lv 65 · 850,000 HP<br>respawn 900s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>980 – 1470</b></span><span>Defense <b>250</b></span>
+      <span>P.Resist <b>45</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Demonic World</b> — tile 1335, 313</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Jades Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Broken Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Cracked Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Advanced Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Unique Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Black Dragon Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Ring Chest (Lv60)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Ring Chest (Lv70)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Egg of Luck</td><td class="n">279</td><td class="n"><span class="pbar"><i style="width:36%"></i></span>36%</td></tr><tr><td>Chest of the Fallen</td><td class="n">500</td><td class="n"><span class="pbar"><i style="width:20%"></i></span>20%</td></tr><tr><td>Chest of the Black Dragon</td><td class="n">500</td><td class="n"><span class="pbar"><i style="width:20%"></i></span>20%</td></tr><tr><td>Chest of Kylin</td><td class="n">500</td><td class="n"><span class="pbar"><i style="width:20%"></i></span>20%</td></tr><tr><td>Chest of the Fallen</td><td class="n">1000</td><td class="n"><span class="pbar"><i style="width:10%"></i></span>10%</td></tr><tr><td>Chest of the Black Dragon</td><td class="n">1000</td><td class="n"><span class="pbar"><i style="width:10%"></i></span>10%</td></tr><tr><td>Chest of Kylin</td><td class="n">1000</td><td class="n"><span class="pbar"><i style="width:10%"></i></span>10%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="mini" data-search="blood spirit demonic world mini boss ring chest (lv60) ring chest (lv70) broken gem voucher cracked gem voucher advanced gem voucher unique gem voucher black dragon gem voucher chest of the fallen chest of the black dragon chest of kylin">
+  <div class="chead"><span class="rankdot" style="background:#9b7fd4"></span>
+    <span><span class="cname">Blood Spirit</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Mini boss · id 677</span></span>
+    <span class="cmeta">Lv 63 · 165,000 HP<br>respawn 600s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>683 – 1024</b></span><span>Defense <b>175</b></span>
+      <span>P.Resist <b>31</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Demonic World</b> — tile 1305, 348</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Ring Chest (Lv60)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Ring Chest (Lv70)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Broken Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Cracked Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Advanced Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Unique Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Black Dragon Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Chest of the Fallen</td><td class="n">1000</td><td class="n"><span class="pbar"><i style="width:10%"></i></span>10%</td></tr><tr><td>Chest of the Black Dragon</td><td class="n">2000</td><td class="n"><span class="pbar"><i style="width:5%"></i></span>5%</td></tr><tr><td>Chest of Kylin</td><td class="n">2000</td><td class="n"><span class="pbar"><i style="width:5%"></i></span>5%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="mini" data-search="snowman warlord demonic world mini boss ring chest (lv60) ring chest (lv70) broken gem voucher cracked gem voucher advanced gem voucher unique gem voucher black dragon gem voucher chest of the fallen chest of the black dragon chest of kylin">
+  <div class="chead"><span class="rankdot" style="background:#9b7fd4"></span>
+    <span><span class="cname">Snowman Warlord</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Mini boss · id 678</span></span>
+    <span class="cmeta">Lv 63 · 165,000 HP<br>respawn 600s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>683 – 1024</b></span><span>Defense <b>175</b></span>
+      <span>P.Resist <b>31</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Demonic World</b> — tile 1367, 347</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Ring Chest (Lv60)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Ring Chest (Lv70)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Broken Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Cracked Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Advanced Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Unique Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Black Dragon Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Chest of the Fallen</td><td class="n">1000</td><td class="n"><span class="pbar"><i style="width:10%"></i></span>10%</td></tr><tr><td>Chest of the Black Dragon</td><td class="n">2000</td><td class="n"><span class="pbar"><i style="width:5%"></i></span>5%</td></tr><tr><td>Chest of Kylin</td><td class="n">2000</td><td class="n"><span class="pbar"><i style="width:5%"></i></span>5%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="chest" data-search="chest of demonic world 2 demonic world chest spirit gem broken gem of the wind cracked gem of striking broken gem of rage cracked gem of soul chipped gem of colossus yellow jade great gem of soul great gem of wind gem of the wind gem of rage">
+  <div class="chead"><span class="rankdot" style="background:#e8b53a"></span>
+    <span><span class="cname">Chest of Demonic World 2</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Chest · id 1709</span></span>
+    <span class="cmeta">Lv 65 · 9,600 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>0 – 0</b></span><span>Defense <b>375</b></span>
+      <span>P.Resist <b>51</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Demonic World</b> — tile 1339, 341, 1368, 347</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Spirit Gem</td><td class="n">429</td><td class="n"><span class="pbar"><i style="width:23%"></i></span>23%</td></tr><tr><td>Broken Gem of the Wind</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Cracked Gem of Striking</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Broken Gem of Rage</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Cracked Gem of Soul</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Chipped Gem of Colossus</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Yellow Jade</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Great Gem of Soul</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Great Gem of Wind</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Gem of the Wind</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr><tr><td>Gem of Rage</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="chest" data-search="chest of demonic world 3 demonic world chest lustrious gem cracked gem of the wind broken gem of colossus cracked gem of rage chipped gem of the wind chipped gem of rage red jade great gem of striking gem of striking gem of soul">
+  <div class="chead"><span class="rankdot" style="background:#e8b53a"></span>
+    <span><span class="cname">Chest of Demonic World 3</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Chest · id 1710</span></span>
+    <span class="cmeta">Lv 65 · 9,600 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>0 – 0</b></span><span>Defense <b>375</b></span>
+      <span>P.Resist <b>51</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Demonic World</b> — tile 1333, 270, 1334, 313, 1337, 356</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Lustrious Gem</td><td class="n">429</td><td class="n"><span class="pbar"><i style="width:23%"></i></span>23%</td></tr><tr><td>Cracked Gem of the Wind</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Broken Gem of Colossus</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Cracked Gem of Rage</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Chipped Gem of the Wind</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Chipped Gem of Rage</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Red Jade</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Great Gem of Striking</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Gem of Striking</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr><tr><td>Gem of Soul</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="chest" data-search="novice chaos chest abaddon · demonic world chest shadow gem broken gem of striking cracked gem of colossus broken gem of soul chipped gem of striking chipped gem of soul green jade great gem of rage great gem of colossus gem of colossus">
+  <div class="chead"><span class="rankdot" style="background:#e8b53a"></span>
+    <span><span class="cname">Novice Chaos Chest</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Chest · id 1711</span></span>
+    <span class="cmeta">Lv 65 · 9,600 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>0 – 0</b></span><span>Defense <b>375</b></span>
+      <span>P.Resist <b>51</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Abaddon · Demonic World</b> — tile 1333, 425, 1335, 377, 1306, 348, 1608, 407, 1741, 293, 1729, 406 +1 more</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Shadow Gem</td><td class="n">429</td><td class="n"><span class="pbar"><i style="width:23%"></i></span>23%</td></tr><tr><td>Broken Gem of Striking</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Cracked Gem of Colossus</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Broken Gem of Soul</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Chipped Gem of Striking</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Chipped Gem of Soul</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Green Jade</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Great Gem of Rage</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Great Gem of Colossus</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Gem of Colossus</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="mob" data-search="blighted tree demonic world monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Blighted Tree</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 1725</span></span>
+    <span class="cmeta">Lv 5 · 10 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>4 – 5</b></span><span>Defense <b>3</b></span>
+      <span>P.Resist <b>10</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Demonic World</b> — tile 1305, 335, 1334, 355, 1386, 316, 1296, 315, 1306, 396, 1329, 356 +1 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="iron ore lv5 demonic world monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Iron Ore Lv5</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 1732</span></span>
+    <span class="cmeta">Lv 5 · 10 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>4 – 5</b></span><span>Defense <b>3</b></span>
+      <span>P.Resist <b>10</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Demonic World</b> — tile 1364, 413, 1367, 409, 1278, 395, 1306, 408, 1332, 277, 1280, 374 +13 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="demonic yeti demonic world monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Demonic Yeti</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 726</span></span>
+    <span class="cmeta">Lv 65 · 22,528 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>809 – 1214</b></span><span>Defense <b>205</b></span>
+      <span>P.Resist <b>39</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Demonic World</b> — tile 1349, 308, 1333, 323, 1358, 298, 1393, 312, 1367, 356, 1306, 322 +4 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="elite werewolf archer demonic world monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Elite Werewolf Archer</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 520</span></span>
+    <span class="cmeta">Lv 65 · 5,632 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>323 – 484</b></span><span>Defense <b>137</b></span>
+      <span>P.Resist <b>26</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Demonic World</b> — tile 1306, 361, 1305, 333, 1310, 282, 1329, 282, 1338, 282, 1321, 384 +2 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="terra captain demonic world monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Terra Captain</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 67</span></span>
+    <span class="cmeta">Lv 65 · 5,632 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>404 – 607</b></span><span>Defense <b>137</b></span>
+      <span>P.Resist <b>26</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Demonic World</b> — tile 1362, 374, 1364, 329, 1308, 411, 1332, 413</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="frantic lizardman abaddon · demonic world monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Frantic Lizardman</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 552</span></span>
+    <span class="cmeta">Lv 77 · 15,024 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>548 – 823</b></span><span>Defense <b>224</b></span>
+      <span>P.Resist <b>33</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Abaddon · Demonic World</b> — tile 1572, 345, 1375, 314, 1580, 356, 1600, 339, 1610, 353, 1656, 337 +11 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><h2 class="zonehead">Lone Tower <span class="zonect">10</span></h2><div class="card" data-rank="main" data-search="pirate captain 008 lone tower main boss jades voucher broken gem voucher cracked gem voucher advanced gem voucher unique gem voucher black dragon gem voucher ring chest (lv70) ring chest (lv80) chest of the fallen chest of the black dragon chest of kylin chest of the fallen chest of the black dragon chest of kylin">
+  <div class="chead"><span class="rankdot" style="background:#ff5f4d"></span>
+    <span><span class="cname">Pirate Captain 008</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Main boss · id 757</span></span>
+    <span class="cmeta">Lv 75 · 1,300,000 HP<br>respawn 900s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>1400 – 2100</b></span><span>Defense <b>290</b></span>
+      <span>P.Resist <b>50</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Lone Tower</b> — tile 1531, 407</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Jades Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Broken Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Cracked Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Advanced Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Unique Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Black Dragon Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Ring Chest (Lv70)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Ring Chest (Lv80)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Chest of the Fallen</td><td class="n">500</td><td class="n"><span class="pbar"><i style="width:20%"></i></span>20%</td></tr><tr><td>Chest of the Black Dragon</td><td class="n">500</td><td class="n"><span class="pbar"><i style="width:20%"></i></span>20%</td></tr><tr><td>Chest of Kylin</td><td class="n">500</td><td class="n"><span class="pbar"><i style="width:20%"></i></span>20%</td></tr><tr><td>Chest of the Fallen</td><td class="n">1000</td><td class="n"><span class="pbar"><i style="width:10%"></i></span>10%</td></tr><tr><td>Chest of the Black Dragon</td><td class="n">1000</td><td class="n"><span class="pbar"><i style="width:10%"></i></span>10%</td></tr><tr><td>Chest of Kylin</td><td class="n">1000</td><td class="n"><span class="pbar"><i style="width:10%"></i></span>10%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="mini" data-search="navy guardian lone tower mini boss ring chest (lv70) ring chest (lv80) broken gem voucher cracked gem voucher advanced gem voucher unique gem voucher black dragon gem voucher chaos framestone chaos clawstone chaos pawstone chest of the fallen chest of the black dragon chest of kylin">
+  <div class="chead"><span class="rankdot" style="background:#9b7fd4"></span>
+    <span><span class="cname">Navy Guardian</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Mini boss · id 1032</span></span>
+    <span class="cmeta">Lv 74 · 193,900 HP<br>respawn 600s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>724 – 1086</b></span><span>Defense <b>142</b></span>
+      <span>P.Resist <b>24</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Lone Tower</b> — tile 1544, 315</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Ring Chest (Lv70)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Ring Chest (Lv80)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Broken Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Cracked Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Advanced Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Unique Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Black Dragon Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Chaos Framestone</td><td class="n">200</td><td class="n"><span class="pbar"><i style="width:50%"></i></span>50%</td></tr><tr><td>Chaos Clawstone</td><td class="n">200</td><td class="n"><span class="pbar"><i style="width:50%"></i></span>50%</td></tr><tr><td>Chaos Pawstone</td><td class="n">200</td><td class="n"><span class="pbar"><i style="width:50%"></i></span>50%</td></tr><tr><td>Chest of the Fallen</td><td class="n">2000</td><td class="n"><span class="pbar"><i style="width:5%"></i></span>5%</td></tr><tr><td>Chest of the Black Dragon</td><td class="n">4000</td><td class="n"><span class="pbar"><i style="width:2%"></i></span>2%</td></tr><tr><td>Chest of Kylin</td><td class="n">4000</td><td class="n"><span class="pbar"><i style="width:2%"></i></span>2%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="mini" data-search="pirate guardian lone tower mini boss ring chest (lv70) ring chest (lv80) broken gem voucher cracked gem voucher advanced gem voucher unique gem voucher black dragon gem voucher chaos framestone chaos clawstone chaos pawstone chest of the fallen chest of the black dragon chest of kylin">
+  <div class="chead"><span class="rankdot" style="background:#9b7fd4"></span>
+    <span><span class="cname">Pirate Guardian</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Mini boss · id 1033</span></span>
+    <span class="cmeta">Lv 74 · 193,900 HP<br>respawn 600s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>724 – 1086</b></span><span>Defense <b>142</b></span>
+      <span>P.Resist <b>24</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Lone Tower</b> — tile 1541, 311</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Ring Chest (Lv70)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Ring Chest (Lv80)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Broken Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Cracked Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Advanced Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Unique Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Black Dragon Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Chaos Framestone</td><td class="n">200</td><td class="n"><span class="pbar"><i style="width:50%"></i></span>50%</td></tr><tr><td>Chaos Clawstone</td><td class="n">200</td><td class="n"><span class="pbar"><i style="width:50%"></i></span>50%</td></tr><tr><td>Chaos Pawstone</td><td class="n">200</td><td class="n"><span class="pbar"><i style="width:50%"></i></span>50%</td></tr><tr><td>Chest of the Fallen</td><td class="n">2000</td><td class="n"><span class="pbar"><i style="width:5%"></i></span>5%</td></tr><tr><td>Chest of the Black Dragon</td><td class="n">4000</td><td class="n"><span class="pbar"><i style="width:2%"></i></span>2%</td></tr><tr><td>Chest of Kylin</td><td class="n">4000</td><td class="n"><span class="pbar"><i style="width:2%"></i></span>2%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="chest" data-search="obscure chest 1 abaddon · lone tower chest lustrious gem cracked gem of the wind broken gem of colossus cracked gem of rage chipped gem of the wind chipped gem of rage red jade great gem of striking gem of striking gem of soul">
+  <div class="chead"><span class="rankdot" style="background:#e8b53a"></span>
+    <span><span class="cname">Obscure Chest 1</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Chest · id 1716</span></span>
+    <span class="cmeta">Lv 85 · 15,000 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>0 – 0</b></span><span>Defense <b>600</b></span>
+      <span>P.Resist <b>60</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Abaddon · Lone Tower</b> — tile 1767, 307, 1619, 400, 1532, 414, 1449, 301, 1522, 414, 1540, 413</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Lustrious Gem</td><td class="n">429</td><td class="n"><span class="pbar"><i style="width:23%"></i></span>23%</td></tr><tr><td>Cracked Gem of the Wind</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Broken Gem of Colossus</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Cracked Gem of Rage</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Chipped Gem of the Wind</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Chipped Gem of Rage</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Red Jade</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Great Gem of Striking</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Gem of Striking</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr><tr><td>Gem of Soul</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="chest" data-search="treasure chest abaddon · lone tower chest spirit gem broken gem of the wind cracked gem of striking broken gem of rage cracked gem of soul chipped gem of colossus yellow jade great gem of soul great gem of wind gem of the wind gem of rage">
+  <div class="chead"><span class="rankdot" style="background:#e8b53a"></span>
+    <span><span class="cname">Treasure Chest</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Chest · id 1715</span></span>
+    <span class="cmeta">Lv 85 · 15,000 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>0 – 0</b></span><span>Defense <b>600</b></span>
+      <span>P.Resist <b>60</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Abaddon · Lone Tower</b> — tile 1550, 307, 1617, 284, 1632, 442, 1738, 285, 1548, 388, 1768, 439</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Spirit Gem</td><td class="n">429</td><td class="n"><span class="pbar"><i style="width:23%"></i></span>23%</td></tr><tr><td>Broken Gem of the Wind</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Cracked Gem of Striking</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Broken Gem of Rage</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Cracked Gem of Soul</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Chipped Gem of Colossus</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Yellow Jade</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Great Gem of Soul</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Great Gem of Wind</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Gem of the Wind</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr><tr><td>Gem of Rage</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="mob" data-search="highwater tree abaddon · lone tower monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Highwater Tree</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 1726</span></span>
+    <span class="cmeta">Lv 6 · 10 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>4 – 5</b></span><span>Defense <b>3</b></span>
+      <span>P.Resist <b>10</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Abaddon · Lone Tower</b> — tile 1455, 365, 1450, 311, 1485, 391, 1578, 378, 1521, 307, 1544, 388 +6 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="iron ore lv6 lone tower monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Iron Ore Lv6</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 1733</span></span>
+    <span class="cmeta">Lv 6 · 10 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>4 – 5</b></span><span>Defense <b>3</b></span>
+      <span>P.Resist <b>10</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Lone Tower</b> — tile 1455, 336, 1549, 334, 1472, 352, 1483, 369, 1488, 389, 1538, 388 +10 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="beardy pirate sailor lone tower monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Beardy Pirate Sailor</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 569</span></span>
+    <span class="cmeta">Lv 67 · 5,088 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>467 – 700</b></span><span>Defense <b>126</b></span>
+      <span>P.Resist <b>26</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Lone Tower</b> — tile 1448, 310, 1463, 384, 1537, 371, 1539, 318, 1463, 305, 1551, 358</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="beardy pirate fighter lone tower monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Beardy Pirate Fighter</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 570</span></span>
+    <span class="cmeta">Lv 68 · 5,108 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>477 – 716</b></span><span>Defense <b>128</b></span>
+      <span>P.Resist <b>26</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Lone Tower</b> — tile 1492, 390, 1506, 359, 1512, 313, 1482, 349, 1471, 369, 1469, 336</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="beardy pirate militia lone tower monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Beardy Pirate Militia</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 571</span></span>
+    <span class="cmeta">Lv 68 · 5,108 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>477 – 716</b></span><span>Defense <b>128</b></span>
+      <span>P.Resist <b>26</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Lone Tower</b> — tile 1521, 411, 1543, 413, 1543, 387, 1498, 334, 1511, 388, 1542, 334 +1 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><h2 class="zonehead">Abaddon <span class="zonect">16</span></h2><div class="card" data-rank="main" data-search="barborosa abaddon main boss jades voucher broken gem voucher cracked gem voucher advanced gem voucher unique gem voucher black dragon gem voucher ring chest (lv80) chest of the fallen chest of the black dragon chest of kylin chest of the fallen chest of the black dragon chest of kylin">
+  <div class="chead"><span class="rankdot" style="background:#ff5f4d"></span>
+    <span><span class="cname">Barborosa</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Main boss · id 805</span></span>
+    <span class="cmeta">Lv 85 · 2,000,000 HP<br>respawn 900s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>2000 – 3000</b></span><span>Defense <b>330</b></span>
+      <span>P.Resist <b>55</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Abaddon</b> — tile 1740, 284</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Jades Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Broken Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Cracked Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Advanced Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Unique Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Black Dragon Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Ring Chest (Lv80)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Chest of the Fallen</td><td class="n">500</td><td class="n"><span class="pbar"><i style="width:20%"></i></span>20%</td></tr><tr><td>Chest of the Black Dragon</td><td class="n">500</td><td class="n"><span class="pbar"><i style="width:20%"></i></span>20%</td></tr><tr><td>Chest of Kylin</td><td class="n">500</td><td class="n"><span class="pbar"><i style="width:20%"></i></span>20%</td></tr><tr><td>Chest of the Fallen</td><td class="n">1000</td><td class="n"><span class="pbar"><i style="width:10%"></i></span>10%</td></tr><tr><td>Chest of the Black Dragon</td><td class="n">1000</td><td class="n"><span class="pbar"><i style="width:10%"></i></span>10%</td></tr><tr><td>Chest of Kylin</td><td class="n">1000</td><td class="n"><span class="pbar"><i style="width:10%"></i></span>10%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="main" data-search="deathsoul commander abaddon main boss jades voucher broken gem voucher cracked gem voucher advanced gem voucher unique gem voucher black dragon gem voucher ring chest (lv80) chest of the fallen chest of the black dragon chest of kylin chest of the fallen chest of the black dragon chest of kylin">
+  <div class="chead"><span class="rankdot" style="background:#ff5f4d"></span>
+    <span><span class="cname">Deathsoul Commander</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Main boss · id 807</span></span>
+    <span class="cmeta">Lv 85 · 2,000,000 HP<br>respawn 900s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>2000 – 3000</b></span><span>Defense <b>330</b></span>
+      <span>P.Resist <b>55</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Abaddon</b> — tile 1619, 405</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Jades Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Broken Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Cracked Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Advanced Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Unique Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Black Dragon Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Ring Chest (Lv80)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Chest of the Fallen</td><td class="n">500</td><td class="n"><span class="pbar"><i style="width:20%"></i></span>20%</td></tr><tr><td>Chest of the Black Dragon</td><td class="n">500</td><td class="n"><span class="pbar"><i style="width:20%"></i></span>20%</td></tr><tr><td>Chest of Kylin</td><td class="n">500</td><td class="n"><span class="pbar"><i style="width:20%"></i></span>20%</td></tr><tr><td>Chest of the Fallen</td><td class="n">1000</td><td class="n"><span class="pbar"><i style="width:10%"></i></span>10%</td></tr><tr><td>Chest of the Black Dragon</td><td class="n">1000</td><td class="n"><span class="pbar"><i style="width:10%"></i></span>10%</td></tr><tr><td>Chest of Kylin</td><td class="n">1000</td><td class="n"><span class="pbar"><i style="width:10%"></i></span>10%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="main" data-search="evil tribal chieftian abaddon main boss jades voucher broken gem voucher cracked gem voucher advanced gem voucher unique gem voucher black dragon gem voucher ring chest (lv80) chest of the fallen chest of the black dragon chest of kylin chest of the fallen chest of the black dragon chest of kylin">
+  <div class="chead"><span class="rankdot" style="background:#ff5f4d"></span>
+    <span><span class="cname">Evil Tribal Chieftian</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Main boss · id 788</span></span>
+    <span class="cmeta">Lv 85 · 2,000,000 HP<br>respawn 900s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>2000 – 3000</b></span><span>Defense <b>330</b></span>
+      <span>P.Resist <b>55</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Abaddon</b> — tile 1738, 405</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Jades Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Broken Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Cracked Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Advanced Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Unique Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Black Dragon Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Ring Chest (Lv80)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Chest of the Fallen</td><td class="n">500</td><td class="n"><span class="pbar"><i style="width:20%"></i></span>20%</td></tr><tr><td>Chest of the Black Dragon</td><td class="n">500</td><td class="n"><span class="pbar"><i style="width:20%"></i></span>20%</td></tr><tr><td>Chest of Kylin</td><td class="n">500</td><td class="n"><span class="pbar"><i style="width:20%"></i></span>20%</td></tr><tr><td>Chest of the Fallen</td><td class="n">1000</td><td class="n"><span class="pbar"><i style="width:10%"></i></span>10%</td></tr><tr><td>Chest of the Black Dragon</td><td class="n">1000</td><td class="n"><span class="pbar"><i style="width:10%"></i></span>10%</td></tr><tr><td>Chest of Kylin</td><td class="n">1000</td><td class="n"><span class="pbar"><i style="width:10%"></i></span>10%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="main" data-search="huge cyborg abaddon main boss jades voucher broken gem voucher cracked gem voucher advanced gem voucher unique gem voucher black dragon gem voucher ring chest (lv80) chest of the fallen chest of the black dragon chest of kylin chest of the fallen chest of the black dragon chest of kylin">
+  <div class="chead"><span class="rankdot" style="background:#ff5f4d"></span>
+    <span><span class="cname">Huge Cyborg</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Main boss · id 561</span></span>
+    <span class="cmeta">Lv 85 · 2,000,000 HP<br>respawn 900s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>2000 – 3000</b></span><span>Defense <b>330</b></span>
+      <span>P.Resist <b>55</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Abaddon</b> — tile 1619, 283</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Jades Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Broken Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Cracked Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Advanced Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Unique Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Black Dragon Gem Voucher</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Ring Chest (Lv80)</td><td class="n">100</td><td class="n"><span class="pbar"><i style="width:100%"></i></span>100%</td></tr><tr><td>Chest of the Fallen</td><td class="n">500</td><td class="n"><span class="pbar"><i style="width:20%"></i></span>20%</td></tr><tr><td>Chest of the Black Dragon</td><td class="n">500</td><td class="n"><span class="pbar"><i style="width:20%"></i></span>20%</td></tr><tr><td>Chest of Kylin</td><td class="n">500</td><td class="n"><span class="pbar"><i style="width:20%"></i></span>20%</td></tr><tr><td>Chest of the Fallen</td><td class="n">1000</td><td class="n"><span class="pbar"><i style="width:10%"></i></span>10%</td></tr><tr><td>Chest of the Black Dragon</td><td class="n">1000</td><td class="n"><span class="pbar"><i style="width:10%"></i></span>10%</td></tr><tr><td>Chest of Kylin</td><td class="n">1000</td><td class="n"><span class="pbar"><i style="width:10%"></i></span>10%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="chest" data-search="novice chaos chest abaddon · demonic world chest shadow gem broken gem of striking cracked gem of colossus broken gem of soul chipped gem of striking chipped gem of soul green jade great gem of rage great gem of colossus gem of colossus">
+  <div class="chead"><span class="rankdot" style="background:#e8b53a"></span>
+    <span><span class="cname">Novice Chaos Chest</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Chest · id 1711</span></span>
+    <span class="cmeta">Lv 65 · 9,600 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>0 – 0</b></span><span>Defense <b>375</b></span>
+      <span>P.Resist <b>51</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Abaddon · Demonic World</b> — tile 1333, 425, 1335, 377, 1306, 348, 1608, 407, 1741, 293, 1729, 406 +1 more</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Shadow Gem</td><td class="n">429</td><td class="n"><span class="pbar"><i style="width:23%"></i></span>23%</td></tr><tr><td>Broken Gem of Striking</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Cracked Gem of Colossus</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Broken Gem of Soul</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Chipped Gem of Striking</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Chipped Gem of Soul</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Green Jade</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Great Gem of Rage</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Great Gem of Colossus</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Gem of Colossus</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="chest" data-search="obscure chest 1 abaddon · lone tower chest lustrious gem cracked gem of the wind broken gem of colossus cracked gem of rage chipped gem of the wind chipped gem of rage red jade great gem of striking gem of striking gem of soul">
+  <div class="chead"><span class="rankdot" style="background:#e8b53a"></span>
+    <span><span class="cname">Obscure Chest 1</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Chest · id 1716</span></span>
+    <span class="cmeta">Lv 85 · 15,000 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>0 – 0</b></span><span>Defense <b>600</b></span>
+      <span>P.Resist <b>60</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Abaddon · Lone Tower</b> — tile 1767, 307, 1619, 400, 1532, 414, 1449, 301, 1522, 414, 1540, 413</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Lustrious Gem</td><td class="n">429</td><td class="n"><span class="pbar"><i style="width:23%"></i></span>23%</td></tr><tr><td>Cracked Gem of the Wind</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Broken Gem of Colossus</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Cracked Gem of Rage</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Chipped Gem of the Wind</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Chipped Gem of Rage</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Red Jade</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Great Gem of Striking</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Gem of Striking</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr><tr><td>Gem of Soul</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="chest" data-search="obscure chest 2 abaddon chest shadow gem broken gem of striking cracked gem of colossus broken gem of soul chipped gem of striking chipped gem of soul green jade great gem of rage great gem of colossus gem of colossus">
+  <div class="chead"><span class="rankdot" style="background:#e8b53a"></span>
+    <span><span class="cname">Obscure Chest 2</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Chest · id 1717</span></span>
+    <span class="cmeta">Lv 85 · 15,000 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>0 – 0</b></span><span>Defense <b>600</b></span>
+      <span>P.Resist <b>60</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Abaddon</b> — tile 1739, 402, 1790, 359, 1582, 320</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Shadow Gem</td><td class="n">429</td><td class="n"><span class="pbar"><i style="width:23%"></i></span>23%</td></tr><tr><td>Broken Gem of Striking</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Cracked Gem of Colossus</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Broken Gem of Soul</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Chipped Gem of Striking</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Chipped Gem of Soul</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Green Jade</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Great Gem of Rage</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Great Gem of Colossus</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Gem of Colossus</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="chest" data-search="treasure chest abaddon · lone tower chest spirit gem broken gem of the wind cracked gem of striking broken gem of rage cracked gem of soul chipped gem of colossus yellow jade great gem of soul great gem of wind gem of the wind gem of rage">
+  <div class="chead"><span class="rankdot" style="background:#e8b53a"></span>
+    <span><span class="cname">Treasure Chest</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Chest · id 1715</span></span>
+    <span class="cmeta">Lv 85 · 15,000 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>0 – 0</b></span><span>Defense <b>600</b></span>
+      <span>P.Resist <b>60</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Abaddon · Lone Tower</b> — tile 1550, 307, 1617, 284, 1632, 442, 1738, 285, 1548, 388, 1768, 439</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Spirit Gem</td><td class="n">429</td><td class="n"><span class="pbar"><i style="width:23%"></i></span>23%</td></tr><tr><td>Broken Gem of the Wind</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Cracked Gem of Striking</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Broken Gem of Rage</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Cracked Gem of Soul</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Chipped Gem of Colossus</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Yellow Jade</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Great Gem of Soul</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Great Gem of Wind</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Gem of the Wind</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr><tr><td>Gem of Rage</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="mob" data-search="highwater tree abaddon · lone tower monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Highwater Tree</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 1726</span></span>
+    <span class="cmeta">Lv 6 · 10 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>4 – 5</b></span><span>Defense <b>3</b></span>
+      <span>P.Resist <b>10</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Abaddon · Lone Tower</b> — tile 1455, 365, 1450, 311, 1485, 391, 1578, 378, 1521, 307, 1544, 388 +6 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="ashfall tree abaddon monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Ashfall Tree</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 1727</span></span>
+    <span class="cmeta">Lv 7 · 10 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>4 – 5</b></span><span>Defense <b>3</b></span>
+      <span>P.Resist <b>10</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Abaddon</b> — tile 1656, 347, 1610, 274, 1628, 413, 1738, 375, 1610, 371, 1576, 287 +14 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="iron ore lv7 abaddon monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Iron Ore Lv7</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 1734</span></span>
+    <span class="cmeta">Lv 7 · 10 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>4 – 5</b></span><span>Defense <b>3</b></span>
+      <span>P.Resist <b>10</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Abaddon</b> — tile 1652, 253, 1730, 293, 1729, 395, 1779, 343, 1674, 356, 1632, 263 +39 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="sand pirate abaddon monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Sand Pirate</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 957</span></span>
+    <span class="cmeta">Lv 75 · 7,500 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>360 – 540</b></span><span>Defense <b>620</b></span>
+      <span>P.Resist <b>60</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Abaddon</b> — tile 1710, 270, 1710, 287, 1717, 301, 1726, 310, 1745, 312, 1762, 307 +44 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="thunder lion abaddon monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Thunder Lion</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 965</span></span>
+    <span class="cmeta">Lv 75 · 6,378 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>600 – 900</b></span><span>Defense <b>220</b></span>
+      <span>P.Resist <b>25</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Abaddon</b> — tile 1709, 378, 1704, 406, 1712, 427, 1723, 440, 1743, 437, 1761, 431 +9 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="frantic lizardman abaddon · demonic world monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Frantic Lizardman</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 552</span></span>
+    <span class="cmeta">Lv 77 · 15,024 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>548 – 823</b></span><span>Defense <b>224</b></span>
+      <span>P.Resist <b>33</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Abaddon · Demonic World</b> — tile 1572, 345, 1375, 314, 1580, 356, 1600, 339, 1610, 353, 1656, 337 +11 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="desert lizard warrior abaddon monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Desert Lizard Warrior</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 958</span></span>
+    <span class="cmeta">Lv 78 · 7,921 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>400 – 600</b></span><span>Defense <b>650</b></span>
+      <span>P.Resist <b>60</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Abaddon</b> — tile 1629, 374, 1643, 383, 1645, 420, 1628, 431, 1610, 435, 1596, 429 +8 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="evil carcass abaddon monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Evil Carcass</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 966</span></span>
+    <span class="cmeta">Lv 78 · 7,018 HP<br>respawn 600s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>640 – 960</b></span><span>Defense <b>230</b></span>
+      <span>P.Resist <b>25</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Abaddon</b> — tile 1648, 271, 1651, 296, 1643, 312, 1629, 316, 1612, 314, 1598, 309 +8 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><h2 class="zonehead">Black Dragon Lair <span class="zonect">13</span></h2><div class="card" data-rank="chest" data-search="abandoned chest 1 black dragon lair chest lustrious gem cracked gem of the wind broken gem of colossus cracked gem of rage chipped gem of the wind chipped gem of rage red jade great gem of striking gem of striking gem of soul">
+  <div class="chead"><span class="rankdot" style="background:#e8b53a"></span>
+    <span><span class="cname">Abandoned Chest 1</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Chest · id 1719</span></span>
+    <span class="cmeta">Lv 95 · 18,000 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>0 – 0</b></span><span>Defense <b>712</b></span>
+      <span>P.Resist <b>64</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Black Dragon Lair</b> — tile 1926, 468, 1975, 338, 1926, 493</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Lustrious Gem</td><td class="n">429</td><td class="n"><span class="pbar"><i style="width:23%"></i></span>23%</td></tr><tr><td>Cracked Gem of the Wind</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Broken Gem of Colossus</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Cracked Gem of Rage</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Chipped Gem of the Wind</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Chipped Gem of Rage</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Red Jade</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Great Gem of Striking</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Gem of Striking</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr><tr><td>Gem of Soul</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="chest" data-search="abandoned chest 2 black dragon lair chest shadow gem broken gem of striking cracked gem of colossus broken gem of soul chipped gem of striking chipped gem of soul green jade great gem of rage great gem of colossus gem of colossus">
+  <div class="chead"><span class="rankdot" style="background:#e8b53a"></span>
+    <span><span class="cname">Abandoned Chest 2</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Chest · id 1720</span></span>
+    <span class="cmeta">Lv 95 · 18,000 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>0 – 0</b></span><span>Defense <b>712</b></span>
+      <span>P.Resist <b>64</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Black Dragon Lair</b> — tile 1852, 425, 2007, 214, 2013, 429</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Shadow Gem</td><td class="n">429</td><td class="n"><span class="pbar"><i style="width:23%"></i></span>23%</td></tr><tr><td>Broken Gem of Striking</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Cracked Gem of Colossus</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Broken Gem of Soul</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Chipped Gem of Striking</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Chipped Gem of Soul</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Green Jade</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Great Gem of Rage</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Great Gem of Colossus</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Gem of Colossus</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="chest" data-search="obscure chest 3 black dragon lair chest spirit gem broken gem of the wind cracked gem of striking broken gem of rage cracked gem of soul chipped gem of colossus yellow jade great gem of soul great gem of wind gem of the wind gem of rage">
+  <div class="chead"><span class="rankdot" style="background:#e8b53a"></span>
+    <span><span class="cname">Obscure Chest 3</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Chest · id 1718</span></span>
+    <span class="cmeta">Lv 95 · 18,000 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>0 – 0</b></span><span>Defense <b>712</b></span>
+      <span>P.Resist <b>64</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Black Dragon Lair</b> — tile 1987, 407, 2007, 280, 1893, 213, 1950, 208</div>
+    <table><thead><tr><th>Drops</th><th class="n">Weight</th><th class="n">Chance</th></tr></thead><tbody><tr><td>Spirit Gem</td><td class="n">429</td><td class="n"><span class="pbar"><i style="width:23%"></i></span>23%</td></tr><tr><td>Broken Gem of the Wind</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Cracked Gem of Striking</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Broken Gem of Rage</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Cracked Gem of Soul</td><td class="n">714</td><td class="n"><span class="pbar"><i style="width:14%"></i></span>14%</td></tr><tr><td>Chipped Gem of Colossus</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Yellow Jade</td><td class="n">1143</td><td class="n"><span class="pbar"><i style="width:9%"></i></span>9%</td></tr><tr><td>Great Gem of Soul</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Great Gem of Wind</td><td class="n">1786</td><td class="n"><span class="pbar"><i style="width:6%"></i></span>6%</td></tr><tr><td>Gem of the Wind</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr><tr><td>Gem of Rage</td><td class="n">2857</td><td class="n"><span class="pbar"><i style="width:4%"></i></span>4%</td></tr></tbody></table>
+  </div></div><div class="card" data-rank="mob" data-search="dragonscarred tree black dragon lair monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Dragonscarred Tree</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 1728</span></span>
+    <span class="cmeta">Lv 8 · 10 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>4 – 5</b></span><span>Defense <b>3</b></span>
+      <span>P.Resist <b>10</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Black Dragon Lair</b> — tile 1808, 346, 1924, 208, 1920, 318, 1966, 404, 1922, 420, 1962, 444 +6 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="iron ore lv8 black dragon lair monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Iron Ore Lv8</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 1735</span></span>
+    <span class="cmeta">Lv 8 · 10 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>4 – 5</b></span><span>Defense <b>3</b></span>
+      <span>P.Resist <b>10</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Black Dragon Lair</b> — tile 1848, 298, 1870, 239, 1870, 348, 1838, 356, 1979, 250, 1892, 386 +27 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="ancient relic protector black dragon lair monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Ancient Relic Protector</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 536</span></span>
+    <span class="cmeta">Lv 85 · 8,517 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>508 – 763</b></span><span>Defense <b>212</b></span>
+      <span>P.Resist <b>38</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Black Dragon Lair</b> — tile 1980, 385, 2005, 289, 1897, 342, 1975, 479, 1821, 399, 1815, 433 +13 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="horrifying mummy black dragon lair monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Horrifying Mummy</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 969</span></span>
+    <span class="cmeta">Lv 85 · 8,799 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>464 – 696</b></span><span>Defense <b>650</b></span>
+      <span>P.Resist <b>60</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Black Dragon Lair</b> — tile 2006, 225, 1895, 227, 1930, 488, 1841, 256, 2014, 452, 1812, 238 +4 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="pumpkin death warrior black dragon lair monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Pumpkin Death Warrior</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 973</span></span>
+    <span class="cmeta">Lv 85 · 7,745 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>720 – 1080</b></span><span>Defense <b>250</b></span>
+      <span>P.Resist <b>25</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Black Dragon Lair</b> — tile 1908, 369, 1816, 462, 1863, 496, 1812, 491, 1859, 393</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="snow mistress black dragon lair monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Snow Mistress</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 971</span></span>
+    <span class="cmeta">Lv 85 · 6,877 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>920 – 1380</b></span><span>Defense <b>245</b></span>
+      <span>P.Resist <b>25</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Black Dragon Lair</b> — tile 1837, 237, 1870, 238, 1952, 221, 1892, 472, 1865, 356, 2003, 338</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="lizardman champion black dragon lair monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Lizardman Champion</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 555</span></span>
+    <span class="cmeta">Lv 86 · 5,241 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>778 – 1167</b></span><span>Defense <b>143</b></span>
+      <span>P.Resist <b>31</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Black Dragon Lair</b> — tile 1871, 239, 2023, 409</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="terra champion black dragon lair monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Terra Champion</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 556</span></span>
+    <span class="cmeta">Lv 87 · 5,262 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>793 – 1190</b></span><span>Defense <b>144</b></span>
+      <span>P.Resist <b>31</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Black Dragon Lair</b> — tile 1835, 348, 1963, 413, 2012, 476</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="wicked terra elder black dragon lair monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Wicked Terra Elder</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 558</span></span>
+    <span class="cmeta">Lv 88 · 5,920 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>741 – 1112</b></span><span>Defense <b>164</b></span>
+      <span>P.Resist <b>33</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Black Dragon Lair</b> — tile 1976, 216, 1817, 410, 1896, 410, 1855, 452</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="evil relic guardian black dragon lair monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Evil Relic Guardian</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 560</span></span>
+    <span class="cmeta">Lv 89 · 5,896 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>755 – 1132</b></span><span>Defense <b>166</b></span>
+      <span>P.Resist <b>33</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Black Dragon Lair</b> — tile 1838, 430, 1893, 426</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><h2 class="zonehead">Unzoned <span class="zonect">2</span></h2><div class="card" data-rank="mob" data-search="iron ore lv2 silver mine · spawn · unzoned monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Iron Ore Lv2</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 1729</span></span>
+    <span class="cmeta">Lv 2 · 10 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>4 – 5</b></span><span>Defense <b>3</b></span>
+      <span>P.Resist <b>10</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Silver Mine · Spawn · Unzoned</b> — tile 449, 341, 405, 358, 377, 349, 411, 313, 590, 306, 537, 368 +45 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div><div class="card" data-rank="mob" data-search="silt-choked tree silver mine · unzoned monster ">
+  <div class="chead"><span class="rankdot" style="background:#d2543f"></span>
+    <span><span class="cname">Silt-Choked Tree</span>
+      <span style="font:11.5px var(--mono);color:var(--faint)"> Monster · id 1722</span></span>
+    <span class="cmeta">Lv 2 · 10 HP<br>respawn 300s</span></div>
+  <div class="cbody">
+    <div class="stats"><span>Attack <b>4 – 5</b></span><span>Defense <b>3</b></span>
+      <span>P.Resist <b>10</b></span><span>EXP <b>0</b></span></div>
+    <div class="where">Found in <b>Silver Mine · Unzoned</b> — tile 657, 244, 529, 334, 403, 290, 390, 370, 561, 301, 567, 228 +29 more</div>
+    <div class="nodrop">No droppable items configured.</div>
+  </div></div>
+  <footer>Read straight from <code>gauntletChaSpn.txt</code> and
+  <code>characters.item_ids</code> / <code>.item_counts</code>. Drop semantics from
+  <code>GauntletDropRules.h</code>: weight below 100 never rolls, and the terminator is on
+  <code>item_counts</code> — a slot past it is unreachable however valid its id.
+  0 such slots are flagged above rather than hidden.</footer>
+</div><script>
+var pills=[].slice.call(document.querySelectorAll('.pill'));
+var q=document.getElementById('q');
+var on={main:1,mini:1,chest:1,mob:1};
+function apply(){
+  var t=(q.value||'').toLowerCase();
+  document.querySelectorAll('.card').forEach(function(c){
+    var okRank=on[c.dataset.rank];
+    var okText=!t||c.dataset.search.indexOf(t)>=0;
+    c.style.display=(okRank&&okText)?'':'none';
+  });
+  var n=document.querySelectorAll('.card:not([style*="none"])').length;
+  document.getElementById('count').textContent=n+' shown';
+}
+pills.forEach(function(p){p.onclick=function(){
+  var k=p.dataset.k; on[k]=!on[k];
+  p.setAttribute('aria-pressed',on[k]?'true':'false'); apply();
+};});
+q.addEventListener('input',apply);
+apply();
+</script></body></html>

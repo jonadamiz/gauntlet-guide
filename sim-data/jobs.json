@@ -1,0 +1,78 @@
+{
+ "JOB_TYPE_XINSHOU": {
+  "id": 0,
+  "name": "Newbie"
+ },
+ "JOB_TYPE_JIANSHI": {
+  "id": 1,
+  "name": "Swordsman"
+ },
+ "JOB_TYPE_LIEREN": {
+  "id": 2,
+  "name": "Hunter"
+ },
+ "JOB_TYPE_SHUISHOU": {
+  "id": 3,
+  "name": "Sailor"
+ },
+ "JOB_TYPE_MAOXIANZHE": {
+  "id": 4,
+  "name": "Explorer"
+ },
+ "JOB_TYPE_QIYUANSHI": {
+  "id": 5,
+  "name": "Herbalist"
+ },
+ "JOB_TYPE_JISHI": {
+  "id": 6,
+  "name": "Artisan"
+ },
+ "JOB_TYPE_SHANGREN": {
+  "id": 7,
+  "name": "Merchant"
+ },
+ "JOB_TYPE_JUJS": {
+  "id": 8,
+  "name": "Champion"
+ },
+ "JOB_TYPE_SHUANGJS": {
+  "id": 9,
+  "name": "Crusader"
+ },
+ "JOB_TYPE_JIANDUNSHI": {
+  "id": 10,
+  "name": "White Knight"
+ },
+ "JOB_TYPE_XUNSHOUSHI": {
+  "id": 11,
+  "name": "Animal Tamer"
+ },
+ "JOB_TYPE_JUJISHOU": {
+  "id": 12,
+  "name": "Sharpshooter"
+ },
+ "JOB_TYPE_SHENGZHIZHE": {
+  "id": 13,
+  "name": "Cleric"
+ },
+ "JOB_TYPE_FENGYINSHI": {
+  "id": 14,
+  "name": "Seal Master"
+ },
+ "JOB_TYPE_CHUANZHANG": {
+  "id": 15,
+  "name": "Captain"
+ },
+ "JOB_TYPE_HANGHAISHI": {
+  "id": 16,
+  "name": "Voyager"
+ },
+ "JOB_TYPE_BAOFAHU": {
+  "id": 17,
+  "name": "Upstart"
+ },
+ "JOB_TYPE_GONGCHENGSHI": {
+  "id": 18,
+  "name": "Engineer"
+ }
+}

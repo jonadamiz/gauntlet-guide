@@ -1,0 +1,2822 @@
+{
+ "62": {
+  "id": 62,
+  "name": "Sword Mastery",
+  "jobs": {
+   "1": 10,
+   "9": 10,
+   "8": 10
+  },
+  "cost": 1,
+  "icon": "s0062.png",
+  "hint": "Increases by 4 damage per skill level",
+  "passive": true,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     2
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 1,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": [
+   {
+    "col": "mn_atk_valu",
+    "base": 0,
+    "perLevel": 4,
+    "kind": "flat"
+   },
+   {
+    "col": "mx_atk_valu",
+    "base": 0,
+    "perLevel": 4,
+    "kind": "flat"
+   }
+  ]
+ },
+ "63": {
+  "id": 63,
+  "name": "Will of Steel",
+  "jobs": {
+   "1": 10,
+   "9": 10,
+   "8": 10
+  },
+  "cost": 1,
+  "icon": "s0063.png",
+  "hint": "Increases by 3 points per skill level. Fixed time duration of 10s",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 1,
+  "buff": true,
+  "state": 70,
+  "stateName": "Will of Steel",
+  "effects": [
+   {
+    "col": "def_valu",
+    "base": 0,
+    "perLevel": 3,
+    "kind": "flat"
+   }
+  ]
+ },
+ "64": {
+  "id": 64,
+  "name": "Strengthen",
+  "jobs": {
+   "8": 10
+  },
+  "cost": 1,
+  "icon": "s0064.png",
+  "hint": "Increase Max HP by 20 for every Lv",
+  "passive": true,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 1,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": [
+   {
+    "col": "mx_hp_valu",
+    "base": 0,
+    "perLevel": 20,
+    "kind": "flat",
+    "perStat": {
+     "con": 3
+    }
+   }
+  ]
+ },
+ "65": {
+  "id": 65,
+  "name": "Deftness",
+  "jobs": {
+   "9": 10
+  },
+  "cost": 1,
+  "icon": "s0065.png",
+  "hint": "Every Lv increase Dodge by 3 points",
+  "passive": true,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 1,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": [
+   {
+    "col": "flee_valu",
+    "base": 0,
+    "perLevel": 3,
+    "kind": "flat"
+   }
+  ]
+ },
+ "66": {
+  "id": 66,
+  "name": "Concentration",
+  "jobs": {
+   "1": 10,
+   "9": 10,
+   "8": 10
+  },
+  "cost": 1,
+  "icon": "s0066.png",
+  "hint": "Hit Rate increase by 1 with every subsequent Lv",
+  "passive": true,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 1,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": [
+   {
+    "col": "hit_valu",
+    "base": 0,
+    "perLevel": 1,
+    "kind": "flat"
+   }
+  ]
+ },
+ "67": {
+  "id": 67,
+  "name": "Greatsword Maste",
+  "jobs": {
+   "8": 10
+  },
+  "cost": 1,
+  "icon": "s0067.png",
+  "hint": "Increases 7 atk per Lv",
+  "passive": true,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     2
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 1,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": [
+   {
+    "col": "mn_atk_valu",
+    "base": 0,
+    "perLevel": 7,
+    "kind": "flat"
+   },
+   {
+    "col": "mx_atk_valu",
+    "base": 0,
+    "perLevel": 7,
+    "kind": "flat"
+   }
+  ]
+ },
+ "68": {
+  "id": 68,
+  "name": "Blood Bull",
+  "jobs": {
+   "8": 10
+  },
+  "cost": 1,
+  "icon": "s0068.png",
+  "hint": "Max HP and Defense increase 10% at Lv1. Max HP and Defense increases 2% per subsequent Lv.",
+  "passive": true,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     2
+    ]
+   ],
+   [
+    [
+     1,
+     22
+    ],
+    [
+     1,
+     27
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 1,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": [
+   {
+    "col": "mx_hp_valu",
+    "base": 0.1,
+    "perLevel": 0.02,
+    "kind": "coef"
+   },
+   {
+    "col": "def_valu",
+    "base": 0.1,
+    "perLevel": 0.02,
+    "kind": "coef"
+   }
+  ]
+ },
+ "70": {
+  "id": 70,
+  "name": "Blood Frenzy",
+  "jobs": {
+   "9": 10
+  },
+  "cost": 1,
+  "icon": "s0070.png",
+  "hint": "Increase Atk Spd 10% for Lv 1. Atk Spd increase 2% for every subsequent Lv.",
+  "passive": true,
+  "need": [
+   [
+    [
+     1,
+     1
+    ]
+   ],
+   [
+    [
+     1,
+     1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 1,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": [
+   {
+    "col": "aspd_valu",
+    "base": 0.1,
+    "perLevel": 0.01,
+    "kind": "coef"
+   }
+  ]
+ },
+ "74": {
+  "id": 74,
+  "name": "Range Mastery",
+  "jobs": {
+   "2": 10,
+   "12": 10
+  },
+  "cost": 1,
+  "icon": "s0074.png",
+  "hint": "Increase atk by 2 for every Lv",
+  "passive": true,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 1,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": [
+   {
+    "col": "mn_atk_valu",
+    "base": 0,
+    "perLevel": 2,
+    "kind": "flat"
+   },
+   {
+    "col": "mx_atk_valu",
+    "base": 0,
+    "perLevel": 2,
+    "kind": "flat"
+   }
+  ]
+ },
+ "75": {
+  "id": 75,
+  "name": "Windwalk",
+  "jobs": {
+   "2": 10,
+   "12": 10
+  },
+  "cost": 1,
+  "icon": "s0075.png",
+  "hint": "Movement speed increases by 2% per skill level",
+  "passive": true,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 1,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": [
+   {
+    "col": "mspd_valu",
+    "base": 0,
+    "perLevel": 0.02,
+    "kind": "coef"
+   }
+  ]
+ },
+ "78": {
+  "id": 78,
+  "name": "Firegun Mastery",
+  "jobs": {
+   "12": 10
+  },
+  "cost": 1,
+  "icon": "s0078.png",
+  "hint": "Increases 6 minimum and 10 maximum damage per skill level",
+  "passive": true,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     4
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 1,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": [
+   {
+    "col": "mn_atk_valu",
+    "base": 0,
+    "perLevel": 6,
+    "kind": "flat"
+   },
+   {
+    "col": "mx_atk_valu",
+    "base": 0,
+    "perLevel": 10,
+    "kind": "flat"
+   }
+  ]
+ },
+ "79": {
+  "id": 79,
+  "name": "Vigor",
+  "jobs": {
+   "5": 10,
+   "13": 10,
+   "14": 10
+  },
+  "cost": 1,
+  "icon": "s0079.png",
+  "hint": "Max SP increase by 40 for every Lv",
+  "passive": true,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 1,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": [
+   {
+    "col": "mx_sp_valu",
+    "base": 0,
+    "perLevel": 40,
+    "kind": "flat"
+   }
+  ]
+ },
+ "80": {
+  "id": 80,
+  "name": "Divine Grace",
+  "jobs": {
+   "13": 10,
+   "14": 10
+  },
+  "cost": 1,
+  "icon": "s0080.png",
+  "hint": "Increases SP recovery rate of character by 2 at level 1. Each additional skill level increases by 1 SP recovery rate",
+  "passive": true,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 1,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": [
+   {
+    "col": "srec_valu",
+    "base": 1,
+    "perLevel": 1,
+    "kind": "flat"
+   }
+  ]
+ },
+ "81": {
+  "id": 81,
+  "name": "Illusion Slash",
+  "jobs": {
+   "1": 10,
+   "9": 10,
+   "8": 10
+  },
+  "cost": 1,
+  "icon": "s0081.png",
+  "hint": "Attack is boosted according to skill level and current attack speed",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     2
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": false,
+  "onTarget": true,
+  "applyTarget": 4,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": []
+ },
+ "82": {
+  "id": 82,
+  "name": "Mighty Strike",
+  "jobs": {
+   "8": 10
+  },
+  "cost": 1,
+  "icon": "s0082.png",
+  "hint": "Increases attack by 1.25 times at Level 1. Increases by 5% per skill level",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     2
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": false,
+  "onTarget": true,
+  "applyTarget": 4,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": []
+ },
+ "83": {
+  "id": 83,
+  "name": "Primal Rage",
+  "jobs": {
+   "8": 10
+  },
+  "cost": 1,
+  "icon": "s0083.png",
+  "hint": "3.5x of normal atk at Lv1. Subsequent Lv increase 50% damage.",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     2
+    ]
+   ],
+   [
+    [
+     1,
+     22
+    ],
+    [
+     1,
+     27
+    ]
+   ]
+  ],
+  "helpful": false,
+  "onTarget": true,
+  "applyTarget": 4,
+  "buff": false,
+  "state": 45,
+  "stateName": "Shadow Slash",
+  "effects": []
+ },
+ "84": {
+  "id": 84,
+  "name": "Berserk",
+  "jobs": {
+   "1": 10,
+   "9": 10,
+   "8": 10
+  },
+  "cost": 1,
+  "icon": "s0084.png",
+  "hint": "Increases attack speed of character tremendously over short duration. Effect increases with skill level",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     2
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 1,
+  "buff": true,
+  "state": 24,
+  "stateName": "Berserk",
+  "effects": [
+   {
+    "col": "aspd_valu",
+    "base": 0.2,
+    "perLevel": 0.015,
+    "kind": "coef"
+   }
+  ]
+ },
+ "86": {
+  "id": 86,
+  "name": "Shadow Slash",
+  "jobs": {
+   "9": 10
+  },
+  "cost": 1,
+  "icon": "s0086.png",
+  "hint": "Damage is 110% of normal atk and causes faint for 3.5secs.Subsequent Lv increases damage by 10% and faint increases by 0.5secs.",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     1
+    ]
+   ],
+   [
+    [
+     1,
+     1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": false,
+  "onTarget": true,
+  "applyTarget": 4,
+  "buff": false,
+  "state": 45,
+  "stateName": "Shadow Slash",
+  "effects": []
+ },
+ "87": {
+  "id": 87,
+  "name": "Poison Dart",
+  "jobs": {
+   "9": 10
+  },
+  "cost": 1,
+  "icon": "s0087.png",
+  "hint": "Deals 12 damage per second, over a period of 17s at Level 1. Increases damage by 2 and poison duration by 2s per skill level",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     1
+    ]
+   ],
+   [
+    [
+     1,
+     1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": false,
+  "onTarget": true,
+  "applyTarget": 4,
+  "buff": false,
+  "state": 4,
+  "stateName": "Poisoned",
+  "effects": []
+ },
+ "90": {
+  "id": 90,
+  "name": "Dual Shot",
+  "jobs": {
+   "2": 10,
+   "12": 10
+  },
+  "cost": 1,
+  "icon": "s0090.png",
+  "hint": "1.7x normal atk at Lv1. Increases by 15% for every subsequent Lv.",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     3
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": false,
+  "onTarget": true,
+  "applyTarget": 4,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": []
+ },
+ "93": {
+  "id": 93,
+  "name": "Frozen Arrow",
+  "jobs": {
+   "2": 10,
+   "12": 10
+  },
+  "cost": 1,
+  "icon": "s0093.png",
+  "hint": "Increases attack by 1.2 times and slows enemy at Level 1. Effect increases with skill level",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     3
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": false,
+  "onTarget": true,
+  "applyTarget": 4,
+  "buff": false,
+  "state": 81,
+  "stateName": "Frozen Arrow",
+  "effects": []
+ },
+ "94": {
+  "id": 94,
+  "name": "Cripple",
+  "jobs": {
+   "12": 10
+  },
+  "cost": 1,
+  "icon": "s0094.png",
+  "hint": "Decrease movement speed by 50%, dodge rate by 20% over a period of 5s at Level 1. Decreases 2.5% movement speed and duration in",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     4
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": false,
+  "onTarget": true,
+  "applyTarget": 4,
+  "buff": false,
+  "state": 39,
+  "stateName": "Cripple",
+  "effects": []
+ },
+ "95": {
+  "id": 95,
+  "name": "Enfeeble",
+  "jobs": {
+   "12": 10
+  },
+  "cost": 1,
+  "icon": "s0095.png",
+  "hint": "Reduce target's atk by 20%, prevents skill for 5secs for Lv1. Every Lv extends duration by 0.5secs.",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     4
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": false,
+  "onTarget": true,
+  "applyTarget": 4,
+  "buff": false,
+  "state": 68,
+  "stateName": "Enfeeble",
+  "effects": []
+ },
+ "96": {
+  "id": 96,
+  "name": "Headshot",
+  "jobs": {
+   "12": 10
+  },
+  "cost": 1,
+  "icon": "s0096.png",
+  "hint": "Deal 350 damage at Lv1 and ignore defense. Additional HP5% - 10% damage off target's current HP. Increases by 30 damage per ski",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     4
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": false,
+  "onTarget": true,
+  "applyTarget": 4,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": []
+ },
+ "97": {
+  "id": 97,
+  "name": "Heal",
+  "jobs": {
+   "5": 10,
+   "13": 10,
+   "14": 10
+  },
+  "cost": 1,
+  "icon": "s0097.png",
+  "hint": "Recover target's HP. Recovery amount depends on Caster's Lv, Skill Lv and Spr.",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 5,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": []
+ },
+ "98": {
+  "id": 98,
+  "name": "Recover",
+  "jobs": {
+   "5": 10,
+   "13": 10,
+   "14": 10
+  },
+  "cost": 1,
+  "icon": "s0098.png",
+  "hint": "",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 5,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": []
+ },
+ "99": {
+  "id": 99,
+  "name": "Spiritual Bolt",
+  "jobs": {
+   "5": 10,
+   "13": 10,
+   "14": 10
+  },
+  "cost": 1,
+  "icon": "s0099.png",
+  "hint": "Deal magical damage and ignore Physical Defense. Damage determined by skill level and spirit difference between caster and targ",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     9
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": false,
+  "onTarget": true,
+  "applyTarget": 4,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": []
+ },
+ "100": {
+  "id": 100,
+  "name": "Spiritual Fire",
+  "jobs": {
+   "5": 10,
+   "13": 10,
+   "14": 10
+  },
+  "cost": 1,
+  "icon": "s0100.png",
+  "hint": "Increases attack by 11% over 180s at Level 1. Increases attack by 1% and duration by 18s per skill level",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 5,
+  "buff": true,
+  "state": 40,
+  "stateName": "Spiritual Fire",
+  "effects": [
+   {
+    "col": "mn_atk_valu",
+    "base": 0.1,
+    "perLevel": 0.01,
+    "kind": "coef"
+   },
+   {
+    "col": "mx_atk_valu",
+    "base": 0.1,
+    "perLevel": 0.01,
+    "kind": "coef"
+   }
+  ]
+ },
+ "101": {
+  "id": 101,
+  "name": "Tempest Boost",
+  "jobs": {
+   "5": 10,
+   "13": 10,
+   "14": 10
+  },
+  "cost": 1,
+  "icon": "s0101.png",
+  "hint": "Increases attack speed by 6% over 138s at Level 1. Increases attack speed by 13% and duration by 18s per skill level",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 5,
+  "buff": true,
+  "state": 29,
+  "stateName": "Tempest Boost",
+  "effects": [
+   {
+    "col": "aspd_valu",
+    "base": 0.05,
+    "perLevel": 0.01,
+    "kind": "coef"
+   },
+   {
+    "col": "mspd_valu",
+    "base": 0.05,
+    "perLevel": 0.01,
+    "kind": "coef"
+   }
+  ]
+ },
+ "102": {
+  "id": 102,
+  "name": "Tornado Swirl",
+  "jobs": {
+   "13": 10
+  },
+  "cost": 1,
+  "icon": "s0102.png",
+  "hint": "Increases critical rate by 6% over 33s at Level 1. Increases critical rate by 1% and duration by 3s per skill level",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 5,
+  "buff": true,
+  "state": 33,
+  "stateName": "Tornado Swirl",
+  "effects": [
+   {
+    "col": "crt_valu",
+    "base": 5,
+    "perLevel": 1,
+    "kind": "flat"
+   }
+  ]
+ },
+ "103": {
+  "id": 103,
+  "name": "Angelic Shield",
+  "jobs": {
+   "13": 10
+  },
+  "cost": 1,
+  "icon": "s0103.png",
+  "hint": "Increases defense by 3% over 33s at Level 1. Increases defense by 3% and duration by 3s per skill level",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 5,
+  "buff": true,
+  "state": 37,
+  "stateName": "Angelic Shield",
+  "effects": [
+   {
+    "col": "def_valu",
+    "base": 0,
+    "perLevel": 0.03,
+    "kind": "coef"
+   }
+  ]
+ },
+ "104": {
+  "id": 104,
+  "name": "Seal of Elder",
+  "jobs": {
+   "14": 10
+  },
+  "cost": 1,
+  "icon": "s0104.png",
+  "hint": "Duration of 10.5s at Level 1. Increases by 0.5s per skill level",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": false,
+  "onTarget": true,
+  "applyTarget": 4,
+  "buff": false,
+  "state": 26,
+  "stateName": "Skill Forbidden",
+  "effects": []
+ },
+ "105": {
+  "id": 105,
+  "name": "Shadow Insignia",
+  "jobs": {
+   "14": 10
+  },
+  "cost": 1,
+  "icon": "s0105.png",
+  "hint": "Duration of 6s at Level 1. Increases by 1s per skill level",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": false,
+  "onTarget": true,
+  "applyTarget": 4,
+  "buff": false,
+  "state": 65,
+  "stateName": "Attack forbidden",
+  "effects": []
+ },
+ "106": {
+  "id": 106,
+  "name": "Energy Shield",
+  "jobs": {
+   "13": 10
+  },
+  "cost": 1,
+  "icon": "s0106.png",
+  "hint": "Convert every 0.75 damage taken into 1 SP lost at Level 1. Damaged absorbed per SP is increased by 0.25 per skill level",
+  "passive": true,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 1,
+  "buff": false,
+  "state": 83,
+  "stateName": "Energy Shield",
+  "effects": []
+ },
+ "107": {
+  "id": 107,
+  "name": "Howl",
+  "jobs": {
+   "8": 10
+  },
+  "cost": 1,
+  "icon": "s0107.png",
+  "hint": "1.05x normal damage at Lv1. Damage increases 0.05x per subsequent Lv.",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     2
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": false,
+  "onTarget": true,
+  "applyTarget": 4,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": []
+ },
+ "109": {
+  "id": 109,
+  "name": "Dual Sword Maste",
+  "jobs": {
+   "9": 10
+  },
+  "cost": 1,
+  "icon": "s0109.png",
+  "hint": "Increase atk of left handed sword by 8%.",
+  "passive": true,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 1,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": [
+   {
+    "col": "lhand_itemv",
+    "base": 0,
+    "perLevel": 8,
+    "kind": "flat"
+   }
+  ]
+ },
+ "112": {
+  "id": 112,
+  "name": "Meteor Shower",
+  "jobs": {
+   "2": 10,
+   "12": 10
+  },
+  "cost": 1,
+  "icon": "s0112.png",
+  "hint": "Deals 60% area damage at Level 1. Increases damage by 10% per skill level",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     3
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": false,
+  "onTarget": true,
+  "applyTarget": 4,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": []
+ },
+ "113": {
+  "id": 113,
+  "name": "Magma Bullet",
+  "jobs": {
+   "12": 10
+  },
+  "cost": 1,
+  "icon": "s0113.png",
+  "hint": "Deals 33 damage per second over 10s at Level 1. Also debuffs target causing 10 damage per sec for 10s. Damage increased by 3 pe",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     4
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": false,
+  "onTarget": true,
+  "applyTarget": 4,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": []
+ },
+ "116": {
+  "id": 116,
+  "name": "True Sight",
+  "jobs": {
+   "13": 10,
+   "14": 10
+  },
+  "cost": 1,
+  "icon": "s0116.png",
+  "hint": "Duration of 35s. Duration increases by 15s per skill level",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": false,
+  "onTarget": true,
+  "applyTarget": 4,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": []
+ },
+ "119": {
+  "id": 119,
+  "name": "Cursed Fire",
+  "jobs": {
+   "14": 10
+  },
+  "cost": 1,
+  "icon": "s0119.png",
+  "hint": "Decreases defense by 12% at Level 1. Decreases by 2% more and duration increases by 15s per skill level",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": false,
+  "onTarget": true,
+  "applyTarget": 4,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": []
+ },
+ "121": {
+  "id": 121,
+  "name": "Abyss Mire",
+  "jobs": {
+   "14": 10
+  },
+  "cost": 1,
+  "icon": "s0121.png",
+  "hint": "Decrease target's speed by 30%, lasting 20secs for Lv1. Subsequent Lv decrease speed more 3% more, duration increases by 2secs",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     9
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": false,
+  "onTarget": true,
+  "applyTarget": 4,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": []
+ },
+ "122": {
+  "id": 122,
+  "name": "Healing Spring",
+  "jobs": {
+   "13": 10
+  },
+  "cost": 1,
+  "icon": "s0122.png",
+  "hint": "Recovery increase by 2.2x for Lv1, last 17secs. Recovery increase by 0.2x, duration increase by 2secs for every subsequent Lv.",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 5,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": []
+ },
+ "123": {
+  "id": 123,
+  "name": "Stealth",
+  "jobs": {
+   "9": 10
+  },
+  "cost": 1,
+  "icon": "s0123.png",
+  "hint": "Conceals for 30s and consumes 5.5 SP every 5s at level 1. Reduces SP consumption by 0.5 SP and duration increases by 5s per ski",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     1
+    ]
+   ],
+   [
+    [
+     1,
+     1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 1,
+  "buff": false,
+  "state": 43,
+  "stateName": "Stealth",
+  "effects": []
+ },
+ "124": {
+  "id": 124,
+  "name": "Revival",
+  "jobs": {
+   "5": 10,
+   "13": 10,
+   "14": 10
+  },
+  "cost": 1,
+  "icon": "s0124.png",
+  "hint": "Brings dead target back to life. Requires Revival Clover. Each skill level reduce skill cooldown by 1.5 sec",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 6,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": []
+ },
+ "127": {
+  "id": 127,
+  "name": "Tiger Roar",
+  "jobs": {
+   "1": 10,
+   "9": 10,
+   "8": 10
+  },
+  "cost": 1,
+  "icon": "s0127.png",
+  "hint": "Decreases additional attack by 3 and movement speed 1% over 15s per skill level",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": false,
+  "onTarget": true,
+  "applyTarget": 4,
+  "buff": true,
+  "state": 22,
+  "stateName": "Tiger Roar",
+  "effects": [
+   {
+    "col": "mx_atk_valu",
+    "base": 0,
+    "perLevel": 3,
+    "kind": "flat"
+   },
+   {
+    "col": "mn_atk_valu",
+    "base": 0,
+    "perLevel": 3,
+    "kind": "flat"
+   },
+   {
+    "col": "mspd_valu",
+    "base": 0,
+    "perLevel": 0.015,
+    "kind": "coef"
+   }
+  ]
+ },
+ "210": {
+  "id": 210,
+  "name": "Diligence",
+  "jobs": {
+   "4": 10,
+   "16": 10
+  },
+  "cost": 1,
+  "icon": "s0210.png",
+  "hint": "Recovers 2 points per 3 sec at Level 1. Increases by 1 point per skill level",
+  "passive": true,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 1,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": [
+   {
+    "col": "srec_valu",
+    "base": 1,
+    "perLevel": 1,
+    "kind": "flat"
+   }
+  ]
+ },
+ "211": {
+  "id": 211,
+  "name": "Current",
+  "jobs": {
+   "16": 10
+  },
+  "cost": 1,
+  "icon": "s0211.png",
+  "hint": "Increases by 6% at Level 1. Increases by 1% per skill level",
+  "passive": true,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 1,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": [
+   {
+    "col": "mspd_valu",
+    "base": 20,
+    "perLevel": 5,
+    "kind": "flat"
+   }
+  ]
+ },
+ "212": {
+  "id": 212,
+  "name": "Conch Armor",
+  "jobs": {
+   "16": 10
+  },
+  "cost": 1,
+  "icon": "s0212.png",
+  "hint": "Increases by 8 points. Increases by 3 point per skill level",
+  "passive": true,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 1,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": [
+   {
+    "col": "def_valu",
+    "base": 0,
+    "perLevel": 8,
+    "kind": "flat"
+   }
+  ]
+ },
+ "213": {
+  "id": 213,
+  "name": "Tornado",
+  "jobs": {
+   "4": 10,
+   "16": 10
+  },
+  "cost": 1,
+  "icon": "s0213.png",
+  "hint": "Duration of 3.5s at Level 1. Increases duration by 0.5s per skill level",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": false,
+  "onTarget": true,
+  "applyTarget": 4,
+  "buff": false,
+  "state": 86,
+  "stateName": "Tornado",
+  "effects": []
+ },
+ "214": {
+  "id": 214,
+  "name": "Lightning Bolt",
+  "jobs": {
+   "4": 10,
+   "16": 10
+  },
+  "cost": 1,
+  "icon": "s0214.png",
+  "hint": "Damage is determined by skill level and Spirit",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": false,
+  "onTarget": true,
+  "applyTarget": 4,
+  "buff": false,
+  "state": 46,
+  "stateName": "Numb",
+  "effects": []
+ },
+ "215": {
+  "id": 215,
+  "name": "Algae Entangleme",
+  "jobs": {
+   "16": 10
+  },
+  "cost": 1,
+  "icon": "s0215.png",
+  "hint": "Deals target 5 damage per sec over 6s. Increases damage by 1 point and duration by 2s per skill level",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": false,
+  "onTarget": true,
+  "applyTarget": 4,
+  "buff": false,
+  "state": 87,
+  "stateName": "Algae Entangleme",
+  "effects": []
+ },
+ "216": {
+  "id": 216,
+  "name": "Conch Ray",
+  "jobs": {
+   "16": 10
+  },
+  "cost": 1,
+  "icon": "s0216.png",
+  "hint": "Damage is determined by skill level and Spirit",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": false,
+  "onTarget": true,
+  "applyTarget": 4,
+  "buff": false,
+  "state": 45,
+  "stateName": "Shadow Slash",
+  "effects": []
+ },
+ "217": {
+  "id": 217,
+  "name": "Tail Wind",
+  "jobs": {
+   "16": 10
+  },
+  "cost": 1,
+  "icon": "s0217.png",
+  "hint": "Raises the movement speed of you and nearby allies.",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 2,
+  "buff": true,
+  "state": 88,
+  "stateName": "Tail Wind",
+  "effects": [
+   {
+    "col": "mspd_valu",
+    "base": 100,
+    "perLevel": 10,
+    "kind": "flat"
+   }
+  ]
+ },
+ "218": {
+  "id": 218,
+  "name": "Whirlpool",
+  "jobs": {
+   "16": 10
+  },
+  "cost": 1,
+  "icon": "s0218.png",
+  "hint": "Effect increases with each level",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": false,
+  "onTarget": true,
+  "applyTarget": 5,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": []
+ },
+ "219": {
+  "id": 219,
+  "name": "Fog",
+  "jobs": {
+   "16": 10
+  },
+  "cost": 1,
+  "icon": "s0219.png",
+  "hint": "Blankets an area in fog, lowering the defense of enemies caught within.",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": false,
+  "onTarget": true,
+  "applyTarget": 3,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": []
+ },
+ "220": {
+  "id": 220,
+  "name": "Lightning Curtai",
+  "jobs": {
+   "16": 10
+  },
+  "cost": 1,
+  "icon": "s0220.png",
+  "hint": "Effect increases with each level",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": false,
+  "onTarget": true,
+  "applyTarget": 4,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": []
+ },
+ "222": {
+  "id": 222,
+  "name": "Break Armor",
+  "jobs": {
+   "1": 10,
+   "9": 10,
+   "8": 10
+  },
+  "cost": 1,
+  "icon": "s0222.png",
+  "hint": "Decreases defense by 4 over 15s per skill level",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": false,
+  "onTarget": true,
+  "applyTarget": 4,
+  "buff": true,
+  "state": 89,
+  "stateName": "Break Armor",
+  "effects": [
+   {
+    "col": "def_valu",
+    "base": 0,
+    "perLevel": 4,
+    "kind": "flat"
+   }
+  ]
+ },
+ "223": {
+  "id": 223,
+  "name": "Rousing",
+  "jobs": {
+   "2": 10,
+   "12": 10
+  },
+  "cost": 1,
+  "icon": "s0223.png",
+  "hint": "Increases by 11 points over 15s. Increases by 1 point per skill level",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 1,
+  "buff": true,
+  "state": 90,
+  "stateName": "Rousing",
+  "effects": [
+   {
+    "col": "aspd_valu",
+    "base": 10,
+    "perLevel": 1,
+    "kind": "flat"
+   }
+  ]
+ },
+ "224": {
+  "id": 224,
+  "name": "Venom Arrow",
+  "jobs": {
+   "2": 10,
+   "12": 10
+  },
+  "cost": 1,
+  "icon": "s0224.png",
+  "hint": "Deals 12 damage per sec over 20s at Level 1. Increases damage by 2 per skill level",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     3
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": false,
+  "onTarget": true,
+  "applyTarget": 4,
+  "buff": false,
+  "state": 91,
+  "stateName": "Venom Arrow",
+  "effects": []
+ },
+ "225": {
+  "id": 225,
+  "name": "Harden",
+  "jobs": {
+   "5": 10,
+   "13": 10,
+   "14": 10
+  },
+  "cost": 1,
+  "icon": "s0225.png",
+  "hint": "Increases defense by 14 points over 180s. Increases by 4 points per skill level.",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 5,
+  "buff": true,
+  "state": 92,
+  "stateName": "Harden",
+  "effects": [
+   {
+    "col": "def_valu",
+    "base": 14,
+    "perLevel": 4,
+    "kind": "flat"
+   }
+  ]
+ },
+ "242": {
+  "id": 242,
+  "name": "Taunt",
+  "jobs": {
+   "1": 10,
+   "9": 10,
+   "8": 10
+  },
+  "cost": 1,
+  "icon": "s0128.png",
+  "hint": "Duration increases per skill level",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": false,
+  "onTarget": true,
+  "applyTarget": 4,
+  "buff": false,
+  "state": 15,
+  "stateName": "Taunt",
+  "effects": []
+ },
+ "243": {
+  "id": 243,
+  "name": "Roar",
+  "jobs": {
+   "8": 10
+  },
+  "cost": 1,
+  "icon": "s0129.png",
+  "hint": "Effective range of skill increases per skill level",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": false,
+  "onTarget": true,
+  "applyTarget": 4,
+  "buff": false,
+  "state": 15,
+  "stateName": "Taunt",
+  "effects": []
+ },
+ "255": {
+  "id": 255,
+  "name": "Crystalline Bles",
+  "jobs": {
+   "13": 10
+  },
+  "cost": 1,
+  "icon": "s0225.png",
+  "hint": "Duration increases per skill level",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 2,
+  "buff": false,
+  "state": 96,
+  "stateName": "Kiss of Frost",
+  "effects": []
+ },
+ "256": {
+  "id": 256,
+  "name": "Intense Magic",
+  "jobs": {
+   "14": 10
+  },
+  "cost": 1,
+  "icon": "s0225.png",
+  "hint": "Duration and effectiveness increases per skill level with a chance to cast without the use of Magical Clover at higher levels",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 5,
+  "buff": false,
+  "state": 50,
+  "stateName": "Intense Magic",
+  "effects": []
+ },
+ "476": {
+  "id": 476,
+  "name": "Trinity Blessing",
+  "jobs": {
+   "5": 1,
+   "13": 1,
+   "14": 1
+  },
+  "cost": 1,
+  "icon": "s0545.png",
+  "hint": "Casts Spiritual Fire, Tempest Boost and Harden at the level you have learned each. Always level 1 - it cannot be upgraded; upgrade the three skills themselves.",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 5,
+  "buff": false,
+  "state": null,
+  "stateName": null,
+  "effects": []
+ },
+ "477": {
+  "id": 477,
+  "name": "Exorcise",
+  "jobs": {
+   "14": 1
+  },
+  "cost": 1,
+  "icon": "s0544.png",
+  "hint": "Seals a fallen character so Revival cannot restore them. Consumes a Revival Clover.",
+  "passive": false,
+  "need": [
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ],
+   [
+    [
+     1,
+     -1
+    ]
+   ]
+  ],
+  "helpful": true,
+  "onTarget": false,
+  "applyTarget": 6,
+  "buff": false,
+  "state": 229,
+  "stateName": "Exorcise",
+  "effects": []
+ }
+}

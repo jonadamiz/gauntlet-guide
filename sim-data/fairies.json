@@ -1,0 +1,79 @@
+[
+ {
+  "itemId": 231,
+  "name": "Fairy of Luck",
+  "stat": null,
+  "allFive": false,
+  "bonus": 0.0
+ },
+ {
+  "itemId": 232,
+  "name": "Fairy of Strength",
+  "stat": "str",
+  "allFive": false,
+  "bonus": 0.0
+ },
+ {
+  "itemId": 233,
+  "name": "Fairy of Constitution",
+  "stat": "con",
+  "allFive": false,
+  "bonus": 0.0
+ },
+ {
+  "itemId": 234,
+  "name": "Fairy of Spirit",
+  "stat": "sta",
+  "allFive": false,
+  "bonus": 0.0
+ },
+ {
+  "itemId": 235,
+  "name": "Fairy of Accuracy",
+  "stat": "dex",
+  "allFive": false,
+  "bonus": 0.0
+ },
+ {
+  "itemId": 236,
+  "name": "Fairy of Agility",
+  "stat": "agi",
+  "allFive": false,
+  "bonus": 0.0
+ },
+ {
+  "itemId": 237,
+  "name": "Fairy of Evil",
+  "stat": null,
+  "allFive": false,
+  "bonus": 0.0
+ },
+ {
+  "itemId": 680,
+  "name": "Mordo",
+  "stat": null,
+  "allFive": false,
+  "bonus": 0.0
+ },
+ {
+  "itemId": 681,
+  "name": "Mordo JR",
+  "stat": null,
+  "allFive": true,
+  "bonus": 0.2
+ },
+ {
+  "itemId": 7125,
+  "name": "Angela",
+  "stat": null,
+  "allFive": false,
+  "bonus": 0.0
+ },
+ {
+  "itemId": 7126,
+  "name": "Angela JR",
+  "stat": null,
+  "allFive": false,
+  "bonus": 0.0
+ }
+]

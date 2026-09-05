@@ -1,0 +1,210 @@
+{
+ "Kylin": {
+  "level": 75,
+  "states": [
+   214,
+   215
+  ],
+  "summary": "Turns some of the damage you take into healing.",
+  "detail": "One hit in ten heals you instead of hurting you. Wearing any Lv85 ring strengthens it further \u2014 closer to one hit in five, and the healing is larger. It works on its own once the three pieces are on; there is nothing to activate.",
+  "statPanel": false,
+  "pieces": [
+   [
+    {
+     "id": 825,
+     "name": "Kylin Armor",
+     "obtainable": true
+    },
+    {
+     "id": 826,
+     "name": "Kylin Gloves",
+     "obtainable": true
+    },
+    {
+     "id": 827,
+     "name": "Kylin Boots",
+     "obtainable": true
+    }
+   ],
+   [
+    {
+     "id": 831,
+     "name": "Lance Kylin Armor",
+     "obtainable": false
+    },
+    {
+     "id": 832,
+     "name": "Lance Kylin Gloves",
+     "obtainable": false
+    },
+    {
+     "id": 833,
+     "name": "Lance Kylin Boots",
+     "obtainable": false
+    }
+   ],
+   [
+    {
+     "id": 834,
+     "name": "Carsise Kylin Armor",
+     "obtainable": false
+    },
+    {
+     "id": 835,
+     "name": "Carsise Kylin Gloves",
+     "obtainable": false
+    },
+    {
+     "id": 836,
+     "name": "Carsise Kylin Boots",
+     "obtainable": false
+    }
+   ],
+   [
+    {
+     "id": 837,
+     "name": "Phyllis Kylin Armor",
+     "obtainable": false
+    },
+    {
+     "id": 838,
+     "name": "Phyllis Kylin Gloves",
+     "obtainable": false
+    },
+    {
+     "id": 839,
+     "name": "Phyllis Kylin Boots",
+     "obtainable": false
+    }
+   ],
+   [
+    {
+     "id": 843,
+     "name": "Ami Kylin Cap",
+     "obtainable": false
+    },
+    {
+     "id": 840,
+     "name": "Ami Kylin Armor",
+     "obtainable": false
+    },
+    {
+     "id": 841,
+     "name": "Ami Kylin Gloves",
+     "obtainable": false
+    },
+    {
+     "id": 842,
+     "name": "Ami Kylin Boots",
+     "obtainable": false
+    }
+   ],
+   [
+    {
+     "id": 2549,
+     "name": "Kylin Armor",
+     "obtainable": false
+    },
+    {
+     "id": 2550,
+     "name": "Kylin Gloves",
+     "obtainable": false
+    },
+    {
+     "id": 2551,
+     "name": "Kylin Boots",
+     "obtainable": false
+    }
+   ]
+  ]
+ },
+ "BlackDragon": {
+  "level": 75,
+  "states": [
+   216,
+   217
+  ],
+  "summary": "Spreads healing across the team, and adds a strike for some classes.",
+  "detail": "When a healer casts Heal, there is a one-in-five chance it echoes to every ally in the match for half its value. Wearing any Lv85 ring also unlocks Draconic Retribution, which differs by class. The heal echo needs a healer in the party to matter.",
+  "statPanel": false,
+  "pieces": [
+   [
+    {
+     "id": 845,
+     "name": "Black Dragon Torso",
+     "obtainable": true
+    },
+    {
+     "id": 846,
+     "name": "Black Dragon Claw",
+     "obtainable": true
+    },
+    {
+     "id": 847,
+     "name": "Black Dragon Wing",
+     "obtainable": true
+    }
+   ],
+   [
+    {
+     "id": 2367,
+     "name": "Corporeal Black Dragon Torso",
+     "obtainable": false
+    },
+    {
+     "id": 2368,
+     "name": "Rightful Black Dragon Claw",
+     "obtainable": false
+    },
+    {
+     "id": 2369,
+     "name": "Rightful Black Dragon Wings",
+     "obtainable": false
+    }
+   ]
+  ]
+ },
+ "Chaos": {
+  "level": 55,
+  "states": [
+   222
+  ],
+  "summary": "Every kill makes you hit harder, up to +30%.",
+  "detail": "With the full set and any Lv85 ring, each kill or assist adds +2% attack, up to +30% at fifteen. The count carries through your own death and resets when the match ends. It only exists inside a running match, so this panel cannot show it on your numbers.",
+  "statPanel": false,
+  "pieces": [
+   [
+    {
+     "id": 1124,
+     "name": "Chaos Framestone",
+     "obtainable": true
+    },
+    {
+     "id": 1125,
+     "name": "Chaos Clawstone",
+     "obtainable": true
+    },
+    {
+     "id": 1126,
+     "name": "Chaos Pawstone",
+     "obtainable": true
+    }
+   ]
+  ]
+ },
+ "Death": {
+  "level": 75,
+  "states": [
+   200,
+   201,
+   202,
+   203,
+   204,
+   205
+  ],
+  "summary": "The only set that changes your actual stats \u2014 and each class gets its own.",
+  "detail": "Six sets share the name, one per advanced class. Each raises a few of your stats by a percentage of what your gear already gives, and adds an effect of its own. The percentages stack on top of your gear rather than multiplying with each other. Your class's row is highlighted below.",
+  "statPanel": true,
+  "pieces": []
+ }
+}

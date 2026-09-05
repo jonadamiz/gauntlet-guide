@@ -1,0 +1,314 @@
+{
+ "maxSlots": 3,
+ "lines": {
+  "1": {
+   "id": 1,
+   "name": "Protection",
+   "col": null,
+   "source": "ElfSKill_PowerSheild",
+   "isStat": false,
+   "tiers": {
+    "1": {
+     "tier": 1,
+     "label": "Novice",
+     "value": null,
+     "item": 243,
+     "proc": {
+      "pct": 22.5
+     },
+     "effect": "Absorbs 22.5% of an incoming hit, but only while below 20% HP, and only while the fairy has stamina.",
+     "book": "Skill Book for pet fairy. Teaches Protection Lv1 to your equipped fairy. Sold by the Gatekeeper"
+    },
+    "2": {
+     "tier": 2,
+     "label": "Standard",
+     "value": null,
+     "item": 244,
+     "proc": {
+      "pct": 30.0
+     },
+     "effect": "Absorbs 30% of an incoming hit, but only while below 20% HP, and only while the fairy has stamina.",
+     "book": "Skill Book for pet fairy. Teaches Protection Lv2 to your equipped fairy. Sold by the Gatekeeper"
+    },
+    "3": {
+     "tier": 3,
+     "label": "Expert",
+     "value": null,
+     "item": 245,
+     "proc": {
+      "pct": 37.5
+     },
+     "effect": "Absorbs 37.5% of an incoming hit, but only while below 20% HP, and only while the fairy has stamina.",
+     "book": "Skill Book for pet fairy. Teaches Protection Lv3 to your equipped fairy. Sold by the Gatekeeper"
+    }
+   }
+  },
+  "2": {
+   "id": 2,
+   "name": "Berserk",
+   "col": null,
+   "source": "ElfSKill_ElfCrt",
+   "isStat": false,
+   "tiers": {
+    "1": {
+     "tier": 1,
+     "label": "Novice",
+     "value": null,
+     "item": 246,
+     "proc": {
+      "pct": 5.0
+     },
+     "effect": "5% chance of a bonus hit on a swing that did NOT crit (it cannot stack with a real critical).",
+     "book": "Skill Book for pet fairy. Teaches Berserk Lv1 to your equipped fairy. Sold by the Gatekeeper"
+    },
+    "2": {
+     "tier": 2,
+     "label": "Standard",
+     "value": null,
+     "item": 247,
+     "proc": {
+      "pct": 8.0
+     },
+     "effect": "8% chance of a bonus hit on a swing that did NOT crit (it cannot stack with a real critical).",
+     "book": "Skill Book for pet fairy. Teaches Berserk Lv2 to your equipped fairy. Sold by the Gatekeeper"
+    },
+    "3": {
+     "tier": 3,
+     "label": "Expert",
+     "value": null,
+     "item": 248,
+     "proc": {
+      "pct": 11.0
+     },
+     "effect": "11% chance of a bonus hit on a swing that did NOT crit (it cannot stack with a real critical).",
+     "book": "Skill Book for pet fairy. Teaches Berserk Lv3 to your equipped fairy. Sold by the Gatekeeper"
+    }
+   }
+  },
+  "3": {
+   "id": 3,
+   "name": "Magic",
+   "col": null,
+   "source": "ElfSkill_MagicAtk",
+   "isStat": false,
+   "tiers": {
+    "1": {
+     "tier": 1,
+     "label": "Novice",
+     "value": null,
+     "item": 249,
+     "proc": {
+      "pct": 5.0,
+      "flat": 5.0
+     },
+     "effect": "Adds 5% of the hit plus 5 magic damage.",
+     "book": "Skill Book for pet fairy. Teaches Magic Lv1 to your equipped fairy. Sold by the Gatekeeper"
+    },
+    "2": {
+     "tier": 2,
+     "label": "Standard",
+     "value": null,
+     "item": 250,
+     "proc": {
+      "pct": 8.0,
+      "flat": 8.0
+     },
+     "effect": "Adds 8% of the hit plus 8 magic damage.",
+     "book": "Skill Book for pet fairy. Teaches Magic Lv2 to your equipped fairy. Sold by the Gatekeeper"
+    },
+    "3": {
+     "tier": 3,
+     "label": "Expert",
+     "value": null,
+     "item": 251,
+     "proc": {
+      "pct": 10.0,
+      "flat": 10.0
+     },
+     "effect": "Adds 10% of the hit plus 10 magic damage.",
+     "book": "Skill Book for pet fairy. Teaches Magic Lv3 to your equipped fairy. Sold by the Gatekeeper"
+    }
+   }
+  },
+  "4": {
+   "id": 4,
+   "name": "Recover",
+   "col": "hrec_valu",
+   "source": "ElfSkill_HpResume",
+   "isStat": true,
+   "tiers": {
+    "1": {
+     "tier": 1,
+     "label": "Novice",
+     "value": 10,
+     "item": 252,
+     "proc": null,
+     "effect": "Restores an extra 10 HP each regeneration tick.",
+     "book": "Skill Book for pet fairy. Teaches Recover Lv1 to your equipped fairy. Sold by the Gatekeeper"
+    },
+    "2": {
+     "tier": 2,
+     "label": "Standard",
+     "value": 20,
+     "item": 253,
+     "proc": null,
+     "effect": "Restores an extra 20 HP each regeneration tick.",
+     "book": "Skill Book for pet fairy. Teaches Recover Lv2 to your equipped fairy. Sold by the Gatekeeper"
+    },
+    "3": {
+     "tier": 3,
+     "label": "Expert",
+     "value": 35,
+     "item": 254,
+     "proc": null,
+     "effect": "Restores an extra 35 HP each regeneration tick.",
+     "book": "Skill Book for pet fairy. Teaches Recover Lv3 to your equipped fairy. Sold by the Gatekeeper"
+    }
+   }
+  },
+  "5": {
+   "id": 5,
+   "name": "Meditation",
+   "col": "srec_valu",
+   "source": "ElfSkill_SpResume",
+   "isStat": true,
+   "tiers": {
+    "1": {
+     "tier": 1,
+     "label": "Novice",
+     "value": 10,
+     "item": 259,
+     "proc": null,
+     "effect": "Restores an extra 10 SP each regeneration tick.",
+     "book": "Skill Book for pet fairy. Teaches Meditation Lv1 to your equipped fairy. Sold by the Gatekeeper"
+    },
+    "2": {
+     "tier": 2,
+     "label": "Standard",
+     "value": 20,
+     "item": 260,
+     "proc": null,
+     "effect": "Restores an extra 20 SP each regeneration tick.",
+     "book": "Skill Book for pet fairy. Teaches Meditation Lv2 to your equipped fairy. Sold by the Gatekeeper"
+    },
+    "3": {
+     "tier": 3,
+     "label": "Expert",
+     "value": 35,
+     "item": 261,
+     "proc": null,
+     "effect": "Restores an extra 35 SP each regeneration tick.",
+     "book": "Skill Book for pet fairy. Teaches Meditation Lv3 to your equipped fairy. Sold by the Gatekeeper"
+    }
+   }
+  }
+ },
+ "books": {
+  "243": {
+   "item": 243,
+   "name": "Novice Protection",
+   "descriptor": "Skill Book for pet fairy. Teaches Protection Lv1 to your equipped fairy. Sold by the Gatekeeper",
+   "skill": 1,
+   "tier": 1
+  },
+  "244": {
+   "item": 244,
+   "name": "Standard Protection",
+   "descriptor": "Skill Book for pet fairy. Teaches Protection Lv2 to your equipped fairy. Sold by the Gatekeeper",
+   "skill": 1,
+   "tier": 2
+  },
+  "245": {
+   "item": 245,
+   "name": "Expert Protection",
+   "descriptor": "Skill Book for pet fairy. Teaches Protection Lv3 to your equipped fairy. Sold by the Gatekeeper",
+   "skill": 1,
+   "tier": 3
+  },
+  "246": {
+   "item": 246,
+   "name": "Novice Berserk",
+   "descriptor": "Skill Book for pet fairy. Teaches Berserk Lv1 to your equipped fairy. Sold by the Gatekeeper",
+   "skill": 2,
+   "tier": 1
+  },
+  "247": {
+   "item": 247,
+   "name": "Standard Berserk",
+   "descriptor": "Skill Book for pet fairy. Teaches Berserk Lv2 to your equipped fairy. Sold by the Gatekeeper",
+   "skill": 2,
+   "tier": 2
+  },
+  "248": {
+   "item": 248,
+   "name": "Expert Berserk",
+   "descriptor": "Skill Book for pet fairy. Teaches Berserk Lv3 to your equipped fairy. Sold by the Gatekeeper",
+   "skill": 2,
+   "tier": 3
+  },
+  "249": {
+   "item": 249,
+   "name": "Novice Magic",
+   "descriptor": "Skill Book for pet fairy. Teaches Magic Lv1 to your equipped fairy. Sold by the Gatekeeper",
+   "skill": 3,
+   "tier": 1
+  },
+  "250": {
+   "item": 250,
+   "name": "Standard Magic",
+   "descriptor": "Skill Book for pet fairy. Teaches Magic Lv2 to your equipped fairy. Sold by the Gatekeeper",
+   "skill": 3,
+   "tier": 2
+  },
+  "251": {
+   "item": 251,
+   "name": "Expert Magic",
+   "descriptor": "Skill Book for pet fairy. Teaches Magic Lv3 to your equipped fairy. Sold by the Gatekeeper",
+   "skill": 3,
+   "tier": 3
+  },
+  "252": {
+   "item": 252,
+   "name": "Novice Recover",
+   "descriptor": "Skill Book for pet fairy. Teaches Recover Lv1 to your equipped fairy. Sold by the Gatekeeper",
+   "skill": 4,
+   "tier": 1
+  },
+  "253": {
+   "item": 253,
+   "name": "Standard Recover",
+   "descriptor": "Skill Book for pet fairy. Teaches Recover Lv2 to your equipped fairy. Sold by the Gatekeeper",
+   "skill": 4,
+   "tier": 2
+  },
+  "254": {
+   "item": 254,
+   "name": "Expert Recover",
+   "descriptor": "Skill Book for pet fairy. Teaches Recover Lv3 to your equipped fairy. Sold by the Gatekeeper",
+   "skill": 4,
+   "tier": 3
+  },
+  "259": {
+   "item": 259,
+   "name": "Novice Meditation",
+   "descriptor": "Skill Book for pet fairy. Teaches Meditation Lv1 to your equipped fairy. Sold by the Gatekeeper",
+   "skill": 5,
+   "tier": 1
+  },
+  "260": {
+   "item": 260,
+   "name": "Standard Meditation",
+   "descriptor": "Skill Book for pet fairy. Teaches Meditation Lv2 to your equipped fairy. Sold by the Gatekeeper",
+   "skill": 5,
+   "tier": 2
+  },
+  "261": {
+   "item": 261,
+   "name": "Expert Meditation",
+   "descriptor": "Skill Book for pet fairy. Teaches Meditation Lv3 to your equipped fairy. Sold by the Gatekeeper",
+   "skill": 5,
+   "tier": 3
+  }
+ },
+ "note": "value is a flat addition to col; a null value means the line scales with the hit or is conditional and has no fixed number"
+}

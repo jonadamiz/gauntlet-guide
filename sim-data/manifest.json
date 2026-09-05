@@ -1,0 +1,45 @@
+{
+ "dataVersion": "d1ff944d57ee9709",
+ "levelCap": 85,
+ "fairyLevelMax": 42,
+ "attrRadix": 1000,
+ "instanceSlots": 5,
+ "instancePriority": [
+  "mn_atk_valu",
+  "mx_atk_valu",
+  "def_valu",
+  "p_def",
+  "mx_hp_valu",
+  "crt_valu",
+  "hit_valu",
+  "flee_valu",
+  "mx_sp_valu",
+  "str_valu",
+  "agi_valu",
+  "dex_valu",
+  "con_valu",
+  "sta_valu",
+  "luk_valu"
+ ],
+ "playerBases": {
+  "pdef": 0,
+  "mspd": 480,
+  "adis": 0,
+  "col": 0
+ },
+ "startingAttributes": {
+  "str": 5,
+  "agi": 5,
+  "dex": 5,
+  "con": 5,
+  "sta": 5,
+  "luk": 5
+ },
+ "counts": {
+  "items": 677,
+  "gems": 36,
+  "tonics": 49,
+  "champions": 11,
+  "jobs": 19
+ }
+}

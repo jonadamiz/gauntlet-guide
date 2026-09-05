@@ -1,0 +1,833 @@
+{
+ "skills": {
+  "25": {
+   "id": 25,
+   "name": "Bare Hand",
+   "handler": "Skill_Melee_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "26": {
+   "id": 26,
+   "name": "Dual Implosion",
+   "handler": "Skill_Melee_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "28": {
+   "id": 28,
+   "name": "Sword",
+   "handler": "Skill_Melee_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "29": {
+   "id": 29,
+   "name": "Greatsword",
+   "handler": "Skill_Melee_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "30": {
+   "id": 30,
+   "name": "Bow",
+   "handler": "Skill_Range_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "31": {
+   "id": 31,
+   "name": "Firegun",
+   "handler": "Skill_Range_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "32": {
+   "id": 32,
+   "name": "Blade",
+   "handler": "Skill_Melee_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "33": {
+   "id": 33,
+   "name": "Boxing Gloves",
+   "handler": "Skill_Melee_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "34": {
+   "id": 34,
+   "name": "Dagger",
+   "handler": "Skill_Melee_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "35": {
+   "id": 35,
+   "name": "Gold Pouch",
+   "handler": "Skill_Melee_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "36": {
+   "id": 36,
+   "name": "Short Staff",
+   "handler": "Skill_Staff_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "37": {
+   "id": 37,
+   "name": "Hammer",
+   "handler": "Skill_Melee_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "38": {
+   "id": 38,
+   "name": "Dual Weapon",
+   "handler": "Skill_Melee_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "42": {
+   "id": 42,
+   "name": "Ink Blast",
+   "handler": "Skill_Range_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "81": {
+   "id": 81,
+   "name": "Illusion Slash",
+   "handler": "Skill_Hyz_End",
+   "lua": "(1.5 + 0.1 * sklv) * (math.min(3, (math.max(1, math.floor(Aspd(atker) / 70))))) * Atk_Dmg(atker, defer)",
+   "js": "(1.5 + 0.1 * L) * (Math.min(3, (Math.max(1, Math.floor(ASPD / 70))))) * ATK",
+   "usesAspd": true,
+   "magic": false,
+   "alternates": [
+    "(1 + 0.1 * sklv) * (math.min(3, (math.max(1, math.floor(Aspd(atker) / 70))))) * Atk_Dmg(atker, defer)"
+   ],
+   "conditions": [
+    "(GetChaMapName(atker) == \"garner2\" or GetChaMapName(defer) == \"garner2\") and Is_NormalMonster(defer) == 0"
+   ]
+  },
+  "83": {
+   "id": 83,
+   "name": "Primal Rage",
+   "handler": "Skill_Swzq_End",
+   "lua": "(math.floor(Atk_Dmg(atker, defer) * 3.5) + sklv)",
+   "js": "(Math.floor(ATK * 3.5) + L)",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "Damage * 3"
+   ],
+   "conditions": [
+    "Server.EqSet[\"BlackDragon\"](atker) == 1 and math.random(1, 100) <= 30"
+   ]
+  },
+  "86": {
+   "id": 86,
+   "name": "Shadow Slash",
+   "handler": "Skill_Guz_End",
+   "lua": "(1 + sklv * 0.1) * Atk_Dmg(atker, defer)",
+   "js": "(1 + L * 0.1) * ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [],
+   "conditions": []
+  },
+  "90": {
+   "id": 90,
+   "name": "Dual Shot",
+   "handler": "Skill_Lzj_End",
+   "lua": "(1.5 + sklv * 0.15) * Atk_Dmg(atker, defer)",
+   "js": "(1.5 + L * 0.15) * ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [],
+   "conditions": []
+  },
+  "93": {
+   "id": 93,
+   "name": "Frozen Arrow",
+   "handler": "Skill_Bdj_End",
+   "lua": "1.2 * Atk_Dmg(atker, defer)",
+   "js": "1.2 * ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [],
+   "conditions": []
+  },
+  "94": {
+   "id": 94,
+   "name": "Cripple",
+   "handler": "Skill_Tj_End",
+   "lua": "1 + (sklv * 0.05) * Atk_Dmg(atker, defer)",
+   "js": "1 + (L * 0.05) * ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [],
+   "conditions": [],
+   "note": "Reads `1 + (sklv * k) * Atk_Dmg`, so the +1 sits OUTSIDE the multiplier -- at Lv10 this is about half a normal attack. Every sibling skill brackets the whole term. Shown as shipped."
+  },
+  "97": {
+   "id": 97,
+   "name": "Heal",
+   "handler": "Skill_Xzy_End",
+   "lua": null,
+   "js": null,
+   "heal": "50 + 50 * L + STA * 7",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [],
+   "conditions": [],
+   "note": "Capped at the target's missing HP, so a nearly-full ally receives less. The Abyss set adds 20% (DeathSet_Heal)."
+  },
+  "99": {
+   "id": 99,
+   "name": "Spiritual Bolt",
+   "handler": "Skill_Xlcz_End",
+   "lua": "math.floor((10 + Sta(atker) * 2) * (1 + sklv * 0.25) * (1 + LV_DIF * 0.025)) * 1.1",
+   "js": "Math.floor((10 + STA * 2) * (1 + L * 0.25) * (1 + DLV * 0.025)) * 1.1",
+   "usesAspd": false,
+   "magic": true,
+   "alternates": [
+    "math.floor((MAGIC_Atk_Dmg(atker, defer)) * (1 + sklv * 0.1))",
+    "Cuihua_Mofa(Damage, GetChaStateLv(atker, STATE_MLCH))",
+    "Damage + ElfSkill_MagicAtk(Damage, atker)",
+    "Damage * 1.055",
+    "Damage * (1.05 + math.floor(math.pow((GetChaAttr(atker, ATTR_CSAILEXP) / 100), 0.5)) * 0.005)"
+   ],
+   "conditions": [
+    "(GetChaMapName(atker) == \"garner2\" or GetChaMapName(defer) == \"garner2\") and Is_NormalMonster(defer) == 0",
+    "GetChaAttr(atker, ATTR_CSAILEXP) > 0 and GetChaAttr(atker, ATTR_CSAILEXP) < 100",
+    "GetChaAttr(atker, ATTR_CSAILEXP) >= 100 and GetChaAttr(atker, ATTR_CSAILEXP) < 12100"
+   ]
+  },
+  "107": {
+   "id": 107,
+   "name": "Howl",
+   "handler": "Skill_Lh_End",
+   "lua": "(1 + sklv * 0.05) * Atk_Dmg(atker, defer)",
+   "js": "(1 + L * 0.05) * ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [],
+   "conditions": []
+  },
+  "112": {
+   "id": 112,
+   "name": "Meteor Shower",
+   "handler": "Skill_Lxjy_End",
+   "lua": "(0.5 + sklv * 0.1) * Atk_Dmg(atker, defer)",
+   "js": "(0.5 + L * 0.1) * ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [],
+   "conditions": []
+  },
+  "128": {
+   "id": 128,
+   "name": "Saliva of Lizard",
+   "handler": "Skill_Range_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "129": {
+   "id": 129,
+   "name": "Needle of Stramo",
+   "handler": "Skill_Range_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "130": {
+   "id": 130,
+   "name": "Stone of Treant",
+   "handler": "Skill_Range_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "131": {
+   "id": 131,
+   "name": "Panda's Bamboo S",
+   "handler": "Skill_Range_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "132": {
+   "id": 132,
+   "name": "Bolt of Terra El",
+   "handler": "Skill_Range_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "133": {
+   "id": 133,
+   "name": "Bolt of Naiad",
+   "handler": "Skill_Range_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "134": {
+   "id": 134,
+   "name": "Oyster",
+   "handler": "Skill_Range_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "135": {
+   "id": 135,
+   "name": "Bubble Clam",
+   "handler": "Skill_Range_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "136": {
+   "id": 136,
+   "name": "Baby Icy Dragon",
+   "handler": "Skill_Range_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "137": {
+   "id": 137,
+   "name": "Icy Dragoon",
+   "handler": "Skill_Range_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "138": {
+   "id": 138,
+   "name": "Shadow Quiver",
+   "handler": "Skill_Range_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "139": {
+   "id": 139,
+   "name": "Mist of Snow Lad",
+   "handler": "Skill_Range_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "140": {
+   "id": 140,
+   "name": "Fireball of Chie",
+   "handler": "Skill_Range_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "141": {
+   "id": 141,
+   "name": "Werewolf Quiver",
+   "handler": "Skill_Range_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "142": {
+   "id": 142,
+   "name": "Fireball of Gian",
+   "handler": "Skill_Range_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "143": {
+   "id": 143,
+   "name": "Icecube of King ",
+   "handler": "Skill_Range_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "144": {
+   "id": 144,
+   "name": "Dart of Ninja Mo",
+   "handler": "Skill_Range_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "145": {
+   "id": 145,
+   "name": "Heart of Mermaid",
+   "handler": "Skill_Range_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "146": {
+   "id": 146,
+   "name": "Relic Protector",
+   "handler": "Skill_Range_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "147": {
+   "id": 147,
+   "name": "Wave of King Tor",
+   "handler": "Skill_Range_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "148": {
+   "id": 148,
+   "name": "Bubble of Water ",
+   "handler": "Skill_Range_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "149": {
+   "id": 149,
+   "name": "Mud of Mudman",
+   "handler": "Skill_Range_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "150": {
+   "id": 150,
+   "name": "Hand of Stramoni",
+   "handler": "Skill_Melee_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "151": {
+   "id": 151,
+   "name": "Guardian Angel",
+   "handler": "Skill_Range_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "152": {
+   "id": 152,
+   "name": "Soul of Goddess",
+   "handler": "Skill_Range_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "153": {
+   "id": 153,
+   "name": "Mist of Snow Que",
+   "handler": "Skill_Range_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "154": {
+   "id": 154,
+   "name": "Lump of Mud King",
+   "handler": "Skill_Range_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "214": {
+   "id": 214,
+   "name": "Lightning Bolt",
+   "handler": "Skill_Lj_End",
+   "lua": "math.floor((80 + sklv * 10 + (Sta(atker)) * 6) + 3 * (Lv(atker)))",
+   "js": null,
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(MAGIC_Atk_Dmg(atker, defer) * math.pow(sklv, 1 / 2))",
+    "Damage * 1.5",
+    "Cuihua_Mofa(Damage, (GetChaStateLv(atker, STATE_MLCH)))",
+    "Damage + ElfSkill_MagicAtk(Damage, atker)",
+    "Damage * 1.055",
+    "Damage * (1.05 + math.floor(math.pow((GetChaAttr(atker, ATTR_CSAILEXP) / 100), 0.5)) * 0.005)"
+   ],
+   "conditions": [
+    "(GetChaMapName(atker) == \"garner2\" or GetChaMapName(defer) == \"garner2\") and Is_NormalMonster(defer) == 0",
+    "Server.EqSet[\"BlackDragon\"](atker) == 1 and math.random(1, 100) <= 80",
+    "GetChaAttr(atker, ATTR_CSAILEXP) > 0 and GetChaAttr(atker, ATTR_CSAILEXP) < 100",
+    "GetChaAttr(atker, ATTR_CSAILEXP) >= 100 and GetChaAttr(atker, ATTR_CSAILEXP) < 12100"
+   ]
+  },
+  "216": {
+   "id": 216,
+   "name": "Conch Ray",
+   "handler": "Skill_Bkcj_End",
+   "lua": "math.floor(200 + sklv * 30 + Sta(atker) * 6) * 1.1",
+   "js": "Math.floor(200 + L * 30 + STA * 6) * 1.1",
+   "usesAspd": false,
+   "magic": true,
+   "alternates": [
+    "math.floor(MAGIC_Atk_Dmg(atker, defer) + sklv * 200)",
+    "Cuihua_Mofa(Damage, (GetChaStateLv(atker, STATE_MLCH)))",
+    "Damage + ElfSkill_MagicAtk(Damage, atker)",
+    "Damage * 1.055",
+    "Damage * (1.05 + math.floor(math.pow((GetChaAttr(atker, ATTR_CSAILEXP) / 100), 0.5)) * 0.005)"
+   ],
+   "conditions": [
+    "(GetChaMapName(atker) == \"garner2\" or GetChaMapName(defer) == \"garner2\") and Is_NormalMonster(defer) == 0",
+    "math.random(1, 200) >= Con(defer)",
+    "GetChaAttr(atker, ATTR_CSAILEXP) > 0 and GetChaAttr(atker, ATTR_CSAILEXP) < 100",
+    "GetChaAttr(atker, ATTR_CSAILEXP) >= 100 and GetChaAttr(atker, ATTR_CSAILEXP) < 12100"
+   ]
+  },
+  "253": {
+   "id": 253,
+   "name": "Cannon Strike",
+   "handler": "Skill_Range_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  },
+  "447": {
+   "id": 447,
+   "name": "Serpent Attack",
+   "handler": "Skill_Range_End",
+   "lua": "Atk_Dmg(ATKER, DEFER)",
+   "js": "ATK",
+   "usesAspd": false,
+   "magic": false,
+   "alternates": [
+    "math.floor(Damage * DamageSa)"
+   ],
+   "conditions": [
+    "CheckElfHaveSkill(Skills, 0, 2) == 2 and ElfSKill_ElfCrt(ATKER, Fairy, Skills) == 1"
+   ]
+  }
+ },
+ "core": {
+  "phyDmg": "Attack * (1 - min(0.85, pdef<70 ? pdef/100 : pdef/150)) - def",
+  "lvEff": "clamp(1 + 0.025 * (atkLv - defLv), 0.8, 1.2) when |dLv| >= 1",
+  "floor": "floor(atkLv * 0.25)",
+  "miss": "min(0.9, max((mobFlee - myHit + 10)/100, 0))",
+  "crit": "min(myCrt/100 + clamp(0.03*dLv, 0, 0.15), 1), flat x2 damage"
+ },
+ "source": "skilleffect.lua; skills.effect names the handler"
+}
