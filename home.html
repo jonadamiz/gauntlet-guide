@@ -39,14 +39,14 @@ body{
    fades out at its edges and puts back a thin version of the bar it was added to remove. */
 body::before{
   content:""; position:fixed; inset:0; z-index:-3;
-  background:url("/keyart.jpg") center center / cover no-repeat;
+  background:url("keyart.jpg") center center / cover no-repeat;
   background-color:#5275A7;
   filter:blur(34px) saturate(1.12);
   transform:scale(1.12);
 }
 body::after{
   content:""; position:fixed; inset:0; z-index:-2;
-  background:url("/keyart.jpg") center top / contain no-repeat;
+  background:url("keyart.jpg") center top / contain no-repeat;
 }
 /* Held to the width the artwork actually renders at: `contain` gives it min(100vw, 100vh x 16/9),
    and 1920/1080 is 177.78vh. The max() floor stops the two-column grid collapsing on a short, wide
