@@ -691,7 +691,7 @@ header.nameboard{
        empty. A duplicate id does not warn; it silently redirects every lookup. -->
   <a class="dl" id="attrlink" href="attributes.html" hidden target="_blank" rel="noopener">Attribute values</a>
   <a class="dl" id="bosses" href="bosses.html" hidden target="_blank" rel="noopener">Boss guide</a>
-  <a class="dl" id="dl" href="/download/gameclient.zip" hidden download>Download client</a>
+  <a class="dl" id="dl" href="https://storage.googleapis.com/gauntlet-clients/client-ready-20260902.zip">Download client &middot; 1.77 GB</a>
 </div>
 
 <!-- The gap the artwork is allowed to own. Sized in vh so a short window does not spend half of
@@ -3533,8 +3533,9 @@ $("attrlink").title = "Every class level by level: what each level gives, what e
 revealIfServed("bosses", () => "Boss guide");
 $("bosses").title = "Every boss, mini boss, chest and monster the Gauntlet actually spawns, with "
                   + "drop chances computed by the engine's own rule. Opens in a new tab.";
-revealIfServed("dl", n => n ? `Download client · ${(n / 1073741824).toFixed(2)} GB`
-                            : "Download client");
+// The client lives in a public GCS bucket, which sends no CORS headers, so a cross-origin
+// HEAD from this page is blocked. revealIfServed would therefore never un-hide it: the
+// link is shipped visible with its size baked into the label instead.
 $("dl").title = "Full game client archive. Resumable — the server answers Range requests, so an "
               + "interrupted download continues instead of restarting.";
 $("foot").innerHTML = `Every option here is obtainable inside the Gauntlet — ${DATA.equip.length}

@@ -246,7 +246,14 @@ footer{margin-top:26px;text-align:center;font-size:11.5px;color:#DCEBF7;
 <div class="utilbar">
   <span class="pill live">Server online</span>
   <a class="pill" href="forecaster.html">Armory</a>
-  <button class="pill" type="button" disabled title="Prototype">Download</button>
+  <a class="pill" href="guide.html">Map guide</a>
+  <a class="pill" href="attributes.html">Attribute values</a>
+  <a class="pill" href="bosses.html">Boss guide</a>
+  <!-- The PUBLIC bucket URL, not the storage.cloud.google.com console one: that form
+       302s to a Google sign-in, so it would send players to a login page rather than
+       the file. No `download` attribute -- it is ignored cross-origin, and the object
+       is served as application/x-zip-compressed so the browser saves it regardless. -->
+  <a class="pill" href="https://storage.googleapis.com/gauntlet-clients/client-ready-20260902.zip">Download client &middot; 1.77 GB</a>
 </div>
 
 <!-- The artwork's own painted title is the masthead. Nothing is drawn over this. -->
