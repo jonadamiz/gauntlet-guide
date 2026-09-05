@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Gauntlet: Dragon's Risen</title>
+<!--
+  The site's entry page is home.html, but a static host serves index.html at a directory root, so
+  the root would otherwise 404 while every page under it worked. This redirects rather than
+  duplicating home.html, which keeps one copy of the page to maintain.
+
+  Both a meta refresh and a script: the meta works with scripting disabled, the script avoids
+  leaving a history entry so Back does not bounce the visitor straight here again.
+-->
+<link rel="canonical" href="home.html">
+<meta http-equiv="refresh" content="0; url=home.html">
+<script>location.replace("home.html");</script>
+</head>
+<body>
+<p>Taking you to the <a href="home.html">Gauntlet guide</a>.</p>
+</body>
+</html>
