@@ -28,32 +28,30 @@ relative `sim-data/*.json` — no `/api/`, no Blazor, no SignalR.
 
 ## Publishing
 
-Any static host works: GitHub Pages, Netlify, Cloudflare Pages. 33 files, ~20 MB, largest single
+Any static host works: GitHub Pages, Netlify, Cloudflare Pages. 11 files, ~18 MB, largest single
 file `sim-data/models.json` at 15 MB (inside every free tier's per-file cap).
 
-Links in this copy are **relative**, so it can be served from a domain root *or* a subpath such as
-a GitHub Pages project site. The wwwroot original still uses root-absolute links; do not copy this
-folder back over it without re-checking that.
-
-`.nojekyll` is present so GitHub Pages does not run the files through Jekyll.
-
-## Known gap
-
-`forecaster.html` links to `/download/gameclient.zip`, which is not in this bundle and is not in
-wwwroot either. The client is several GB, so it does not belong on a static host — point that link
-at wherever the client is actually distributed, or remove it.
+Every generator writes **relative** links, so the same files work at a domain root and under a
+subpath such as this GitHub Pages project site. `.nojekyll` keeps GitHub Pages from running the
+files through Jekyll. The Download button points at the CDN installer, not at a file in this repo.
 
 ## Regenerating
 
-```bash
-SRC=sources/Dotnet/Admin/Corsairs.Admin.Web/wwwroot
-rm -rf web/guide && mkdir -p web/guide && cp -r "$SRC"/* web/guide/
-touch web/guide/.nojekyll
-# then re-run the root-absolute -> relative link rewrite, or the pages will only work at a root
-```
-
-Verify before publishing by serving it locally and checking every page returns 200:
+The pages are built from the live game data in the TalesOfPirate repo, then staged here by one
+script that refuses root-absolute links, copies exactly the files the pages load, and serves the
+result on loopback to prove every page and asset answers 200. It never commits or pushes.
 
 ```bash
-cd web/guide && python -m http.server 8791 --bind 127.0.0.1
+# in the TalesOfPirate repo
+python tools/build_home.py
+python tools/build_forecaster.py
+python tools/build_map_guide.py
+python tools/build_boss_guide.py
+python tools/build_attr_table.py
+python tools/test_guide_site.py                         # the pages agree with the game
+python tools/publish_guide.py --prune                   # stage into ../gauntlet-guide
+# then commit and push this repo
 ```
+
+`--prune` removes only files of the site's own types that no page references any more; it never
+touches dot-folders, `README.md`, `CNAME` or `LICENSE`.

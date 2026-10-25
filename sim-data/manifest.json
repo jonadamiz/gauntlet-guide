@@ -1,7 +1,21 @@
 {
- "dataVersion": "d1ff944d57ee9709",
- "levelCap": 85,
- "fairyLevelMax": 42,
+ "dataVersion": "01806b8232066d89",
+ "levelCap": 75,
+ "fairyLevelMax": 50,
+ "resistCap": 70,
+ "rules": [
+  "Killing the <b>Black Dragon</b> wins the match for the side of the player who dealt it the most damage.",
+  "Level cap <b>75</b>.",
+  "At most <b>2</b> of each second class per side: checked when the teams form, and again at the Lv40 class trial and at Rebirth.",
+  "Second classes: <b>Champion</b> from Carsise Swordsman; <b>Cleric</b> from Ami Herbalist or Lance Herbalist or Phyllis Herbalist; <b>Crusader</b> from Lance Swordsman or Phyllis Swordsman; <b>Seal Master</b> from Ami Herbalist or Lance Herbalist or Phyllis Herbalist; <b>Sharpshooter</b> from Lance Hunter or Phyllis Hunter; <b>Voyager</b> from Ami Explorer or Lance Explorer or Phyllis Explorer.",
+  "Gear grows with you: as you level, the pieces you wear and the ones in your bag (not the bank or a vault) step up to the next tier on their own.",
+  "Chaos gear levels with its wearer.",
+  "Boss drop tables pay out on the <b>first</b> kill of each boss in a match; later kills still grant gold and the boss's other rewards.",
+  "Every kill shares its gold, an Auto Ration and a chance at a fairy stat fruit with each teammate who receives the gold.",
+  "Up to <b>3</b> sockets on a piece of gear.",
+  "Physical and magic resistance cap at <b>70</b>; gear gives magic resistance equal to its physical resistance.",
+  "Skill bars are saved per account and per class, automatically."
+ ],
  "attrRadix": 1000,
  "instanceSlots": 5,
  "instancePriority": [
@@ -23,7 +37,7 @@
  ],
  "playerBases": {
   "pdef": 0,
-  "mspd": 480,
+  "mspd": 520,
   "adis": 0,
   "col": 0
  },
@@ -36,9 +50,9 @@
   "luk": 5
  },
  "counts": {
-  "items": 677,
-  "gems": 36,
-  "tonics": 49,
+  "items": 315,
+  "gems": 24,
+  "tonics": 45,
   "champions": 11,
   "jobs": 19
  }

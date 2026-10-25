@@ -395,8 +395,12 @@ button.ghost:disabled{opacity:.4;cursor:default}
 .note{font-size:11.5px;color:var(--muted);padding:9px 13px;border-top:1px solid var(--line);
   line-height:1.45}
 .note b{color:var(--signal)}
-footer{margin-top:22px;padding-top:14px;border-top:1px solid var(--line);
-  color:var(--faint);font-size:11.5px;line-height:1.6}
+/* On the same frosted paper as the panels: bare, its faint text sat straight on the wallpaper and
+   could not be read over the darker half of the art. */
+footer{margin-top:22px;padding:12px 15px;border-radius:11px;
+  background-color:color-mix(in srgb, var(--paper) 90%, transparent);
+  backdrop-filter:blur(11px); -webkit-backdrop-filter:blur(11px);
+  color:var(--muted);font-size:11.5px;line-height:1.6}
 code{font:11.5px ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;color:var(--brass)}
 .row{display:flex;gap:8px;align-items:center}
 .row > *{flex:1}
@@ -617,7 +621,7 @@ tr.dim td:first-of-type{font-weight:500}
    illustration is visible instead of cropped to the viewport, and the letterbox around it is
    painted the art's own sky colour -- sampled from the image, not guessed -- so the fit reads as
    part of the picture rather than as bars beside it. */
-body{background-color:#5275A7 !important}
+body{background-color:#5778A7 !important}
 /* TWO layers of the same image. `contain` shows the whole illustration, which is the point -- the
    title is painted into it and cropping loses letters -- but on any viewport wider than 16:9 that
    leaves a flat bar down each side. On a 1856x941 window it was 92px of solid #5275A7, and the
@@ -629,7 +633,7 @@ body{background-color:#5275A7 !important}
 body::before{
   content:"";position:fixed;inset:0;z-index:-3;
   background:url("keyart.jpg") center center / cover no-repeat;
-  background-color:#5275A7;
+  background-color:#5778A7;
   filter:blur(34px) saturate(1.12);
   transform:scale(1.12);
 }
@@ -691,7 +695,9 @@ header.nameboard{
        empty. A duplicate id does not warn; it silently redirects every lookup. -->
   <a class="dl" id="attrlink" href="attributes.html" hidden target="_blank" rel="noopener">Attribute values</a>
   <a class="dl" id="bosses" href="bosses.html" hidden target="_blank" rel="noopener">Boss guide</a>
-  <a class="dl" id="dl" href="https://storage.googleapis.com/gauntlet-clients/client-ready-20260902.zip">Download client &middot; 1.77 GB</a>
+  <!-- Always shown, never probed: the installer lives on another origin, where a HEAD from this
+       page is a cross-origin request the browser blocks, so revealIfServed would hide it forever. -->
+  <a class="dl" id="dl" href="https://cdn.gauntletofpirates.com/installer/GauntletOfPiratesSetup.exe" rel="noopener">Download the game</a>
 </div>
 
 <!-- The gap the artwork is allowed to own. Sized in vh so a short window does not spend half of
@@ -705,7 +711,7 @@ header.nameboard{
 <div class="titlerow">
   <header class="nameboard">
     <h1>Gauntlet <em>Armory</em></h1>
-    <div class="sub">Character forecaster — Dragon's Gauntlet</div>
+    <div class="sub">Character forecaster — Gauntlet of Pirates</div>
   </header>
   <div class="selstack">
     <div class="chartabs" id="chartabs" role="tablist" aria-label="Character"></div>
@@ -722,8 +728,8 @@ header.nameboard{
       <div>
         <label for="lv">Level<span class="info" tabindex="0" role="button" aria-label="More information" data-info="level">i</span></label>
         <div class="row">
-          <input type="range" id="lv" min="1" max="85" value="1">
-          <input type="number" id="lvn" min="1" max="85" value="1" style="flex:0 0 62px">
+          <input type="range" id="lv" min="1" max="75" value="1">
+          <input type="number" id="lvn" min="1" max="75" value="1" style="flex:0 0 62px">
         </div>
       </div>
       <div id="advwrap" hidden>
@@ -777,15 +783,17 @@ header.nameboard{
     <div class="row" style="align-items:flex-end">
       <div><label for="fairy">Fairy</label><select id="fairy"></select></div>
       <div><label for="flv">Fairy level</label>
-        <input type="number" id="flv" min="1" max="42" value="42"></div>
+        <input type="number" id="flv" min="1" max="50" value="50"></div>
       <label class="chk" style="flex:0 0 auto">
         <input type="checkbox" id="poss"> Fairy Possession
       </label>
     </div>
+    <div class="note" style="border:0;padding:6px 0 0">Covers the stat fairies, Mordo and Angela. Each
+      fairy's signature effect and the second-generation fairies are not modelled here yet.</div>
     <div id="fairyskills"></div>
     <div id="pots"></div>
     <div id="mordo" hidden>
-      <label>Mordo JR spread — it grants all five, +20% each (floored per stat)</label>
+      <label>Mordo JR spread — it grants all five, +30% each (floored per stat)</label>
       <div class="row" id="mordorow"></div>
       <div class="note" id="mordonote" style="border:0;padding:7px 0 0"></div>
     </div>
@@ -879,11 +887,17 @@ header.nameboard{
   <h2>Full set effect in Gauntlet</h2>
   <div class="body" id="setinfo"></div>
 </div>
+<!-- The mode's rules that live in CODE rather than in item data, so no panel above can show them.
+     Written by export_sim_data.py (rules_5v5) into the manifest, numbers read from their sources. -->
+<div class="panel setpanel wide">
+  <h2>5v5 rules</h2>
+  <div class="body"><ul id="rules5v5" style="margin:0;padding-left:18px"></ul></div>
+</div>
 <footer id="foot"></footer>
 </div>
 
 <script type="module">
-const BUILD_ID = "370d3eb5";
+const BUILD_ID = "2f9ef531";
 // cache: "no-cache" forces a conditional request on every load. It is not paranoia: these files
 // are served with an ETag and Last-Modified but NO Cache-Control, so a browser falls back to
 // heuristic freshness and may reuse a cached copy for hours without asking. models.json is 16 MB,
@@ -1001,7 +1015,7 @@ function enforceHands(changed){
 const mkState = () => ({
   champ:0, picking:null, lv:1, deathOff:false, mordo:{str:0,con:0,agi:0,dex:0,sta:0}, adv:null,
   spent:{str:0,agi:0,dex:0,con:0,sta:0,luk:0},
-  equip:{}, fairy:0, flv:42, poss:false, tonics:new Set(), rebirth:0, skills:{}, fairySkills:{},
+  equip:{}, fairy:0, flv:M.fairyLevelMax, poss:false, tonics:new Set(), rebirth:0, skills:{}, fairySkills:{},
   pots:{}, testMob:null, buffs:{}, pbuffs:{}, foeShield:10,
 });
 const CH = [mkState(), mkState()];
@@ -1040,7 +1054,7 @@ const apFor = lv => lv<=1 ? 0 : ((Math.floor(lv/10)-Math.floor((lv-1)/10))===1 ?
 // CreatCha seeds points at CHARACTER CREATION, separate from the per-level grant, and missing it
 // left every build short: AttrCalculate.lua:1664 gives `Attr_ap(Player) + 4`, and :1669 gives
 // `Attr_tp(Player) + 1` with a comment spelling out why ("Level 1 is worth a point too" -- 84
-// level-ups to Lv85, so the seed makes TP equal the level exactly).
+// level-ups to the cap, so the seed makes TP equal the level exactly).
 const AP_SEED = 4, TP_SEED = 1;
 const apTotal = lv => {let s=AP_SEED; for(let l=2;l<=lv;l++) s+=apFor(l); return s;};
 
@@ -1163,18 +1177,24 @@ function compute(st){
     //   fixed        -> its single value
     //   not entered  -> the band MINIMUM, which the item always carries
     const atMin = new Set(it.m || []);
+    // An item's MAGIC resist is its own physical resist, whatever items.mf_valu says
+    // (ItemContent.cpp mirrors ITEMATTR_VAL_PDEF into ITEMATTR_VAL_MF after the roll), so mf_valu is
+    // skipped below and this item's counted p_def is copied across after the loop.
+    const pdefBefore = flat.p_def || 0;
     for (const k in it.b){
+      if (k === "mf_valu") continue;
       const band = it.b[k];
       const v0 = roll && roll[k];
       const v = v0 == null ? v0 : v0 * w;
       const bmin = band.min * w, bmax = band.max * w;
       if (band.min === band.max)   flat[k] = (flat[k]||0) + bmax;
-      // What YOU typed outranks every default, forced-max included. The Gauntlet granting an item
-      // at its cap is a statement about how the mode hands it out, not about the item in your bag:
-      // the same id exists at lower rolls, and refusing to model one made the tool argue with the
-      // player about their own gear.
+      // What YOU typed outranks every default. The way the Gauntlet hands an item out is a statement
+      // about the mode, not about the item in your bag: the same id exists at other rolls, and
+      // refusing to model one made the tool argue with the player about their own gear.
       else if (v != null)          flat[k] = (flat[k]||0) + v;
-      else if (it.fm)              flat[k] = (flat[k]||0) + bmax;      // Gauntlet grants at cap
+      // A quest-granted item (it.rl, award or cardic) always carries its DAMAGE at the maximum.
+      // Its main stats are a random pick, so one counts only once you enter it -- the minimum below.
+      else if (it.rl && it.rl.dm.includes(k)) flat[k] = (flat[k]||0) + bmax;
       // Otherwise the band MINIMUM, whether the stat is instanced or not.
       //
       // This used to credit only stats in `atMin` -- the ones with no instance slot -- and give an
@@ -1187,6 +1207,7 @@ function compute(st){
       // reported conservatively -- just not impossibly.
       else                         flat[k] = (flat[k]||0) + bmin;
     }
+    flat.mf_valu = (flat.mf_valu || 0) + ((flat.p_def || 0) - pdefBefore);
     for (const k in it.c){ const t=k.replace("_coef","_valu");
       coef[t] = (coef[t]||0) + it.c[k]*w/M.attrRadix; }
   };
@@ -1358,7 +1379,12 @@ function compute(st){
   const df = Math.floor(c*5*C("Def_con_rad1",job) + C("Def_con_rad2",job)*Math.floor(Math.pow(c*3/20,2)));
   const hit = Math.floor(d*C("Hit_dex_rad1",job)) + lv*2 + 5;
   const flee= Math.floor(g*C("Flee_agi_rad1",job)) + lv*2 + 5;
-  const mf  = 100 + Math.floor(l*3*C("Mf_luk_rad",job));
+  // MAGIC RESIST, not the old Luck-based stat (d6bcbfff2, 2026-09-21). ExAttrCheck sets ATTR_BMF from
+  // BSResist -- the base PHYSICAL resist (AttrCalculate.lua: `local mf = BSResist(Player)`), which
+  // ExAttrCheck never sets, so the base is 0 exactly as it is for pdef below. Luck no longer
+  // touches it; Mf_luk_rad is defined but unread. The gear layer mirrors each item's own physical
+  // resist (ItemContent.cpp, SetAttr(ITEMATTR_VAL_MF, GetAttr(ITEMATTR_VAL_PDEF))) -- fold() does that.
+  const mf  = 0;
   const crt = 11 + Math.floor(l*3*C("Crt_luk_rad",job));
   const hrec= Math.max(Math.max(2*hp*C("Hrec_bsmxhp_rad",job) + c*3*C("Hrec_con_rad",job),1),0);
   const srec= Math.max((sp*C("Srec_bsmxsp_rad",job) + t*3*C("Srec_sta_rad",job))/2,1);
@@ -1437,8 +1463,9 @@ function compute(st){
     // silently dropped the STATE layer: six cooking pots grant 1-4 physical resist through state
     // 165 and none of it reached the number. That matters more than its size suggests -- pdef is
     // the PERCENTAGE half of the two-stage mitigation, so it scales the whole hit.
-    def:fin(df,"def_valu",0), pdef:fin(0,"p_def"),
-    crt:fin(crt,"crt_valu"), mf:fin(mf,"mf_valu"),
+    // Both resists clamp to [0, RESIST_CAP] (Resist_final / Mf_final, functions.lua) -- 70 today.
+    def:fin(df,"def_valu",0), pdef:Math.min(M.resistCap, fin(0,"p_def",0)),
+    crt:fin(crt,"crt_valu"), mf:Math.min(M.resistCap, fin(mf,"mf_valu",0)),
     hrec:fin(Math.floor(hrec),"hrec_valu"), srec:fin(Math.floor(srec),"srec_valu"),
     // ASPD: report Aspd_final itself, which is what the game's own panel shows.
     //
@@ -1470,7 +1497,7 @@ function compute(st){
 /* ---- rendering ---------------------------------------------------------- */
 const $ = id => document.getElementById(id);
 // LUCK IS NOT HERE ON PURPOSE. It is a real attribute -- gear and gems grant it, and the stat
-// maths below still reads it for critical chance and magic find -- but a player cannot SPEND a
+// maths below still reads it for critical chance -- but a player cannot SPEND a
 // point on it. The client's character screen draws five labels (Str, Dex, Agi, Con, Sta) with an
 // add-point button for each, and its btnLuk handler is commented out entirely
 // (UIStateForm.cpp:326-333). The server's bounds check spans ATTR_STR..ATTR_LUK, but that is a
@@ -1623,7 +1650,7 @@ function drawAttrs(r){
     if (d>0 && (compute().apLeft<=0 || BASE+S.spent[k]>=ATTR_MAX)) return;
     S.spent[k]=Math.max(0,S.spent[k]+d); draw();});
 
-  // Refunding by hand is not a real option: a Lv85 build has 146 points, so undoing one costs up to
+  // Refunding by hand is not a real option: a Lv75 build has 122 points, so undoing one costs up to
   // 146 clicks. The step buttons stay for fine adjustment; this is the way back to zero.
   const reset = $("apreset");
   if (reset){
@@ -1710,7 +1737,7 @@ function drawEquip(r){
 const STATLABEL = {str_valu:"STR", agi_valu:"AGI", dex_valu:"DEX", con_valu:"CON", sta_valu:"STA",
   luk_valu:"LUK", mn_atk_valu:"Min Attack", mx_atk_valu:"Max Attack", def_valu:"Defense",
   mx_hp_valu:"Max HP", mx_sp_valu:"Max SP", hit_valu:"Hit Rate", flee_valu:"Dodge",
-  crt_valu:"Critical", mf_valu:"MF", hrec_valu:"HP Regen", srec_valu:"SP Regen",
+  crt_valu:"Critical", mf_valu:"Magic Resist", hrec_valu:"HP Regen", srec_valu:"SP Regen",
   aspd_valu:"Attack Speed", mspd_valu:"Movement Speed", adis_valu:"Attack Range",
   p_def:"Physical Resist"};
 
@@ -1724,51 +1751,55 @@ const STATLABEL = {str_valu:"STR", agi_valu:"AGI", dex_valu:"DEX", con_valu:"CON
 // you are allowed to type. The count is what gets policed, below.
 function rollInputs(it, entry){
   if (!it || !it.b) return "";
-  // A5b is closed, so this no longer has to accept anything and police the count. Creat_Item
-  // dispatches on how the item was CREATED:
-  //   * a quest reward in GauntletRewardMaxStats -> Creat_Item_GauntletReward, forced MAX on every
-  //     band. Nothing rolls, so there is nothing to ask for.
+  // Creat_Item dispatches on how the item was CREATED (export_sim_data.py, roll_of):
+  //   * it.rl.k "award"  -> Creat_Item_GauntletReward: damage at its maximum, a random pick of main
+  //     stats each at a fixed share of its range (it.rl.mv), every other band at its minimum.
+  //   * it.rl.k "cardic" -> Creat_Item_GauntletCardic: damage at its maximum, three random main
+  //     stats each landing on a fixed value (it.rl.mv).
   //   * anything else -> the per-TYPE emitter, and only what that type emits reaches an instance
   //     slot. The rest sit at their band minimum and cannot be rolled at all.
-  // Forced-max items get the inputs too, pre-filled at the cap.
-  //
-  // They used to get a message instead, on the reasoning that Creat_Item_GauntletReward grants
-  // every band at its maximum so there is nothing to ask. True of how the GAUNTLET hands the item
-  // out; not true of the item. Drakan is exactly the case: eight rolling bands (STR/AGI/DEX/CON/STA
-  // 0-18, min-atk 171-201, max-atk 203-233, hit 11-15), and a player holding one that did not roll
-  // the cap had no way to say so. The comment above this function already said the guess must not
-  // decide what you are allowed to type -- this makes that true for these items as well.
-  //
-  // The cap remains the DEFAULT, so an untouched forced-max item forecasts exactly as before.
-  const forced = !!it.fm;
+  // Granted items get the inputs too: which main stats rolled is chance, and only the player knows.
+  // The damage fields start at the maximum they always carry; a main stat's field says the value it
+  // carries IF it rolled, and stays blank until entered.
+  const rl = it.rl;
   const varied = (it.i || []).filter(k => it.b[k] && it.b[k].min !== it.b[k].max);
   if (!varied.length) return "";
   const r = (entry && entry.roll) || {};
   const filled = varied.filter(k => r[k] != null).length;   // kept only to flag an impossible count
-  return `<div class="rolls">
-    <div class="rollhead">${forced
-      ? `<b>Granted at maximum.</b> The Gauntlet hands this out capped
-         (<code>Creat_Item_GauntletReward</code>), so the fields start at the cap — change any that
-         your own copy rolled lower.`
-      : `This item's stats are <b>rolled</b> — enter what yours actually has.
-         Blank counts as nothing, so the forecast never credits a roll you may not have.`}</div>` +
-    (!forced && filled > 5 ? `<div class="rollwarn">An item carries at most <b>5</b> instanced stats
+  const head = !rl
+    ? `This item's stats are <b>rolled</b> — enter what yours actually has.
+       Blank counts as the band minimum, so the forecast never credits a roll you may not have.`
+    : rl.k === "cardic"
+      ? `<b>Cardic.</b> Damage is always at its maximum, and ${rl.pick} of its main stats, picked at
+         random, each land on a fixed value (shown in each field). Enter the ones your copy carries.`
+      : rl.pick === "none"
+        ? `<b>Quest-granted.</b> Damage is always at its maximum; it has no main stat to roll, and
+           everything else stays at its minimum.`
+        : `<b>Quest-granted.</b>${rl.dm.length ? " Damage is always at its maximum." : ""} Main stats:
+           ${rl.pick}, picked at random, each at the value shown in its field; everything else stays
+           at its minimum. Enter the ones your copy carries.`;
+  return `<div class="rolls"><div class="rollhead">${head}</div>` +
+    (!rl && filled > 5 ? `<div class="rollwarn">An item carries at most <b>5</b> instanced stats
       (<code>defITEM_INSTANCE_ATTR_NUM</code>). You have filled ${filled} — the extra
       ${filled-5} cannot all exist on one item.</div>` : "") +
     varied.map(k => {
       const b = it.b[k];
+      const dmg = rl && rl.dm.includes(k);
+      const ifRolled = rl && rl.mv[k] != null ? rl.mv[k] : null;
       return `<label class="roll"><span>${STATLABEL[k] || k}</span>
         <input type="number" data-roll="${k}" min="${b.min}" max="${b.max}"
-               value="${r[k] != null ? r[k] : (forced ? b.max : "")}" placeholder="${b.min}–${b.max}">
+               value="${r[k] != null ? r[k] : (dmg ? b.max : "")}"
+               placeholder="${ifRolled != null ? "+" + ifRolled + " if rolled" : b.min + "–" + b.max}">
         <i>${b.min}–${b.max}</i></label>`;
     }).join("") + `</div>`;
 }
 
 
-// What is this item ACTUALLY contributing right now? Not its bands -- its contribution. The three
-// cases look identical in the totals and mean very different things, so the tooltip separates them:
+// What is this item ACTUALLY contributing right now? Not its bands -- its contribution. The cases
+// look identical in the totals and mean very different things, so the tooltip separates them:
 //   * rolled and entered      -> the number you typed, counted in full
-//   * rolled and NOT entered  -> nothing, because the tool will not credit a roll you may not have
+//   * granted damage          -> its maximum, which a quest-granted item always carries
+//   * rolled and NOT entered  -> the band minimum, the floor every copy carries (fold() credits it)
 //   * no instance slot        -> pinned to the band minimum, which it always contributes
 // Sockets are listed separately since a gem's bonus is GemVar.perLevel * socket level, not a band.
 function itemBreakdown(it, entry){
@@ -1777,14 +1808,24 @@ function itemBreakdown(it, entry){
   const roll = (entry && entry.roll) || {};
   const atMin = new Set(it.m || []);
   for (const k in (it.b || {})){
+    // Magic resist is not the item's own band: fold() mirrors the COUNTED physical resist into it
+    // (ItemContent.cpp), so the row is written after this loop from that same number.
+    if (k === "mf_valu") continue;
     const b = it.b[k];
     if (b.min === b.max)   rows.push([STATLABEL[k]||k, "+" + b.max, "fixed", "on"]);
-    // Same order as fold(): what you typed outranks the forced-max default, and `!= null`
+    // Same order as fold(): what you typed outranks every default, and `!= null`
     // so a deliberate 0 reads as a zero roll rather than as nothing entered.
     else if (roll[k] != null) rows.push([STATLABEL[k]||k, "+" + roll[k], "your roll (" + b.min + "\u2013" + b.max + ")", "on"]);
-    else if (it.fm)        rows.push([STATLABEL[k]||k, "+" + b.max, "granted at maximum", "on"]);
+    else if (it.rl && it.rl.dm.includes(k)) rows.push([STATLABEL[k]||k, "+" + b.max, "damage, always at its maximum", "on"]);
+    else if (it.rl && it.rl.mv[k] != null) rows.push([STATLABEL[k]||k, "+" + b.min,
+        "not entered \u00b7 +" + it.rl.mv[k] + " if your copy rolled it, otherwise " + b.min, "dim"]);
     else if (atMin.has(k)) rows.push([STATLABEL[k]||k, "+" + b.min, "not entered \u00b7 band minimum " + b.min + "\u2013" + b.max, "dim"]);
-    else                   rows.push([STATLABEL[k]||k, "\u2014", "rolled " + b.min + "\u2013" + b.max + ", not entered", "off"]);
+    else                   rows.push([STATLABEL[k]||k, "+" + b.min, "rolled " + b.min + "\u2013" + b.max + ", not entered \u00b7 counting the minimum", "dim"]);
+  }
+  const pd = (it.b || {}).p_def;
+  if (pd){
+    const v = pd.min === pd.max ? pd.max : (roll.p_def != null ? roll.p_def : pd.min);
+    rows.push([STATLABEL.mf_valu, "+" + v, "equals this item's physical resist", "on"]);
   }
   for (const k in (it.c || {})){
     const t = k.replace("_coef","_valu");
@@ -1793,6 +1834,13 @@ function itemBreakdown(it, entry){
   const socks = (entry && entry.sock || []).filter(g => g && g.f);
   for (const g of socks){
     const gv = DATA.gemvar[g.f]; if (!gv) continue;
+    // A row with no stat (the Tooth of Black Dragon, GemVar[66]) carries magicDmg: a flat bonus on Spiritual
+    // Bolt, Lightning Bolt and Conch Ray, per SOCKET level (1-9 like every gem's; owner hotfix 2026-10-23).
+    if (gv.magicDmg != null) {
+      rows.push(["Magic Damage", "+" + (gv.magicDmg * (g.l||1)),
+                 "gem · " + gv.name + " Lv" + (g.l||1) + " · Spiritual Bolt, Lightning Bolt, Conch Ray", "on"]);
+      continue;
+    }
     rows.push([STATLABEL[gv.col]||gv.stat, "+" + (gv.perLevel * (g.l||1)), "gem \u00b7 " + gv.name + " Lv" + (g.l||1), "on"]);
   }
   if (!rows.length) return "<div class='tno'>No stats \u2014 this piece is appearance only.</div>";
@@ -1827,10 +1875,9 @@ const INFO_TEXT = {
      dispatches to (<code>Creat_Item_Battr</code>/<code>_Tattr</code>, keyed on
      <code>items.type</code>), not approximated by priority order.`,
   level:
-    `<b>85 is the hard cap</b>, clamped twice — <code>SetChaAttrMax(ATTR_LV, 85)</code> and
-     <code>Server.Level.Limit</code>. Zone bands run past it: Lone Tower 75-84 is the last fully
-     playable zone, <b>Abaddon (85-94) is entry-only</b> at exactly 85, and <b>Boss Arena (95-99)
-     is unreachable</b>. That costs no gear — everything those zones drop is obtainable below 85.
+    `<b>${M.levelCap} is the hard cap</b>, clamped twice — <code>SetChaAttrMax(ATTR_LV)</code> and
+     <code>Server.Level.Limit</code>, which must agree. Demonic World's monsters run up to it, and the
+     Black Dragon Lair opens at ${M.levelCap} for whoever carries the Black Dragon Key.
      Class advancement lands at <b>Lv41</b>, not 40: the trial injects at 40 and the change applies
      on the next level-up.`,
 };
@@ -2006,7 +2053,7 @@ const STAT_ROWS = [
   ["Hit Rate",           "HIT",  r=>r.hit,  "Accuracy, weighed against the target's Dodge. From Acc."],
   ["Dodge",              "FLEE", r=>r.flee, "Evasion, weighed against the attacker's Hit Rate. From Agi."],
   ["Defense",            "DEF",  r=>r.def,  "Reduces incoming physical damage. From Con."],
-  ["Physical Resistance","PDEF", r=>r.pdef, "Percentage mitigation, from gear and cooking pots. No base value is derived."],
+  ["Physical Resistance","PDEF", r=>r.pdef, `Percentage mitigation, from gear and cooking pots. No base value is derived; capped at ${M.resistCap}.`],
   // The only tooltip that has to be computed: the Agi cap moves per class, and a static string
   // cannot say whether THIS build has already hit it.
   ["Attack Speed",       "ASPD", r=>r.aspd, r =>
@@ -2019,8 +2066,8 @@ const STAT_ROWS = [
         // floored, so working back to Agi and forward again can disagree by one.
         : `You are at ${r.aspdInner} of 300 — about ${Math.ceil((300-r.aspdInner)/r.aspdRad)} more Agi to reach it.`)],
   ["Critical Chance",    "CRT",  r=>r.crt,  "Chance of a critical hit. From Luk."],
-  ["Magic Find",         "MF",   r=>r.mf,   "Drop-rate modifier. From Luk; 100 is the baseline."],
-  ["Move Speed",         "MSPD", r=>r.mspd, "Base 480 for every player template, from the characters row."],
+  ["Magic Resistance",   "MR",   r=>r.mf,   `Percentage mitigation against magic. Each piece of gear gives the same as its physical resistance; capped at ${M.resistCap}.`],
+  ["Move Speed",         "MSPD", r=>r.mspd, `Base ${M.playerBases.mspd} for every player template, from the characters row.`],
 ];
 
 function drawStats(r){
@@ -2296,7 +2343,7 @@ function drawSets(r){
           </div>`;
         }).join("");
       detail = `Applied after gear, never compounding. Each set also needs its class ring.
-        ${deathForJob ? "" : "<b>Base classes have none</b> — DeathChest_Open refuses them."}
+        ${deathForJob ? "" : "<b>Base classes have none</b> — the Death Runestone converts only a second class's armour (SetConvertByClass)."}
         <div class="dstable">${rows}</div>`;
     }
     // BLACK DRAGON IS PER-CLASS TOO. An earlier pass concluded it was not, on the strength of
@@ -2331,8 +2378,8 @@ function drawSets(r){
           </span></div>`;
       }).join("");
       detail = `Two separate per-class layers.
-        <b>Skill procs</b> need only the full set. <b>Draconic Retribution</b> also needs any Lv85
-        ring (state ${k.STATE}): ${k.PERCENT}% of the time a harmful player hit recoils your
+        <b>Skill procs</b> need only the full set. <b>Draconic Retribution</b> also needs any class
+        ring from the Black Dragon Lair quest, worn (state ${k.STATE}): ${k.PERCENT}% of the time a harmful player hit recoils your
         class's element back onto the attacker for ${k.SECONDS}s.
         <div class="dstable">${rows}</div>
         ${(bd.universal || []).map(u => `<div style="color:var(--muted);font-size:11px">
@@ -2401,11 +2448,12 @@ function drawSets(r){
 // The whole chain is the server's, transcribed once here and verified against the shipped Lua by
 // tools/test_skill_damage.py:
 //
-//   Phy_Dmg(atk, def, pdef) = atk * (1 - min(0.85, pdef<70 ? pdef/100 : pdef/150)) - def
-//   Atk_Dmg                 = max(lvEff * Phy_Dmg(random(mn,mx), ...), floor(lv * 0.25))
-//   lvEff                   = clamp(1 + 0.025*dLv, 0.8, 1.2)   when |dLv| >= 1
+//   Phy_Dmg(atk, def, pdef) = atk * (1 - min(0.85, pdef/100)) - def
+//   (the pdef>=70 -> /150 branch went with Phy_Dmg's in f1f7403c; resist is capped instead)
+//   Atk_Dmg                 = max(Phy_Dmg(random(mn,mx), ...), floor(lv * 0.25))
+//   (no level factor: level difference decides nothing in any damage calculation)
 //   miss                    = min(0.9, max((mobFlee - myHit + 10)/100, 0))
-//   crit                    = min(myCrt/100 + clamp(0.03*dLv, 0, 0.15), 1), flat x2
+//   crit                    = min(myCrt/100, 1), flat x2   (no level term)
 //
 // Note the TWO-STAGE mitigation, which is the reason this panel earns its place: physical resist
 // takes a PERCENTAGE (capped 85%) and flat defence is subtracted AFTER. Against a Lv85 boss
@@ -2418,9 +2466,10 @@ function damageCore(r, mob){
   // only case today -- but the global would silently be the wrong character the moment this is
   // called for the other one, and reading the level off the same object as the attack values is
   // what makes that impossible rather than merely unlikely.
+  // dLv is still reported so the panel can SHOW the gap; nothing scales by it any more.
   const dLv = r.lv - mob.lv;
-  const lvEff = Math.abs(dLv) >= 1 ? clamp(1 + 0.025 * dLv, 0.8, 1.2) : 1;
-  const cut = mob.pdef < 70 ? Math.min(0.85, mob.pdef / 100) : Math.min(0.85, mob.pdef / 150);
+  const lvEff = 1;
+  const cut = Math.min(0.85, mob.pdef / 100);
   const floorDmg = Math.floor(r.lv * 0.25);
   // Phy_Dmg FLOORS before Atk_Dmg scales by level effect:
   //     Phy_Dmg  = math.floor(Attack * (1 - cut) - Defense)      skilleffect.lua:429
@@ -2428,14 +2477,14 @@ function damageCore(r, mob){
   // Dropping that floor multiplied the FRACTION by LV_EFF too, so every number in this panel read
   // high -- by up to 1.13 against a Lv85 boss, and always high, since a floor can only reduce.
   // Verified against the shipped function: with the floor restored the divergence is exactly 0.
-  const one = atk => Math.max(lvEff * Math.floor(atk * (1 - cut) - mob.def), floorDmg);
+  const one = atk => Math.max(Math.floor(atk * (1 - cut) - mob.def), floorDmg);
   // A character with NO WEAPON has mn == mx, and Atk_Dmg widens that itself rather than rolling a
   // single value: `if MNATK >= MXATK then MNATK = math.max(1, MXATK - 100)` (skilleffect.lua:470).
   // Using mn as given showed an unarmed build a flat number where the game rolls a 100-wide range.
   const rawMn = r.mn >= r.mx ? Math.max(1, r.mx - 100) : r.mn;
   const mn = one(rawMn), mx = one(r.mx), avg = one((rawMn + r.mx) / 2);
   // Crt(a) is ATTR_CRT / CRTRADIX and CRTRADIX is 100, so the stat is a percentage.
-  const lvCrit = Math.abs(dLv) >= 1 ? clamp(0.03 * dLv, 0, 0.15) : 0;
+  const lvCrit = 0;   // crit is the attacker's own rate; the level gap adds nothing
   return {
     dLv, lvEff, cut, mn, mx, avg,
     miss: Math.min(0.9, Math.max((mob.flee - r.hit + 10) / 100, 0)),
@@ -2452,7 +2501,7 @@ function skillDamage(entry, core, r, lv){
     if (!_skillFn[entry.id])
       _skillFn[entry.id] = new Function("ATK","ASPD","STA","DLV","L", "return (" + entry.js + ");");
     const f = _skillFn[entry.id];
-    const dlv = clamp(core.dLv, -10, 10);   // the caster line clamps the gap to +/-10
+    const dlv = 0;   // the caster line's DLV term is gone; fed as 0 so exported expressions still evaluate
     // Cuihua_Mofa, applied to every MAGIC skill's damage and easy to miss:
     //     floor(dmg * (1.4 + mlchLv * 0.02) + mlchLv * 30)
     // The caster handlers call it UNCONDITIONALLY, passing GetChaStateLv(atker, STATE_MLCH) --
@@ -2661,7 +2710,7 @@ function drawTest(r){
   info.innerHTML = `<b>${mob.name}</b> · Lv${mob.lv} · ${mob.zone}
     <br>def <b>${mob.def}</b> · phys resist <b>${mob.pdef}</b> (${pct(core.cut)} cut)
     · HP <b>${mob.hp.toLocaleString()}</b> · dodge ${mob.flee}
-    <br>your level gap ${core.dLv >= 0 ? "+" : ""}${core.dLv} → damage x${core.lvEff.toFixed(3)}`;
+    <br>your level gap ${core.dLv >= 0 ? "+" : ""}${core.dLv} → damage x1.000 (level difference no longer scales damage)`;
 
   // ---- outgoing -------------------------------------------------------------------------
   const rows = [];
@@ -2784,10 +2833,10 @@ function drawTest(r){
   }
 
   // ---- incoming: the same formula with the roles swapped ---------------------------------
-  const inCut = r.pdef < 70 ? Math.min(0.85, r.pdef / 100) : Math.min(0.85, r.pdef / 150);
-  const inLvEff = Math.abs(-core.dLv) >= 1 ? clamp(1 + 0.025 * -core.dLv, 0.8, 1.2) : 1;
+  const inCut = Math.min(0.85, r.pdef / 100);
+  const inLvEff = 1;   // incoming damage ignores the gap too -- the mob's level is not a weapon
   const inFloor = Math.floor(mob.lv * 0.25);
-  const inOne = a => Math.max(inLvEff * (a * (1 - inCut) - r.def), inFloor);
+  const inOne = a => Math.max(a * (1 - inCut) - r.def, inFloor);
   const inMiss = Math.min(0.9, Math.max((r.flee - mob.hit + 10) / 100, 0));
   const inMn = inOne(mob.mnAtk), inMx = inOne(mob.mxAtk);
   const inAvg = inOne((mob.mnAtk + mob.mxAtk) / 2) * (1 - inMiss);
@@ -2953,7 +3002,7 @@ function drawFairy(){
       .filter(f=>f.stat||f.allFive)
       .map(f=>`<option value="${f.itemId}">${f.name}${f.allFive?" · all five":""}</option>`).join("");
     $("fairy").onchange = e=>{S.fairy=+e.target.value; draw();};
-    $("flv").oninput = e=>{S.flv=Math.max(1,Math.min(42,+e.target.value||1)); draw();};
+    $("flv").oninput = e=>{S.flv=Math.max(1,Math.min(M.fairyLevelMax,+e.target.value||1)); draw();};
     $("poss").onchange = e=>{S.poss=e.target.checked; draw();};
   }
 
@@ -2989,9 +3038,9 @@ function drawFairy(){
     if (!$("mordorow").children.length){
       $("mordorow").innerHTML = KEYS.map(k=>
         `<div><label for="m_${k}">${k.toUpperCase()}</label>
-           <input type="number" id="m_${k}" min="0" max="42" value="${S.mordo[k]||0}"></div>`).join("");
+           <input type="number" id="m_${k}" min="0" max="${M.fairyLevelMax}" value="${S.mordo[k]||0}"></div>`).join("");
       KEYS.forEach(k=>{ $("m_"+k).oninput = e => {
-        S.mordo[k] = Math.max(0, Math.min(42, +e.target.value||0)); draw(); };});
+        S.mordo[k] = Math.max(0, Math.min(M.fairyLevelMax, +e.target.value||0)); draw(); };});
     }
     KEYS.forEach(k=>{ const el=$("m_"+k); if(el && +el.value !== (S.mordo[k]||0)) el.value = S.mordo[k]||0; });
     $("mordonote").innerHTML = used === 0
@@ -3000,7 +3049,7 @@ function drawFairy(){
       : "Assigned <b>" + used + "</b> of " + S.flv +
         (left < 0 ? " — <b style=\"color:var(--signal)\">over by " + (-left) + "</b>"
                   : left > 0 ? " — " + left + " unassigned" : " — fully assigned") +
-        ". Each is boosted +20% and floored on its own.";
+        ". Each is boosted +30% and floored on its own.";
   }
 }
 
@@ -3449,7 +3498,7 @@ function decodeState(h){
     // reading ATTRS[5] on a five-entry list throws — which would have taken the whole decode
     // down and opened an old link as a default build instead of dropping one unspendable field.
     p[4].split(",").forEach((v,i)=>{ if (ATTRS[i]) S.spent[ATTRS[i][0]] = +v||0; });
-    const f=p[5].split("."); S.fairy=+f[0]||0; S.flv=+f[1]||42; S.poss=f[2]==="1";
+    const f=p[5].split("."); S.fairy=+f[0]||0; S.flv=Math.min(M.fairyLevelMax, +f[1]||M.fairyLevelMax); S.poss=f[2]==="1";
     S.tonics=new Set((p[6]||"").split(",").filter(Boolean).map(Number));
     // Split on "_" ONLY where a segment really begins -- a slot number followed by a dot.
     // A plain .split("_") was corrupting every link that carried a hand-entered roll, because
@@ -3479,7 +3528,7 @@ function decodeState(h){
 }
 
 $("lv").oninput = e=>{S.lv=+e.target.value; draw();};
-$("lvn").oninput = e=>{S.lv=Math.max(1,Math.min(85,+e.target.value||1)); draw();};
+$("lvn").oninput = e=>{S.lv=Math.max(1,Math.min(M.levelCap,+e.target.value||1)); draw();};
 $("rebirth").onchange = e=>{S.rebirth=+e.target.value; draw();};
 
 // BUILD first, because it is the one that answers "are we looking at the same page?". dataVersion
@@ -3533,14 +3582,11 @@ $("attrlink").title = "Every class level by level: what each level gives, what e
 revealIfServed("bosses", () => "Boss guide");
 $("bosses").title = "Every boss, mini boss, chest and monster the Gauntlet actually spawns, with "
                   + "drop chances computed by the engine's own rule. Opens in a new tab.";
-// The client lives in a public GCS bucket, which sends no CORS headers, so a cross-origin
-// HEAD from this page is blocked. revealIfServed would therefore never un-hide it: the
-// link is shipped visible with its size baked into the label instead.
-$("dl").title = "Full game client archive. Resumable — the server answers Range requests, so an "
-              + "interrupted download continues instead of restarting.";
+$("dl").title = "The game's Windows installer.";
+$("rules5v5").innerHTML = (M.rules || []).map(r => `<li style="margin:3px 0">${r}</li>`).join("");
 $("foot").innerHTML = `Every option here is obtainable inside the Gauntlet — ${DATA.equip.length}
-  equippable items, ${DATA.gems.length} gems, joined from mob drops,
-  chest contents, quest rewards and the Gatekeeper Market. Formulas transcribed from
+  equippable items, ${DATA.gems.length} gems, joined from the starting kit, gear that grows with
+  your level, the quest and runestone grants, mob drops, chests and the Gatekeeper Market. Formulas transcribed from
   <code>AttrCalculate.lua</code> and <code>functions.lua</code>; coefficients parsed per class, not
   hand-typed. Build state lives in the URL — copy the address bar to share it.`;
 
@@ -3577,9 +3623,9 @@ function applyBuild(j){
   // one higher -- and a Lv40 build came back as Lv41, which is the advancement boundary, so a
   // first-class build silently became a second-class one. Clamped to the real range as well: the
   // level slider cannot express anything outside it, and a hand-edited JSON should not either.
-  const lv = Math.max(1, Math.min(85, j.lv || 1));
+  const lv = Math.max(1, Math.min(M.levelCap, j.lv || 1));
   Object.assign(S, {champ:j.champ|0, lv, adv:j.adv ?? null, spent:j.spent || S.spent,
-    equip:j.equip || {}, fairy:j.fairy|0, flv:j.flv || 42, poss:!!j.poss,
+    equip:j.equip || {}, fairy:j.fairy|0, flv:Math.min(M.fairyLevelMax, j.flv || M.fairyLevelMax), poss:!!j.poss,
     mordo:j.mordo || S.mordo, tonics:new Set(j.tonics || [])});
   // A build saved before the five attribute potions became stackable carries a single
   // `attrTonic`. Fold it in rather than dropping it, so an older link does not quietly lose a

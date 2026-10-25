@@ -2,14 +2,10 @@
 <html lang="en"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Gauntlet: Dragon's Risen</title>
+<title>Gauntlet of Pirates</title>
 <style>
 :root{
-  /* Shared with the Armory -- see the module docstring on why these are duplicated. Seven of
-     these (--ground, --sky, --glass, --foam, --signal, --brass-soft, --sky-deep) are unused
-     on THIS page and are kept anyway, so the block stays byte-identical across the three
-     copies. Trimming per page is how three copies quietly become three different palettes,
-     and it would make the eventual extraction a merge instead of a lift. */
+  /* Shared with the Armory -- see the module docstring on why these are duplicated. */
   --ground:#DFF2FB; --surface:#FFFFFF; --sunken:#EFF9FE; --line:#8AD6EE;
   --ink:#002463; --muted:#10306B; --faint:#4F72A0;
   --brass:#97660B; --brass-soft:#FBEFD2;
@@ -19,14 +15,13 @@
   --brass-hi:#FBEBBF; --brass-mid:#DDB35E; --brass-core:#B4832A; --brass-lo:#7A5310;
   --rope:#D9B57E; --rope-dk:#9A7440;
   --paper:#FFFDF7;
-  /* Sampled off the key art: the ribbon under the painted title, and its gold. The ribbon is
-     spent on ONE thing -- the wax seal on a patch entry -- so it stays an accent. */
+  /* The ribbon under the painted title. Spent on ONE thing -- the wax seal on a patch entry. */
   --ribbon:#B3202C; --ribbon-dk:#7E1520;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
-  margin:0; color:var(--ink); background-color:#5275A7;
+  margin:0; color:var(--ink); background-color:#5778A7;
   font:14px/1.55 "Trebuchet MS",system-ui,sans-serif;
   -webkit-font-smoothing:antialiased;
 }
@@ -35,12 +30,11 @@ body{
    cropping it loses letters -- but it bars every viewport wider than 16:9, and a flat bar makes the
    page read as a picture placed on a coloured page instead of one surface. The bar is filled with a
    blurred `cover` copy, so the colour at any edge is the colour the picture has there.
-   scale(1.12) pushes the blur's own transparent fringe off-screen; without it a blurred fixed layer
-   fades out at its edges and puts back a thin version of the bar it was added to remove. */
+   scale(1.12) pushes the blur's own transparent fringe off-screen. */
 body::before{
   content:""; position:fixed; inset:0; z-index:-3;
   background:url("keyart.jpg") center center / cover no-repeat;
-  background-color:#5275A7;
+  background-color:#5778A7;
   filter:blur(34px) saturate(1.12);
   transform:scale(1.12);
 }
@@ -48,16 +42,11 @@ body::after{
   content:""; position:fixed; inset:0; z-index:-2;
   background:url("keyart.jpg") center top / contain no-repeat;
 }
-/* Held to the width the artwork actually renders at: `contain` gives it min(100vw, 100vh x 16/9),
-   and 1920/1080 is 177.78vh. The max() floor stops the two-column grid collapsing on a short, wide
-   window; past that the panels overhang the sharp art onto the blurred fill of the same picture,
-   which is why both changes were made together rather than either alone. */
+/* Held to the width the artwork actually renders at: `contain` gives it min(100vw, 100vh x 16/9). */
 .wrap{max-width:max(900px, min(1360px, 177.78vh)); margin:0 auto; padding:14px 20px 70px}
 a{color:var(--verdigris)}
 
-/* --- the utility rail, top RIGHT -------------------------------------------------------------
-   Right-aligned on purpose: the key art paints its title at top LEFT, and a toolbar there would
-   sit straight on the lettering. */
+/* --- the utility rail, top RIGHT: the art paints its title at top LEFT --------------------- */
 .utilbar{display:flex;flex-wrap:wrap;align-items:center;gap:9px;justify-content:flex-end;
   width:max-content;max-width:100%;margin-left:auto;padding:7px 12px;border-radius:999px;
   background-color:color-mix(in srgb, var(--paper) 82%, transparent);
@@ -67,20 +56,13 @@ a{color:var(--verdigris)}
 @supports not (backdrop-filter: blur(1px)){.utilbar{background-color:var(--paper)}}
 .pill{font:11px/1 ui-monospace,"Cascadia Mono",Consolas,monospace;letter-spacing:.06em;
   text-transform:uppercase;color:var(--brass);border:1px solid var(--brass);border-radius:3px;
-  padding:6px 10px;text-decoration:none;white-space:nowrap;background:none;cursor:pointer}
+  padding:6px 10px;text-decoration:none;white-space:nowrap;background:none}
 .pill:hover{background:color-mix(in srgb, var(--brass) 14%, transparent)}
-.pill.live{color:var(--verdigris);border-color:var(--verdigris)}
-.pill.live::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;
-  background:var(--verdigris);margin-right:6px;vertical-align:1px}
 
-/* The art owns this much of the screen, and nothing is drawn over it. vh because the artwork is
-   contain-fitted, so its painted title sits at a FRACTION of the viewport, not a pixel offset. */
+/* The art owns this much of the screen, and nothing is drawn over it. */
 .hero{height:clamp(230px, 46vh, 560px)}
 
-/* --- the navigation plaque -------------------------------------------------------------------
-   Centred, and the only thing between the artwork and the notices. Tabs are brass; the current
-   one is pressed INTO the plaque (inset shadow, no lift) rather than merely tinted -- a pressed
-   key is legible as "you are here" without relying on colour. */
+/* --- the navigation plaque ------------------------------------------------------------------ */
 .plaque{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;
   width:max-content;max-width:100%;margin:0 auto 22px;padding:11px 14px 14px;border-radius:13px;
   background-color:color-mix(in srgb, var(--paper) 90%, transparent);
@@ -101,7 +83,7 @@ a{color:var(--verdigris)}
 .navtab.on{background:linear-gradient(180deg,var(--brass-core),var(--brass-mid));
   box-shadow:inset 0 2px 4px rgba(70,44,4,.55); color:#2B1A02; text-shadow:0 1px 0 rgba(255,240,200,.4)}
 
-/* --- panels: the Armory's chart-and-brass construction --------------------------------------- */
+/* --- panels: the Armory's chart-and-brass construction -------------------------------------- */
 .panel{
   background:
     radial-gradient(circle at 8.4px 8.4px,
@@ -139,15 +121,16 @@ a{color:var(--verdigris)}
 .body{padding:14px 15px 16px}
 
 /* --- layout ---------------------------------------------------------------------------------- */
-.grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(320px,1fr);gap:18px;align-items:start}
+.grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(300px,1fr);gap:18px;align-items:start}
 .col{display:flex;flex-direction:column;gap:18px;min-width:0}
+.full{margin-top:18px}
 @media(max-width:1000px){.grid{grid-template-columns:1fr}}
 
 /* --- ship's log ------------------------------------------------------------------------------ */
 .entry{display:flex;gap:14px;padding:14px 0;border-bottom:1px dashed var(--line)}
 .entry:first-child{padding-top:2px}
 .entry:last-child{border-bottom:0;padding-bottom:0}
-/* A wax seal: a pressed disc, dark at the rim, lit from the upper left. The version rides it. */
+/* A wax seal: a pressed disc, dark at the rim, lit from the upper left. The month rides it. */
 .seal{flex:0 0 auto;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;
   background:radial-gradient(circle at 34% 30%, #D8434F 0 18%, var(--ribbon) 46%, var(--ribbon-dk) 100%);
   box-shadow:inset 0 -2px 4px rgba(0,0,0,.35), inset 0 2px 3px rgba(255,255,255,.28),
@@ -155,88 +138,39 @@ a{color:var(--verdigris)}
 .seal span{font:700 12px/1 Georgia,serif;color:#FFE9DC;text-shadow:0 1px 1px rgba(0,0,0,.5)}
 .etext h3{margin:0 0 5px;font:700 15px/1.25 Georgia,"Palatino Linotype",serif;color:var(--ink)}
 .edate{font:400 11px/1 ui-monospace,Consolas,monospace;color:var(--faint);
-  letter-spacing:.06em;text-transform:uppercase;margin-left:8px}
+  letter-spacing:.06em;text-transform:uppercase;margin-left:8px;white-space:nowrap}
 .etext ul{margin:0;padding-left:17px;color:var(--muted);font-size:13px}
 .etext li{margin:2px 0}
 
-/* --- crew roster ------------------------------------------------------------------------------ */
-table.roster{width:100%;border-collapse:collapse;font-size:13px}
-table.roster td{padding:7px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
-table.roster tr:last-child td{border-bottom:0}
-td.rank{width:38px}
-/* Only the podium is struck; below it the plain number reads as a rank without pretending to be
-   an award. */
-.disc{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;
-  font:700 12px/1 Georgia,serif;color:var(--faint);background:var(--sunken);
-  box-shadow:inset 0 0 0 1px var(--line)}
-.disc.medal{color:#3A2704;text-shadow:0 1px 0 rgba(255,255,255,.5);
-  box-shadow:inset 0 -2px 3px rgba(70,44,4,.4), inset 0 2px 2px rgba(255,255,255,.6),
-             0 1px 3px rgba(0,22,58,.3)}
-.disc.m1{background:radial-gradient(circle at 34% 28%, #FFF3C4 0 20%, var(--brass-mid) 55%, var(--brass-core))}
-.disc.m2{background:radial-gradient(circle at 34% 28%, #FFFFFF 0 20%, #D7DEE4 55%, #9AA6B0)}
-.disc.m3{background:radial-gradient(circle at 34% 28%, #FBDCC0 0 20%, #C98B58 55%, #9A6236)}
-td.who b{display:block;font-size:13.5px}
-.guild{color:var(--faint);font-size:11px}
-td.cls{color:var(--muted)}
-td.lv{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;color:var(--verdigris)}
-
-/* --- harbourmaster's desk (sign in) ------------------------------------------------------------ */
-.field{margin-bottom:11px}
-.field label{display:block;font-size:11px;letter-spacing:.05em;text-transform:uppercase;
-  color:var(--muted);margin-bottom:4px}
-.field input{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:6px;
-  background:var(--surface);color:var(--ink);font:13px/1.3 "Trebuchet MS",system-ui,sans-serif;
-  box-shadow:0 1px 2px rgba(0,36,99,.09) inset}
-.field input:focus{outline:2px solid var(--verdigris);outline-offset:1px}
-.btn{width:100%;padding:10px 14px;border:0;border-radius:8px;cursor:pointer;
-  font:700 12px/1 Georgia,"Palatino Linotype",serif;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--ink);text-shadow:0 1px 0 rgba(255,252,236,.6);
+/* --- set sail: the download and the other pages ------------------------------------------------ */
+.btn{display:block;text-align:center;width:100%;padding:12px 14px;border:0;border-radius:8px;
+  font:700 13px/1 Georgia,"Palatino Linotype",serif;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink);text-decoration:none;text-shadow:0 1px 0 rgba(255,252,236,.6);
   background:linear-gradient(180deg,var(--brass-hi) 0 42%,var(--brass-mid));
   box-shadow:inset 0 1px 0 rgba(255,255,255,.7), 0 2px 0 var(--brass-lo), 0 3px 8px rgba(0,22,58,.22)}
 .btn:hover{background:linear-gradient(180deg,#FFF6DC 0 42%,var(--brass-hi))}
 .btn:active{transform:translateY(1px);box-shadow:inset 0 2px 4px rgba(70,44,4,.45)}
-.btn.ghost{background:none;color:var(--brass);box-shadow:inset 0 0 0 1px var(--brass);margin-top:9px}
-.btn.ghost:hover{background:color-mix(in srgb,var(--brass) 12%,transparent)}
-.rowlinks{display:flex;justify-content:space-between;margin-top:10px;font-size:11.5px}
-.rowlinks a{color:var(--faint);text-decoration:none;border-bottom:1px dotted var(--faint)}
-.rowlinks a:hover{color:var(--verdigris);border-bottom-color:var(--verdigris)}
+.note{margin:9px 0 0;font-size:11.5px;color:var(--faint);text-align:center}
+.guides{display:flex;flex-direction:column;gap:2px;margin-top:14px}
+.guide{display:block;padding:9px 4px;border-top:1px dashed var(--line);text-decoration:none}
+.guide b{display:block;color:var(--brass);font:700 13.5px/1.3 Georgia,"Palatino Linotype",serif}
+.guide span{display:block;color:var(--muted);font-size:12.5px}
+.guide:hover b{color:var(--verdigris)}
 
-/* --- the tavern (discord) ----------------------------------------------------------------------- */
-.tavern{display:flex;align-items:center;gap:13px}
-.tavern .glyph{flex:0 0 auto;width:44px;height:44px;border-radius:11px;display:grid;place-items:center;
-  background:linear-gradient(180deg,#7B8CE6,#5865F2);color:#fff;font:700 19px/1 Georgia,serif;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.4), 0 3px 8px rgba(0,22,58,.28)}
-.tavern p{margin:0;font-size:12.5px;color:var(--muted)}
-.tavern b{display:block;color:var(--ink);font-size:13.5px}
+/* --- the map --------------------------------------------------------------------------------- */
+.mapimg{display:block;width:100%;height:auto;border-radius:6px;background:var(--sunken);
+  box-shadow:0 0 0 1px var(--line), 0 6px 16px rgba(0,22,58,.22)}
+.mapcap{margin:8px 0 12px;font-size:12px;color:var(--faint)}
+.scroll{overflow-x:auto}
+table.regions{width:100%;border-collapse:collapse;font-size:13px}
+table.regions th{font:700 10px/1 ui-monospace,Consolas,monospace;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--faint);text-align:left;padding:7px 10px;
+  border-bottom:1px solid var(--line)}
+table.regions td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:baseline;color:var(--muted)}
+table.regions tr:last-child td{border-bottom:0}
+td.rg{font-weight:700;color:var(--ink)}
+td.n{font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--verdigris);font-weight:700}
 
-/* --- wall of tales (gallery) --------------------------------------------------------------------- */
-.wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
-.shot{margin:0;position:relative;padding:9px 9px 0;border-radius:6px;background:var(--surface);
-  box-shadow:0 1px 0 var(--line) inset, 0 6px 16px rgba(0,22,58,.26)}
-/* A hair of rotation, alternating, so they read as pinned rather than laid out on a grid. */
-.shot.s0{transform:rotate(-.7deg)} .shot.s1{transform:rotate(.5deg)} .shot.s2{transform:rotate(-.3deg)}
-.shot:hover{transform:rotate(0) translateY(-3px);transition:transform .18s ease}
-.tack{position:absolute;top:-6px;left:50%;transform:translateX(-50%);width:13px;height:13px;
-  border-radius:50%;
-  background:radial-gradient(circle at 34% 30%, #FFF7E0 0 18%, var(--brass-mid) 50%, var(--brass-lo));
-  box-shadow:0 2px 4px rgba(0,22,58,.45)}
-.shot img{display:block;width:100%;height:126px;object-fit:cover;border-radius:3px;
-  background:var(--sunken)}
-.pending{height:126px;border-radius:3px;display:grid;place-items:center;
-  background:repeating-linear-gradient(45deg, var(--sunken) 0 9px, #E4F2FA 9px 18px);
-  box-shadow:inset 0 0 0 1px var(--line)}
-.pending span{font:11px/1 ui-monospace,Consolas,monospace;letter-spacing:.08em;
-  text-transform:uppercase;color:var(--faint)}
-.shot figcaption{padding:8px 2px 10px;font-size:11.5px;color:var(--faint);line-height:1.4}
-.shot figcaption b{display:block;color:var(--ink);font-size:12.5px;margin-bottom:2px}
-
-/* --- prototype marker ---------------------------------------------------------------------------
-   Said plainly and repeated per panel rather than once in a corner. A page that looks finished and
-   is not is the kind of thing someone screenshots and circulates as real. */
-.proto{display:inline-block;font:10px/1 ui-monospace,Consolas,monospace;letter-spacing:.09em;
-  text-transform:uppercase;color:var(--ribbon);border:1px solid var(--ribbon);border-radius:3px;
-  padding:3px 6px;margin-left:8px;white-space:nowrap}
-.note{margin:11px 0 0;font-size:11.5px;color:var(--faint)}
 footer{margin-top:26px;text-align:center;font-size:11.5px;color:#DCEBF7;
   text-shadow:0 1px 2px rgba(0,20,50,.8)}
 @media(prefers-reduced-motion:reduce){*{transition:none !important}}
@@ -244,94 +178,48 @@ footer{margin-top:26px;text-align:center;font-size:11.5px;color:#DCEBF7;
 <div class="wrap">
 
 <div class="utilbar">
-  <span class="pill live">Server online</span>
   <a class="pill" href="forecaster.html">Armory</a>
-  <a class="pill" href="guide.html">Map guide</a>
-  <a class="pill" href="attributes.html">Attribute values</a>
-  <a class="pill" href="bosses.html">Boss guide</a>
-  <!-- The PUBLIC bucket URL, not the storage.cloud.google.com console one: that form
-       302s to a Google sign-in, so it would send players to a login page rather than
-       the file. No `download` attribute -- it is ignored cross-origin, and the object
-       is served as application/x-zip-compressed so the browser saves it regardless. -->
-  <a class="pill" href="https://storage.googleapis.com/gauntlet-clients/client-ready-20260902.zip">Download client &middot; 1.77 GB</a>
+  <a class="pill" href="https://cdn.gauntletofpirates.com/installer/GauntletOfPiratesSetup.exe" rel="noopener">Download</a>
 </div>
 
 <!-- The artwork's own painted title is the masthead. Nothing is drawn over this. -->
 <div class="hero" aria-hidden="true"></div>
 
-<nav class="plaque" aria-label="Main"><a class="navtab on" href="home.html" aria-current="page">Home</a><a class="navtab" href="forecaster.html">Armory</a><a class="navtab" href="guide.html">Map guide</a><a class="navtab" href="bosses.html">Bosses</a></nav>
+<nav class="plaque" aria-label="Main"><a class="navtab on" href="home.html" aria-current="page">Home</a><a class="navtab" href="forecaster.html">Armory</a><a class="navtab" href="guide.html">Map guide</a><a class="navtab" href="bosses.html">Bosses</a><a class="navtab" href="attributes.html">Attributes</a></nav>
 
 <div class="grid">
   <div class="col">
-
     <section class="panel">
       <h2>Ship&rsquo;s Log <span class="sub">patch notes</span></h2>
-      <div class="body"><article class="entry"><div class="seal" aria-hidden="true"><span>0.42</span></div><div class="etext"><h3>The Armory opens <span class="edate">24 Aug</span></h3><ul><li>Every class and race now has a build simulator, live from the server data.</li><li>Base attributes explain what one point buys -- and where the milestones land.</li><li>Map, boss and attribute references linked from the Armory header.</li></ul></div></article><article class="entry"><div class="seal" aria-hidden="true"><span>0.41</span></div><div class="etext"><h3>Dragon&#x27;s Gauntlet balance <span class="edate">17 Aug</span></h3><ul><li>Black Dragon per-class effects corrected for the Cleric line.</li><li>Boss and mini-boss spawns relocated; the map guide follows automatically.</li><li>Chest contents rebalanced across the four zones.</li></ul></div></article><article class="entry"><div class="seal" aria-hidden="true"><span>0.40</span></div><div class="etext"><h3>The isthmus and the shoreline <span class="edate">9 Aug</span></h3><ul><li>Silver Mine and Frozen Coast joined by a walkable causeway.</li><li>Seabed and shore rebuilt from the original region sources.</li><li>124 invisible obstacles cleared from the mine rail corridors.</li></ul></div></article>
-        <p class="note"><span class="proto">prototype</span> Sample entries &mdash; not a live feed.</p>
-      </div>
+      <div class="body"><article class="entry"><div class="seal" aria-hidden="true"><span>Oct</span></div><div class="etext"><h3>Gauntlet of Pirates <span class="edate">21 - 24 Oct</span></h3><ul><li>The game is now Gauntlet of Pirates, with new loading-screen tips.</li><li>Gear grows with your character; the Lv1-65 upgrade runestones are retired.</li><li>Pearls, a Grants tab, gem-slot colours and team colours.</li><li>Targeting: a range ring, no aiming while a skill cools down, no skills on NPCs, and Ctrl picks enemies only.</li><li>Debuff icons, a Deposit to Vault menu, the area name on the minimap, and Healing Spring on allies.</li><li>The camera catches up when it falls behind, and the game installs with nothing extra to download.</li></ul></div></article><article class="entry"><div class="seal" aria-hidden="true"><span>Oct</span></div><div class="etext"><h3>Class skill bars and a new in-game UI <span class="edate">16 - 22 Oct</span></h3><ul><li>Per-class skill bars replace loadouts, and save themselves.</li><li>HUD and window scaling, a status bar, and a reworked inventory and guild vault.</li><li>Champion select gets an apparel pane that dresses your champion, plus a light theme and a colourblind mode.</li><li>Lobby wallets, claimed dailies, party flow, an apparel grid and match history.</li><li>A Gem and Fruit Exchanger, a kill bounty, coloured notices and more Gatekeepers.</li></ul></div></article><article class="entry"><div class="seal" aria-hidden="true"><span>Oct</span></div><div class="etext"><h3>The 5v5 map <span class="edate">7 - 15 Oct</span></h3><ul><li>Silver Mine is cut; its bridge now joins Forsaken City.</li><li>Shared rations, fairy and set swaps, and Chaos gear that levels with you.</li><li>A runestone path from a Lv1 starting kit, with gear you cannot lose.</li><li>Skill tuning, neutral mini bosses, and changes to revival and respawn.</li><li>In-match chat and a team quest counter.</li><li>The Black Dragon can no longer heal itself.</li><li>A Market dressing room, player profiles, and Rankings with Bounty.</li></ul></div></article><article class="entry"><div class="seal" aria-hidden="true"><span>Oct</span></div><div class="etext"><h3>Abaddon cut, the Market opens <span class="edate">1 - 3 Oct</span></h3><ul><li>Abaddon is cut; the isthmus now leads onto the Black Dragon&#x27;s Nest.</li><li>New Cardic weapon stats.</li><li>The lobby Market, guilds and a cosmetics wardrobe.</li><li>Every Demonic Fruit says what its fairy adds; Om gives 20% max SP.</li></ul></div></article><article class="entry"><div class="seal" aria-hidden="true"><span>Sep</span></div><div class="etext"><h3>Runestone crowns and magic resist <span class="edate">23 - 30 Sep</span></h3><ul><li>Magic Resist is its own stat, and it now reaches damage.</li><li>Level difference no longer changes damage.</li><li>Bosses are 30% weaker, crowd control is shorter, and ores pay Refining Gems.</li><li>The Chaos Crownstone climbs to Lv75 as one of four runestone crowns; crowns give 500 SP and 750 HP.</li><li>The Chaotic Runestone works on Lv65 gear, and respawn at Lv75 takes 38 seconds.</li><li>Pet fruit evolution: nine fruits, nine pet effects.</li><li>Base move speed 520, reworked newbie chests, bulk buying, and skills you can cancel.</li></ul></div></article><article class="entry"><div class="seal" aria-hidden="true"><span>Sep</span></div><div class="etext"><h3>The clash density rework <span class="edate">13 - 20 Sep</span></h3><ul><li>Lone Tower and Black Dragon Lair 1 are cut, and the level cap is now 75.</li><li>A runestone chain, side grants, poison fog, the Black Dragon Key, PvP stakes and boss notices.</li><li>Each side spawns at its own base with its own Gatekeepers; a Weightless Potion at every rung.</li><li>Chests refill every 15 minutes.</li><li>An I&#x27;m Stuck button in the ESC menu.</li><li>Characters no longer turn invisible on AMD graphics.</li><li>Server hardening: one bad packet can no longer take the server down.</li></ul></div></article><article class="entry"><div class="seal" aria-hidden="true"><span>Sep</span></div><div class="etext"><h3>5v5 test rounds <span class="edate">5 - 12 Sep</span></h3><ul><li>Gem slots, caps and descriptions, match length, and monster crowd-control lockouts.</li><li>Fairies feed themselves from rations, and eating a food or potion again adds to its time.</li><li>Forge the gear you are wearing; socket level follows player level.</li><li>Rebirth into the same class keeps your build.</li><li>Remappable hotbar keys, hold Space to buff yourself, and players-only targeting.</li><li>Gear from chests, consumables from quests, and an unseal system that works.</li></ul></div></article></div>
     </section>
-
-    <section class="panel">
-      <h2>Wall of Tales <span class="sub">from the Gauntlet</span></h2>
-      <div class="body">
-        <div class="wall"><figure class="shot s0"><div class="tack" aria-hidden="true"></div><img src="gauntlet_minimap.png" alt="The Gauntlet, whole" loading="lazy"><figcaption><b>The Gauntlet, whole</b>The live map render -- every zone the run crosses.</figcaption></figure><figure class="shot s1"><div class="tack" aria-hidden="true"></div><div class="pending"><span>awaiting capture</span></div><figcaption><b>Black Dragon&#x27;s Lair</b>The final chamber. Chests only, and the dragon.</figcaption></figure><figure class="shot s2"><div class="tack" aria-hidden="true"></div><div class="pending"><span>awaiting capture</span></div><figcaption><b>Silver Mine</b>Rail corridors and the west bridge.</figcaption></figure><figure class="shot s0"><div class="tack" aria-hidden="true"></div><div class="pending"><span>awaiting capture</span></div><figcaption><b>Frozen Coast</b>Where the causeway meets the ice.</figcaption></figure></div>
-        <p class="note"><span class="proto">prototype</span> One live map render; the rest are
-        empty frames awaiting real captures rather than stand-in images.</p>
-      </div>
-    </section>
-
   </div>
   <div class="col">
-
     <section class="panel">
-      <h2>Harbourmaster&rsquo;s Desk <span class="sub">sign in</span></h2>
+      <h2>Set Sail <span class="sub">play the 5v5</span></h2>
       <div class="body">
-        <!-- INERT BY DESIGN: no action, no method, no handler, autocomplete off. A prototype that
-             looks like a credential form must not be able to behave like one. -->
-        <form onsubmit="return false" autocomplete="off">
-          <div class="field">
-            <label for="u">Captain&rsquo;s name</label>
-            <input id="u" type="text" autocomplete="off" disabled placeholder="prototype">
-          </div>
-          <div class="field">
-            <label for="p">Password</label>
-            <input id="p" type="password" autocomplete="off" disabled placeholder="prototype">
-          </div>
-          <button class="btn" type="button" disabled>Set sail</button>
-          <button class="btn ghost" type="button" disabled>Register a new crew</button>
-          <div class="rowlinks">
-            <a href="#" onclick="return false">Forgot your password?</a>
-            <a href="#" onclick="return false">Recover account</a>
-          </div>
-        </form>
-        <p class="note"><span class="proto">prototype</span> Disabled on purpose &mdash; this does
-        not send anything anywhere. Do not enter a real password.</p>
+        <a class="btn" href="https://cdn.gauntletofpirates.com/installer/GauntletOfPiratesSetup.exe" rel="noopener">Download the game</a>
+        <p class="note">Windows installer</p>
+        <div class="guides"><a class="guide" href="forecaster.html"><b>Armory</b><span>Plan a build: every weapon, armour piece, gem and fairy in the 5v5, and what it does to your stats.</span></a><a class="guide" href="guide.html"><b>Map guide</b><span>The map region by region: monsters, NPCs, chests, bosses and teleports.</span></a><a class="guide" href="bosses.html"><b>Boss guide</b><span>Every boss, mini boss and chest, and what each one drops.</span></a><a class="guide" href="attributes.html"><b>Attribute values</b><span>What one stat point buys, class by class, and where it jumps.</span></a></div>
       </div>
     </section>
-
-    <section class="panel">
-      <h2>Crew Roster <span class="sub">top of the seas</span></h2>
-      <div class="body">
-        <table class="roster"><tbody><tr><td class="rank"><span class="disc medal m1">1</span></td><td class="who"><b>Redbeard</b><span class="guild">Solar Bosuns</span></td><td class="cls">Crusader</td><td class="lv">85</td></tr><tr><td class="rank"><span class="disc medal m2">2</span></td><td class="who"><b>Marisol</b><span class="guild">Tide Wardens</span></td><td class="cls">Seal Master</td><td class="lv">85</td></tr><tr><td class="rank"><span class="disc medal m3">3</span></td><td class="who"><b>Quill</b><span class="guild">Solar Bosuns</span></td><td class="cls">Sharpshooter</td><td class="lv">84</td></tr><tr><td class="rank"><span class="disc">4</span></td><td class="who"><b>Anselm</b><span class="guild">The Undertow</span></td><td class="cls">Champion</td><td class="lv">82</td></tr><tr><td class="rank"><span class="disc">5</span></td><td class="who"><b>Wren</b><span class="guild">Tide Wardens</span></td><td class="cls">Cleric</td><td class="lv">81</td></tr><tr><td class="rank"><span class="disc">6</span></td><td class="who"><b>Corvo</b><span class="guild">Saltborn</span></td><td class="cls">Voyager</td><td class="lv">79</td></tr></tbody></table>
-        <p class="note"><span class="proto">prototype</span> Sample names &mdash; not live standings.</p>
-      </div>
-    </section>
-
-    <section class="panel">
-      <h2>The Tavern <span class="sub">discord</span></h2>
-      <div class="body">
-        <div class="tavern">
-          <div class="glyph" aria-hidden="true">D</div>
-          <p><b>Join the crew</b>Raids, trade and patch chatter &mdash; the fastest way to find a party.</p>
-        </div>
-        <button class="btn" type="button" disabled style="margin-top:13px">Open Discord</button>
-        <p class="note"><span class="proto">prototype</span> Invite link not wired up yet.</p>
-      </div>
-    </section>
-
   </div>
 </div>
 
-<footer>Gauntlet: Dragon&rsquo;s Risen &middot; the Armory is live; everything else on this page is
-a prototype.</footer>
+<section class="panel full">
+  <h2>The 5v5 map <span class="sub">one road east</span></h2>
+  <div class="body">
+    <img class="mapimg" src="gauntlet_minimap.png" alt="The 5v5 Gauntlet map, west to east"
+      width="1320" height="648" loading="lazy">
+    <p class="mapcap">Both sides start in the west and fight east. Each region is shrouded in poison
+    fog until the boss before it falls; Gatekeepers teleport you only as far as your level allows,
+    and the last region also needs a key.</p>
+    <div class="scroll"><table class="regions">
+      <thead><tr><th>Region</th><th>Monsters</th><th>How it opens</th></tr></thead>
+      <tbody><tr><td class='rg'>Thundoria Castle &middot; Shaitan City</td><td class='n'>Lv 1&ndash;35</td><td>Where each side starts</td></tr><tr><td class='rg'>Forsaken City</td><td class='n'>Lv 36&ndash;52</td><td>Fogged until Medusa falls &middot; teleport from Lv 40</td></tr><tr><td class='rg'>Dark Swamp</td><td class='n'>Lv 48&ndash;64</td><td>Fogged until the Death Knight falls &middot; teleport from Lv 52</td></tr><tr><td class='rg'>Demonic World</td><td class='n'>Lv 62&ndash;75</td><td>Fogged until the Huge Mud Monster falls &middot; teleport from Lv 64</td></tr><tr><td class='rg'>Black Dragon Lair</td><td class='n'>Black Dragon, Lv 90</td><td>Through the Lair Warden with the Black Dragon Key &middot; Lv 75</td></tr></tbody>
+    </table></div>
+  </div>
+</section>
+
+<footer>Gauntlet of Pirates &middot; built from the game&rsquo;s own data on 24 Oct 2026</footer>
 </div></body></html>
